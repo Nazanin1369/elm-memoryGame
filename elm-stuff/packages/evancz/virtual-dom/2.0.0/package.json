@@ -1,0 +1,8 @@
+{
+    "name": "",
+    "version": "",
+    "description": "",
+    "dependencies": {
+        "virtual-dom": "2.0.1"
+    }
+}

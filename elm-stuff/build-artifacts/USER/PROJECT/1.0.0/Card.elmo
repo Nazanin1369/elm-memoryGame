@@ -1,0 +1,87 @@
+Elm.Card = Elm.Card || {};
+Elm.Card.make = function (_elm) {
+   "use strict";
+   _elm.Card = _elm.Card || {};
+   if (_elm.Card.values)
+   return _elm.Card.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Card",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var imageStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                         ,_0: "width"
+                                                         ,_1: "50px"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "height"
+                                                         ,_1: "50px"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "padding"
+                                                         ,_1: "10px"}]));
+   var toImage = function (model) {
+      return $Html$Attributes.src(function () {
+         var _v0 = model.status;
+         switch (_v0.ctor)
+         {case "Closed":
+            return "back.svg";
+            case "Opened":
+            return model.image;}
+         _U.badCase($moduleName,
+         "between lines 28 and 31");
+      }());
+   };
+   var view = F2(function (address,
+   model) {
+      return A2($Html.div,
+      _L.fromArray([]),
+      _L.fromArray([A2($Html.div,
+      _L.fromArray([A2($Html$Events.onClick,
+      address,
+      model.status)]),
+      _L.fromArray([A2($Html.img,
+      _L.fromArray([toImage(model)
+                   ,imageStyle]),
+      _L.fromArray([]))]))]));
+   });
+   var Flip = {ctor: "Flip"};
+   var Closed = {ctor: "Closed"};
+   var initialModel = {_: {}
+                      ,image: "1.svg"
+                      ,status: Closed};
+   var Opened = {ctor: "Opened"};
+   var update = F2(function (action,
+   model) {
+      return function () {
+         switch (action.ctor)
+         {case "Closed":
+            return _U.replace([["status"
+                               ,Opened]],
+              model);
+            case "Opened":
+            return _U.replace([["status"
+                               ,Closed]],
+              model);}
+         _U.badCase($moduleName,
+         "between lines 49 and 51");
+      }();
+   });
+   var Model = F2(function (a,b) {
+      return {_: {}
+             ,image: b
+             ,status: a};
+   });
+   _elm.Card.values = {_op: _op
+                      ,initialModel: initialModel
+                      ,update: update
+                      ,view: view
+                      ,Model: Model};
+   return _elm.Card.values;
+};

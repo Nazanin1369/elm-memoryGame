@@ -1,0 +1,67 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values)
+   return _elm.Main.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Main",
+   $Basics = Elm.Basics.make(_elm),
+   $Card = Elm.Card.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
+   var update = F2(function (action,
+   model) {
+      return function () {
+         switch (action.ctor)
+         {case "Do": return A2($List.map,
+              function (cModel) {
+                 return A2($Card.update,
+                 action._0,
+                 cModel);
+              },
+              model);}
+         _U.badCase($moduleName,
+         "between lines 39 and 40");
+      }();
+   });
+   var init = _L.fromArray([$Card.initialModel
+                           ,$Card.initialModel
+                           ,$Card.initialModel
+                           ,$Card.initialModel]);
+   var Do = function (a) {
+      return {ctor: "Do",_0: a};
+   };
+   var view = F2(function (address,
+   model) {
+      return A2($Html.div,
+      _L.fromArray([]),
+      A2($List.map,
+      function (cModel) {
+         return A2($Card.view,
+         A2($Signal.forwardTo,
+         address,
+         Do),
+         cModel);
+      },
+      model));
+   });
+   var main = $StartApp$Simple.start({_: {}
+                                     ,model: init
+                                     ,update: update
+                                     ,view: view});
+   _elm.Main.values = {_op: _op
+                      ,main: main
+                      ,Do: Do
+                      ,init: init
+                      ,view: view
+                      ,update: update};
+   return _elm.Main.values;
+};
