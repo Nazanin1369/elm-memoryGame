@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Test.Reference</title>
+<script type="text/javascript" src="reference.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var runs = d3.range(10000).map(function(){return d3.shuffle(d3.range(11))});
+    Elm.fullscreen(Elm.Main, {runs: runs})</script>
+</body>
+</html>

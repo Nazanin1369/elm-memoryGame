@@ -1,0 +1,142 @@
+Elm.Random = Elm.Random || {};
+Elm.Random.Array = Elm.Random.Array || {};
+Elm.Random.Array.make = function (_elm) {
+   "use strict";
+   _elm.Random = _elm.Random || {};
+   _elm.Random.Array = _elm.Random.Array || {};
+   if (_elm.Random.Array.values)
+   return _elm.Random.Array.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Random.Array",
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Random = Elm.Random.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Trampoline = Elm.Trampoline.make(_elm);
+   var choose = F2(function (seed,
+   arr) {
+      return _U.eq(arr,
+      $Array.empty) ? {ctor: "_Tuple3"
+                      ,_0: $Maybe.Nothing
+                      ,_1: seed
+                      ,_2: arr} : function () {
+         var intGen = A2($Random.$int,
+         0,
+         $Array.length(arr) - 1);
+         var $ = A2($Random.generate,
+         intGen,
+         seed),
+         index = $._0,
+         seed$ = $._1;
+         var front = A3($Array.slice,
+         0,
+         index,
+         arr);
+         var back = A3($Array.slice,
+         index + 1,
+         $Array.length(arr),
+         arr);
+         return {ctor: "_Tuple3"
+                ,_0: A2($Array.get,index,arr)
+                ,_1: seed$
+                ,_2: A2($Array.append,
+                front,
+                back)};
+      }();
+   });
+   var shuffle = F2(function (seed,
+   arr) {
+      return _U.eq(arr,
+      $Array.empty) ? {ctor: "_Tuple2"
+                      ,_0: arr
+                      ,_1: seed} : function () {
+         var helper = function (_v0) {
+            return function () {
+               switch (_v0.ctor)
+               {case "_Tuple3":
+                  return function () {
+                       var $ = A2(choose,
+                       _v0._0,
+                       _v0._2),
+                       m_val = $._0,
+                       s$ = $._1,
+                       a$ = $._2;
+                       return function () {
+                          switch (m_val.ctor)
+                          {case "Just":
+                             return $Trampoline.Continue(function (_v7) {
+                                  return function () {
+                                     switch (_v7.ctor)
+                                     {case "_Tuple0":
+                                        return helper({ctor: "_Tuple3"
+                                                      ,_0: s$
+                                                      ,_1: A2($List._op["::"],
+                                                      m_val._0,
+                                                      _v0._1)
+                                                      ,_2: a$});}
+                                     _U.badCase($moduleName,
+                                     "on line 55, column 48 to 71");
+                                  }();
+                               });
+                             case "Nothing":
+                             return $Trampoline.Done({ctor: "_Tuple3"
+                                                     ,_0: _v0._0
+                                                     ,_1: _v0._1
+                                                     ,_2: _v0._2});}
+                          _U.badCase($moduleName,
+                          "between lines 53 and 56");
+                       }();
+                    }();}
+               _U.badCase($moduleName,
+               "between lines 52 and 56");
+            }();
+         };
+         var _ = $Trampoline.trampoline(helper({ctor: "_Tuple3"
+                                               ,_0: seed
+                                               ,_1: _L.fromArray([])
+                                               ,_2: arr}));
+         var seed$ = function () {
+            switch (_.ctor)
+            {case "_Tuple3": return _._0;}
+            _U.badCase($moduleName,
+            "on line 56, column 32 to 67");
+         }();
+         var shuffled = function () {
+            switch (_.ctor)
+            {case "_Tuple3": return _._1;}
+            _U.badCase($moduleName,
+            "on line 56, column 32 to 67");
+         }();
+         return {ctor: "_Tuple2"
+                ,_0: $Array.fromList(shuffled)
+                ,_1: seed$};
+      }();
+   });
+   var sample = F2(function (seed,
+   arr) {
+      return function () {
+         var intGen = A2($Random.$int,
+         0,
+         $Array.length(arr) - 1);
+         var $ = A2($Random.generate,
+         intGen,
+         seed),
+         index = $._0,
+         seed$ = $._1;
+         return {ctor: "_Tuple2"
+                ,_0: A2($Array.get,index,arr)
+                ,_1: seed$};
+      }();
+   });
+   _elm.Random.Array.values = {_op: _op
+                              ,sample: sample
+                              ,choose: choose
+                              ,shuffle: shuffle};
+   return _elm.Random.Array.values;
+};

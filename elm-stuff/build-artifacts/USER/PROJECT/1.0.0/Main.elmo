@@ -9,12 +9,15 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
+   $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Card = Elm.Card.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Random = Elm.Random.make(_elm),
+   $Random$Array = Elm.Random.Array.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
@@ -41,7 +44,7 @@ Elm.Main.make = function (_elm) {
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 58 and 60");
+            "between lines 84 and 86");
          }();
       }();
    };
@@ -58,7 +61,7 @@ Elm.Main.make = function (_elm) {
                  },
                  model);}
             _U.badCase($moduleName,
-            "between lines 68 and 75");
+            "between lines 94 and 101");
          }();
       }();
    });
@@ -70,36 +73,45 @@ Elm.Main.make = function (_elm) {
          i) : i;
       }),
       _L.fromArray([]),
-      model);
+      model.cards);
    };
    var update = F2(function (action,
    model) {
       return function () {
          var opened = openImages(model);
          var openedCount = $List.length(opened);
+         var modelAfterLock = _U.replace([["cards"
+                                          ,A2(lockIfIdentical,
+                                          model.cards,
+                                          opened)]],
+         model);
          return function () {
             switch (action.ctor)
             {case "Do":
-               return $List.map(function (cModel) {
-                    return function () {
-                       var _v8 = {ctor: "_Tuple2"
-                                 ,_0: openedCount
-                                 ,_1: cModel.id};
-                       switch (_v8.ctor)
-                       {case "_Tuple2":
-                          return _U.eq(_v8._1,
-                            action._0) ? A2($Card.update,
-                            action._1,
-                            cModel) : _U.eq(_v8._0,
-                            2) ? $Card.close(cModel) : cModel;}
-                       _U.badCase($moduleName,
-                       "between lines 87 and 95");
-                    }();
-                 })(A2(lockIfIdentical,
-                 model,
-                 opened));}
+               return _U.replace([["cards"
+                                  ,A2($List.map,
+                                  function (cModel) {
+                                     return function () {
+                                        var _v8 = {ctor: "_Tuple2"
+                                                  ,_0: openedCount
+                                                  ,_1: cModel.id};
+                                        switch (_v8.ctor)
+                                        {case "_Tuple2":
+                                           return _U.eq(_v8._1,
+                                             action._0) ? A2($Card.update,
+                                             action._1,
+                                             cModel) : _U.eq(_v8._0,
+                                             2) ? $Card.close(cModel) : cModel;}
+                                        _U.badCase($moduleName,
+                                        "between lines 113 and 121");
+                                     }();
+                                  },
+                                  modelAfterLock.cards)]
+                                 ,["score"
+                                  ,modelAfterLock.score + 1]],
+                 modelAfterLock);}
             _U.badCase($moduleName,
-            "between lines 84 and 95");
+            "between lines 111 and 123");
          }();
       }();
    });
@@ -112,19 +124,34 @@ Elm.Main.make = function (_elm) {
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "margin"
                                                              ,_1: "80px 500px 0px 500px"}]));
-   var init = A2($List.map,
-   function (index) {
-      return A2($Card.initialModel,
-      A2($Basics._op["++"],
-      "images/",
-      A2($Basics._op["++"],
-      $Basics.toString(A2($Basics._op["%"],
-      index,
-      8)),
-      ".svg")),
-      index);
-   },
-   _L.range(1,16));
+   var initSeed = 9999;
+   var shuffle = function (list) {
+      return function () {
+         var _v11 = A2($Random$Array.shuffle,
+         $Random.initialSeed(initSeed),
+         $Array.fromList(list));
+         switch (_v11.ctor)
+         {case "_Tuple2":
+            return $Array.toList(_v11._0);}
+         _U.badCase($moduleName,
+         "between lines 33 and 34");
+      }();
+   };
+   var init = {_: {}
+              ,cards: shuffle(A2($List.map,
+              function (index) {
+                 return A2($Card.initialModel,
+                 A2($Basics._op["++"],
+                 "images/",
+                 A2($Basics._op["++"],
+                 $Basics.toString(A2($Basics._op["%"],
+                 index,
+                 8)),
+                 ".svg")),
+                 index);
+              },
+              _L.range(1,16)))
+              ,score: 0};
    var Do = F2(function (a,b) {
       return {ctor: "Do"
              ,_0: a
@@ -134,15 +161,27 @@ Elm.Main.make = function (_elm) {
    model) {
       return A2($Html.div,
       _L.fromArray([containerStyle]),
-      A2($List.map,
-      function (cModel) {
-         return A2($Card.view,
-         A2($Signal.forwardTo,
-         address,
-         Do(cModel.id)),
-         cModel);
-      },
-      model));
+      _L.fromArray([A2($Html.div,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text(A2($Basics._op["++"],
+                   "Tries ",
+                   $Basics.toString(model.score)))]))
+                   ,A2($Html.div,
+                   _L.fromArray([]),
+                   A2($List.map,
+                   function (cModel) {
+                      return A2($Card.view,
+                      A2($Signal.forwardTo,
+                      address,
+                      Do(cModel.id)),
+                      cModel);
+                   },
+                   model.cards))]));
+   });
+   var Model = F2(function (a,b) {
+      return {_: {}
+             ,cards: a
+             ,score: b};
    });
    var main = $StartApp$Simple.start({_: {}
                                      ,model: init
@@ -150,7 +189,10 @@ Elm.Main.make = function (_elm) {
                                      ,view: view});
    _elm.Main.values = {_op: _op
                       ,main: main
+                      ,Model: Model
                       ,Do: Do
+                      ,initSeed: initSeed
+                      ,shuffle: shuffle
                       ,init: init
                       ,containerStyle: containerStyle
                       ,view: view

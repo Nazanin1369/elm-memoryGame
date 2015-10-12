@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Random.Array",
+    "comment": "\n\n# Random Sampling of Arrays\n\nThese implementations are thought to be correct as validated by non-rigorous\ntests, and should be fine for games and simulations. Please do not trust them\nwhen statisical or especially cryptographic randomness is required.\n\nFor best results, invoke `Random.initialSeed` only once in your program, and\nthread the returned new seeds through. Ideally your starting seed should be\nuniformly chosen from all 32-bit random integers. If you hard-code a small\ninteger, peel off at least one pseudorandom number first.\n\n@docs sample, choose, shuffle",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "choose",
+        "comment": "Sample without replacement: produce a randomly selected element of the\narray, the array with that element omitted (shifting all later elements down),\nand the new seed. Takes O(_n_) time.",
+        "type": "Random.Seed -> Array.Array a -> ( Maybe a, Random.Seed, Array.Array a )"
+      },
+      {
+        "name": "sample",
+        "comment": "Sample with replacement: produce a randomly selected element of the\narray and the new seed. Takes O(1) time.",
+        "type": "Random.Seed -> Array.Array a -> ( Maybe a, Random.Seed )"
+      },
+      {
+        "name": "shuffle",
+        "comment": "Shuffle the array using the Fisher-Yates algorithm. Takes O(_n_ log _n_)\ntime and O(_n_) additional space.",
+        "type": "Random.Seed -> Array.Array a -> ( Array.Array a, Random.Seed )"
+      }
+    ],
+    "generated-with-elm-version": "old"
+  }
+]

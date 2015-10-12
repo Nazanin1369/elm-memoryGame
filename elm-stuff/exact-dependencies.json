@@ -3,5 +3,6 @@
     "evancz/virtual-dom": "2.0.0",
     "evancz/start-app": "2.0.1",
     "evancz/elm-html": "4.0.1",
+    "mgold/Elm-Random-Sampling": "2.0.2",
     "elm-lang/core": "2.1.0"
 }

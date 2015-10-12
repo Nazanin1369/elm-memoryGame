@@ -16,10 +16,6 @@ Elm.Array.make = function (_elm) {
    $Native$Array = Elm.Native.Array.make(_elm);
    var append = $Native$Array.append;
    var length = $Native$Array.length;
-   var isEmpty = function (array) {
-      return _U.eq(length(array),
-      0);
-   };
    var slice = $Native$Array.slice;
    var set = $Native$Array.set;
    var get = F2(function (i,
@@ -76,7 +72,6 @@ Elm.Array.make = function (_elm) {
                        ,repeat: repeat
                        ,initialize: initialize
                        ,fromList: fromList
-                       ,isEmpty: isEmpty
                        ,length: length
                        ,push: push
                        ,append: append
@@ -269,146 +264,6 @@ Elm.Basics.make = function (_elm) {
                         ,EQ: EQ
                         ,GT: GT};
    return _elm.Basics.values;
-};
-Elm.Card = Elm.Card || {};
-Elm.Card.make = function (_elm) {
-   "use strict";
-   _elm.Card = _elm.Card || {};
-   if (_elm.Card.values)
-   return _elm.Card.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Card",
-   $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Html$Events = Elm.Html.Events.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var imageStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                         ,_0: "width"
-                                                         ,_1: "50px"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "height"
-                                                         ,_1: "50px"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "padding"
-                                                         ,_1: "10px"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "position"
-                                                         ,_1: "relative"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "display"
-                                                         ,_1: "block"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "-webkit-transform"
-                                                         ,_1: "rotate3d(0,1,0,-180deg)"}]));
-   var imageContainerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                                  ,_0: "float"
-                                                                  ,_1: "left"}]));
-   var toImage = function (model) {
-      return $Html$Attributes.src(function () {
-         var _v0 = model.status;
-         switch (_v0.ctor)
-         {case "Closed":
-            return "images/back.svg";}
-         return model.image;
-      }());
-   };
-   var view = F2(function (address,
-   model) {
-      return A2($Html.div,
-      _L.fromArray([imageContainerStyle]),
-      _L.fromArray([A2($Html.div,
-      _L.fromArray([A2($Html$Events.onClick,
-      address,
-      model.status)]),
-      _L.fromArray([A2($Html.img,
-      _L.fromArray([toImage(model)
-                   ,imageStyle]),
-      _L.fromArray([]))]))]));
-   });
-   var isLocked = function (model) {
-      return function () {
-         var _v1 = model.status;
-         switch (_v1.ctor)
-         {case "Locked": return true;}
-         return false;
-      }();
-   };
-   var isOpen = function (model) {
-      return function () {
-         var _v2 = model.status;
-         switch (_v2.ctor)
-         {case "Opened": return true;}
-         return false;
-      }();
-   };
-   var Flip = {ctor: "Flip"};
-   var Locked = {ctor: "Locked"};
-   var lock = function (model) {
-      return _U.replace([["status"
-                         ,Locked]],
-      model);
-   };
-   var Closed = {ctor: "Closed"};
-   var initialModel = F2(function (img,
-   id) {
-      return {_: {}
-             ,id: id
-             ,image: img
-             ,status: Closed};
-   });
-   var close = function (model) {
-      return function () {
-         var _v3 = model.status;
-         switch (_v3.ctor)
-         {case "Locked": return model;}
-         return _U.replace([["status"
-                            ,Closed]],
-         model);
-      }();
-   };
-   var Opened = {ctor: "Opened"};
-   var update = F2(function (action,
-   model) {
-      return function () {
-         switch (action.ctor)
-         {case "Closed":
-            return _U.replace([["status"
-                               ,Opened]],
-              model);
-            case "Locked": return model;
-            case "Opened":
-            return _U.replace([["status"
-                               ,Closed]],
-              model);}
-         _U.badCase($moduleName,
-         "between lines 75 and 78");
-      }();
-   });
-   var Model = F3(function (a,
-   b,
-   c) {
-      return {_: {}
-             ,id: c
-             ,image: b
-             ,status: a};
-   });
-   _elm.Card.values = {_op: _op
-                      ,initialModel: initialModel
-                      ,update: update
-                      ,view: view
-                      ,isOpen: isOpen
-                      ,close: close
-                      ,lock: lock
-                      ,isLocked: isLocked
-                      ,Model: Model};
-   return _elm.Card.values;
 };
 Elm.Char = Elm.Char || {};
 Elm.Char.make = function (_elm) {
@@ -648,7 +503,7 @@ Elm.Color.make = function (_elm) {
                         ,saturation: s};
               }();}
          _U.badCase($moduleName,
-         "between lines 114 and 118");
+         "between lines 114 and 121");
       }();
    };
    var HSLA = F4(function (a,
@@ -704,7 +559,7 @@ Elm.Color.make = function (_elm) {
                  color._3);
               }();}
          _U.badCase($moduleName,
-         "between lines 105 and 108");
+         "between lines 105 and 111");
       }();
    };
    var grayscale = function (p) {
@@ -984,7 +839,7 @@ Elm.Dict.make = function (_elm) {
               A3(foldr,f,acc,t._4)),
               t._3);}
          _U.badCase($moduleName,
-         "between lines 417 and 421");
+         "between lines 408 and 416");
       }();
    });
    var keys = function (dict) {
@@ -1040,7 +895,7 @@ Elm.Dict.make = function (_elm) {
               A3(foldl,f,acc,dict._3)),
               dict._4);}
          _U.badCase($moduleName,
-         "between lines 406 and 410");
+         "between lines 397 and 405");
       }();
    });
    var isBBlack = function (dict) {
@@ -1064,7 +919,7 @@ Elm.Dict.make = function (_elm) {
             case "Remove": return "Remove";
             case "Same": return "Same";}
          _U.badCase($moduleName,
-         "between lines 182 and 185");
+         "between lines 173 and 179");
       }();
    };
    var Same = {ctor: "Same"};
@@ -1094,10 +949,10 @@ Elm.Dict.make = function (_elm) {
                       targetKey,
                       dict._3);}
                  _U.badCase($moduleName,
-                 "between lines 129 and 132");
+                 "between lines 129 and 135");
               }();}
          _U.badCase($moduleName,
-         "between lines 124 and 132");
+         "between lines 124 and 135");
       }();
    });
    var member = F2(function (key,
@@ -1124,7 +979,7 @@ Elm.Dict.make = function (_elm) {
                         ,_1: dict._2};}
               return max(dict._4);}
          _U.badCase($moduleName,
-         "between lines 100 and 108");
+         "between lines 100 and 121");
       }();
    };
    var min = function (dict) {
@@ -1178,9 +1033,6 @@ Elm.Dict.make = function (_elm) {
    var LBBlack = {ctor: "LBBlack"};
    var LBlack = {ctor: "LBlack"};
    var empty = RBEmpty(LBlack);
-   var isEmpty = function (dict) {
-      return _U.eq(dict,empty);
-   };
    var map = F2(function (f,dict) {
       return function () {
          switch (dict.ctor)
@@ -1196,7 +1048,7 @@ Elm.Dict.make = function (_elm) {
               A2(map,f,dict._3),
               A2(map,f,dict._4));}
          _U.badCase($moduleName,
-         "between lines 394 and 399");
+         "between lines 385 and 394");
       }();
    });
    var showNColor = function (c) {
@@ -1245,7 +1097,7 @@ Elm.Dict.make = function (_elm) {
                    dict._4);}
               break;}
          _U.badCase($moduleName,
-         "between lines 154 and 162");
+         "between lines 145 and 157");
       }();
    };
    var blackish = function (t) {
@@ -1256,7 +1108,7 @@ Elm.Dict.make = function (_elm) {
             return _U.eq(t._0,
               Black) || _U.eq(t._0,BBlack);}
          _U.badCase($moduleName,
-         "between lines 339 and 341");
+         "between lines 330 and 332");
       }();
    };
    var blacken = function (t) {
@@ -1271,7 +1123,7 @@ Elm.Dict.make = function (_elm) {
               t._3,
               t._4);}
          _U.badCase($moduleName,
-         "between lines 378 and 380");
+         "between lines 369 and 371");
       }();
    };
    var Red = {ctor: "Red"};
@@ -1284,7 +1136,7 @@ Elm.Dict.make = function (_elm) {
             case "NBlack": return Red;
             case "Red": return Black;}
          _U.badCase($moduleName,
-         "between lines 244 and 248");
+         "between lines 235 and 239");
       }();
    };
    var lessBlack = function (color) {
@@ -1296,7 +1148,7 @@ Elm.Dict.make = function (_elm) {
             return $Native$Debug.crash("Can\'t make a negative black node less black!");
             case "Red": return NBlack;}
          _U.badCase($moduleName,
-         "between lines 253 and 257");
+         "between lines 244 and 248");
       }();
    };
    var lessBlackTree = function (dict) {
@@ -1314,7 +1166,7 @@ Elm.Dict.make = function (_elm) {
               dict._3,
               dict._4);}
          _U.badCase($moduleName,
-         "between lines 262 and 264");
+         "between lines 253 and 255");
       }();
    };
    var redden = function (t) {
@@ -1329,7 +1181,7 @@ Elm.Dict.make = function (_elm) {
               t._3,
               t._4);}
          _U.badCase($moduleName,
-         "between lines 386 and 388");
+         "between lines 377 and 382");
       }();
    };
    var balance_node = function (t) {
@@ -1531,7 +1383,7 @@ Elm.Dict.make = function (_elm) {
               r._3,
               r._4));}
          _U.badCase($moduleName,
-         "between lines 323 and 328");
+         "between lines 314 and 319");
       }();
    });
    var rem = F3(function (c,l,r) {
@@ -1552,7 +1404,7 @@ Elm.Dict.make = function (_elm) {
                               case "Red":
                               return RBEmpty(LBlack);}
                            _U.badCase($moduleName,
-                           "between lines 282 and 286");
+                           "between lines 273 and 277");
                         }();
                       case "RBNode":
                       return function () {
@@ -1642,7 +1494,7 @@ Elm.Dict.make = function (_elm) {
                    break;}
               break;}
          _U.badCase($moduleName,
-         "between lines 280 and 309");
+         "between lines 271 and 300");
       }();
    });
    var update = F3(function (k,
@@ -1672,7 +1524,7 @@ Elm.Dict.make = function (_elm) {
                                       ,_0: Same
                                       ,_1: empty};}
                             _U.badCase($moduleName,
-                            "between lines 194 and 198");
+                            "between lines 185 and 189");
                          }();}
                     break;
                   case "RBNode":
@@ -1701,7 +1553,7 @@ Elm.Dict.make = function (_elm) {
                                          dict._3,
                                          dict._4)};}
                                _U.badCase($moduleName,
-                               "between lines 201 and 206");
+                               "between lines 192 and 197");
                             }();
                           case "GT": return function () {
                                var $ = up(dict._4),
@@ -1737,7 +1589,7 @@ Elm.Dict.make = function (_elm) {
                                             dict._3,
                                             newRight)};}
                                   _U.badCase($moduleName,
-                                  "between lines 215 and 220");
+                                  "between lines 206 and 211");
                                }();
                             }();
                           case "LT": return function () {
@@ -1774,14 +1626,14 @@ Elm.Dict.make = function (_elm) {
                                             newLeft,
                                             dict._4)};}
                                   _U.badCase($moduleName,
-                                  "between lines 208 and 213");
+                                  "between lines 199 and 204");
                                }();
                             }();}
                        _U.badCase($moduleName,
-                       "between lines 199 and 220");
+                       "between lines 190 and 211");
                     }();}
                _U.badCase($moduleName,
-               "between lines 192 and 220");
+               "between lines 183 and 211");
             }();
          };
          var $ = up(dict),
@@ -1796,7 +1648,7 @@ Elm.Dict.make = function (_elm) {
                case "Same":
                return updatedDict;}
             _U.badCase($moduleName,
-            "between lines 222 and 225");
+            "between lines 213 and 219");
          }();
       }();
    });
@@ -1813,7 +1665,7 @@ Elm.Dict.make = function (_elm) {
       return A3(insert,
       key,
       value,
-      empty);
+      RBEmpty(LBlack));
    });
    var union = F2(function (t1,
    t2) {
@@ -1833,7 +1685,7 @@ Elm.Dict.make = function (_elm) {
                  _v214._1,
                  dict);}
             _U.badCase($moduleName,
-            "on line 466, column 38 to 59");
+            "on line 457, column 38 to 59");
          }();
       }),
       empty,
@@ -1891,7 +1743,7 @@ Elm.Dict.make = function (_elm) {
                                               value,
                                               _v220._1)};}
                _U.badCase($moduleName,
-               "between lines 487 and 489");
+               "between lines 478 and 480");
             }();
          });
          return A3(foldl,
@@ -1922,7 +1774,6 @@ Elm.Dict.make = function (_elm) {
                       ,singleton: singleton
                       ,insert: insert
                       ,update: update
-                      ,isEmpty: isEmpty
                       ,get: get
                       ,remove: remove
                       ,member: member
@@ -2057,7 +1908,7 @@ Elm.Graphics.Collage.make = function (_elm) {
                               ,["y",f.y + _v0._1]],
               f);}
          _U.badCase($moduleName,
-         "on line 226, column 3 to 37");
+         "on line 226, column 7 to 35");
       }();
    });
    var form = function (f) {
@@ -2740,7 +2591,7 @@ Elm.Graphics.Element.make = function (_elm) {
                  maxOrZero(ws),
                  $List.sum(hs));}
             _U.badCase($moduleName,
-            "between lines 362 and 368");
+            "between lines 362 and 373");
          }();
       }();
    });
@@ -2827,1117 +2678,6 @@ Elm.Graphics.Element.make = function (_elm) {
                                   ,Element: Element
                                   ,Position: Position};
    return _elm.Graphics.Element.values;
-};
-Elm.Html = Elm.Html || {};
-Elm.Html.make = function (_elm) {
-   "use strict";
-   _elm.Html = _elm.Html || {};
-   if (_elm.Html.values)
-   return _elm.Html.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Html",
-   $Basics = Elm.Basics.make(_elm),
-   $Graphics$Element = Elm.Graphics.Element.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $VirtualDom = Elm.VirtualDom.make(_elm);
-   var fromElement = $VirtualDom.fromElement;
-   var toElement = $VirtualDom.toElement;
-   var text = $VirtualDom.text;
-   var node = $VirtualDom.node;
-   var body = node("body");
-   var section = node("section");
-   var nav = node("nav");
-   var article = node("article");
-   var aside = node("aside");
-   var h1 = node("h1");
-   var h2 = node("h2");
-   var h3 = node("h3");
-   var h4 = node("h4");
-   var h5 = node("h5");
-   var h6 = node("h6");
-   var header = node("header");
-   var footer = node("footer");
-   var address = node("address");
-   var main$ = node("main");
-   var p = node("p");
-   var hr = node("hr");
-   var pre = node("pre");
-   var blockquote = node("blockquote");
-   var ol = node("ol");
-   var ul = node("ul");
-   var li = node("li");
-   var dl = node("dl");
-   var dt = node("dt");
-   var dd = node("dd");
-   var figure = node("figure");
-   var figcaption = node("figcaption");
-   var div = node("div");
-   var a = node("a");
-   var em = node("em");
-   var strong = node("strong");
-   var small = node("small");
-   var s = node("s");
-   var cite = node("cite");
-   var q = node("q");
-   var dfn = node("dfn");
-   var abbr = node("abbr");
-   var time = node("time");
-   var code = node("code");
-   var $var = node("var");
-   var samp = node("samp");
-   var kbd = node("kbd");
-   var sub = node("sub");
-   var sup = node("sup");
-   var i = node("i");
-   var b = node("b");
-   var u = node("u");
-   var mark = node("mark");
-   var ruby = node("ruby");
-   var rt = node("rt");
-   var rp = node("rp");
-   var bdi = node("bdi");
-   var bdo = node("bdo");
-   var span = node("span");
-   var br = node("br");
-   var wbr = node("wbr");
-   var ins = node("ins");
-   var del = node("del");
-   var img = node("img");
-   var iframe = node("iframe");
-   var embed = node("embed");
-   var object = node("object");
-   var param = node("param");
-   var video = node("video");
-   var audio = node("audio");
-   var source = node("source");
-   var track = node("track");
-   var canvas = node("canvas");
-   var svg = node("svg");
-   var math = node("math");
-   var table = node("table");
-   var caption = node("caption");
-   var colgroup = node("colgroup");
-   var col = node("col");
-   var tbody = node("tbody");
-   var thead = node("thead");
-   var tfoot = node("tfoot");
-   var tr = node("tr");
-   var td = node("td");
-   var th = node("th");
-   var form = node("form");
-   var fieldset = node("fieldset");
-   var legend = node("legend");
-   var label = node("label");
-   var input = node("input");
-   var button = node("button");
-   var select = node("select");
-   var datalist = node("datalist");
-   var optgroup = node("optgroup");
-   var option = node("option");
-   var textarea = node("textarea");
-   var keygen = node("keygen");
-   var output = node("output");
-   var progress = node("progress");
-   var meter = node("meter");
-   var details = node("details");
-   var summary = node("summary");
-   var menuitem = node("menuitem");
-   var menu = node("menu");
-   _elm.Html.values = {_op: _op
-                      ,node: node
-                      ,text: text
-                      ,toElement: toElement
-                      ,fromElement: fromElement
-                      ,body: body
-                      ,section: section
-                      ,nav: nav
-                      ,article: article
-                      ,aside: aside
-                      ,h1: h1
-                      ,h2: h2
-                      ,h3: h3
-                      ,h4: h4
-                      ,h5: h5
-                      ,h6: h6
-                      ,header: header
-                      ,footer: footer
-                      ,address: address
-                      ,main$: main$
-                      ,p: p
-                      ,hr: hr
-                      ,pre: pre
-                      ,blockquote: blockquote
-                      ,ol: ol
-                      ,ul: ul
-                      ,li: li
-                      ,dl: dl
-                      ,dt: dt
-                      ,dd: dd
-                      ,figure: figure
-                      ,figcaption: figcaption
-                      ,div: div
-                      ,a: a
-                      ,em: em
-                      ,strong: strong
-                      ,small: small
-                      ,s: s
-                      ,cite: cite
-                      ,q: q
-                      ,dfn: dfn
-                      ,abbr: abbr
-                      ,time: time
-                      ,code: code
-                      ,$var: $var
-                      ,samp: samp
-                      ,kbd: kbd
-                      ,sub: sub
-                      ,sup: sup
-                      ,i: i
-                      ,b: b
-                      ,u: u
-                      ,mark: mark
-                      ,ruby: ruby
-                      ,rt: rt
-                      ,rp: rp
-                      ,bdi: bdi
-                      ,bdo: bdo
-                      ,span: span
-                      ,br: br
-                      ,wbr: wbr
-                      ,ins: ins
-                      ,del: del
-                      ,img: img
-                      ,iframe: iframe
-                      ,embed: embed
-                      ,object: object
-                      ,param: param
-                      ,video: video
-                      ,audio: audio
-                      ,source: source
-                      ,track: track
-                      ,canvas: canvas
-                      ,svg: svg
-                      ,math: math
-                      ,table: table
-                      ,caption: caption
-                      ,colgroup: colgroup
-                      ,col: col
-                      ,tbody: tbody
-                      ,thead: thead
-                      ,tfoot: tfoot
-                      ,tr: tr
-                      ,td: td
-                      ,th: th
-                      ,form: form
-                      ,fieldset: fieldset
-                      ,legend: legend
-                      ,label: label
-                      ,input: input
-                      ,button: button
-                      ,select: select
-                      ,datalist: datalist
-                      ,optgroup: optgroup
-                      ,option: option
-                      ,textarea: textarea
-                      ,keygen: keygen
-                      ,output: output
-                      ,progress: progress
-                      ,meter: meter
-                      ,details: details
-                      ,summary: summary
-                      ,menuitem: menuitem
-                      ,menu: menu};
-   return _elm.Html.values;
-};
-Elm.Html = Elm.Html || {};
-Elm.Html.Attributes = Elm.Html.Attributes || {};
-Elm.Html.Attributes.make = function (_elm) {
-   "use strict";
-   _elm.Html = _elm.Html || {};
-   _elm.Html.Attributes = _elm.Html.Attributes || {};
-   if (_elm.Html.Attributes.values)
-   return _elm.Html.Attributes.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Html.Attributes",
-   $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $String = Elm.String.make(_elm),
-   $VirtualDom = Elm.VirtualDom.make(_elm);
-   var attribute = $VirtualDom.attribute;
-   var property = $VirtualDom.property;
-   var stringProperty = F2(function (name,
-   string) {
-      return A2(property,
-      name,
-      $Json$Encode.string(string));
-   });
-   var $class = function (name) {
-      return A2(stringProperty,
-      "className",
-      name);
-   };
-   var id = function (name) {
-      return A2(stringProperty,
-      "id",
-      name);
-   };
-   var title = function (name) {
-      return A2(stringProperty,
-      "title",
-      name);
-   };
-   var accesskey = function ($char) {
-      return A2(stringProperty,
-      "accesskey",
-      $String.fromList(_L.fromArray([$char])));
-   };
-   var contextmenu = function (value) {
-      return A2(stringProperty,
-      "contextmenu",
-      value);
-   };
-   var dir = function (value) {
-      return A2(stringProperty,
-      "dir",
-      value);
-   };
-   var draggable = function (value) {
-      return A2(stringProperty,
-      "draggable",
-      value);
-   };
-   var dropzone = function (value) {
-      return A2(stringProperty,
-      "dropzone",
-      value);
-   };
-   var itemprop = function (value) {
-      return A2(stringProperty,
-      "itemprop",
-      value);
-   };
-   var lang = function (value) {
-      return A2(stringProperty,
-      "lang",
-      value);
-   };
-   var tabindex = function (n) {
-      return A2(stringProperty,
-      "tabIndex",
-      $Basics.toString(n));
-   };
-   var charset = function (value) {
-      return A2(stringProperty,
-      "charset",
-      value);
-   };
-   var content = function (value) {
-      return A2(stringProperty,
-      "content",
-      value);
-   };
-   var httpEquiv = function (value) {
-      return A2(stringProperty,
-      "httpEquiv",
-      value);
-   };
-   var language = function (value) {
-      return A2(stringProperty,
-      "language",
-      value);
-   };
-   var src = function (value) {
-      return A2(stringProperty,
-      "src",
-      value);
-   };
-   var height = function (value) {
-      return A2(stringProperty,
-      "height",
-      $Basics.toString(value));
-   };
-   var width = function (value) {
-      return A2(stringProperty,
-      "width",
-      $Basics.toString(value));
-   };
-   var alt = function (value) {
-      return A2(stringProperty,
-      "alt",
-      value);
-   };
-   var preload = function (value) {
-      return A2(stringProperty,
-      "preload",
-      value);
-   };
-   var poster = function (value) {
-      return A2(stringProperty,
-      "poster",
-      value);
-   };
-   var kind = function (value) {
-      return A2(stringProperty,
-      "kind",
-      value);
-   };
-   var srclang = function (value) {
-      return A2(stringProperty,
-      "srclang",
-      value);
-   };
-   var sandbox = function (value) {
-      return A2(stringProperty,
-      "sandbox",
-      value);
-   };
-   var srcdoc = function (value) {
-      return A2(stringProperty,
-      "srcdoc",
-      value);
-   };
-   var type$ = function (value) {
-      return A2(stringProperty,
-      "type",
-      value);
-   };
-   var value = function (value) {
-      return A2(stringProperty,
-      "value",
-      value);
-   };
-   var placeholder = function (value) {
-      return A2(stringProperty,
-      "placeholder",
-      value);
-   };
-   var accept = function (value) {
-      return A2(stringProperty,
-      "accept",
-      value);
-   };
-   var acceptCharset = function (value) {
-      return A2(stringProperty,
-      "acceptCharset",
-      value);
-   };
-   var action = function (value) {
-      return A2(stringProperty,
-      "action",
-      value);
-   };
-   var autocomplete = function (bool) {
-      return A2(stringProperty,
-      "autocomplete",
-      bool ? "on" : "off");
-   };
-   var autosave = function (value) {
-      return A2(stringProperty,
-      "autosave",
-      value);
-   };
-   var enctype = function (value) {
-      return A2(stringProperty,
-      "enctype",
-      value);
-   };
-   var formaction = function (value) {
-      return A2(stringProperty,
-      "formaction",
-      value);
-   };
-   var list = function (value) {
-      return A2(stringProperty,
-      "list",
-      value);
-   };
-   var minlength = function (n) {
-      return A2(stringProperty,
-      "minLength",
-      $Basics.toString(n));
-   };
-   var maxlength = function (n) {
-      return A2(stringProperty,
-      "maxLength",
-      $Basics.toString(n));
-   };
-   var method = function (value) {
-      return A2(stringProperty,
-      "method",
-      value);
-   };
-   var name = function (value) {
-      return A2(stringProperty,
-      "name",
-      value);
-   };
-   var pattern = function (value) {
-      return A2(stringProperty,
-      "pattern",
-      value);
-   };
-   var size = function (n) {
-      return A2(stringProperty,
-      "size",
-      $Basics.toString(n));
-   };
-   var $for = function (value) {
-      return A2(stringProperty,
-      "htmlFor",
-      value);
-   };
-   var form = function (value) {
-      return A2(stringProperty,
-      "form",
-      value);
-   };
-   var max = function (value) {
-      return A2(stringProperty,
-      "max",
-      value);
-   };
-   var min = function (value) {
-      return A2(stringProperty,
-      "min",
-      value);
-   };
-   var step = function (n) {
-      return A2(stringProperty,
-      "step",
-      n);
-   };
-   var cols = function (n) {
-      return A2(stringProperty,
-      "cols",
-      $Basics.toString(n));
-   };
-   var rows = function (n) {
-      return A2(stringProperty,
-      "rows",
-      $Basics.toString(n));
-   };
-   var wrap = function (value) {
-      return A2(stringProperty,
-      "wrap",
-      value);
-   };
-   var usemap = function (value) {
-      return A2(stringProperty,
-      "useMap",
-      value);
-   };
-   var shape = function (value) {
-      return A2(stringProperty,
-      "shape",
-      value);
-   };
-   var coords = function (value) {
-      return A2(stringProperty,
-      "coords",
-      value);
-   };
-   var challenge = function (value) {
-      return A2(stringProperty,
-      "challenge",
-      value);
-   };
-   var keytype = function (value) {
-      return A2(stringProperty,
-      "keytype",
-      value);
-   };
-   var align = function (value) {
-      return A2(stringProperty,
-      "align",
-      value);
-   };
-   var cite = function (value) {
-      return A2(stringProperty,
-      "cite",
-      value);
-   };
-   var href = function (value) {
-      return A2(stringProperty,
-      "href",
-      value);
-   };
-   var target = function (value) {
-      return A2(stringProperty,
-      "target",
-      value);
-   };
-   var downloadAs = function (value) {
-      return A2(stringProperty,
-      "download",
-      value);
-   };
-   var hreflang = function (value) {
-      return A2(stringProperty,
-      "hreflang",
-      value);
-   };
-   var media = function (value) {
-      return A2(stringProperty,
-      "media",
-      value);
-   };
-   var ping = function (value) {
-      return A2(stringProperty,
-      "ping",
-      value);
-   };
-   var rel = function (value) {
-      return A2(stringProperty,
-      "rel",
-      value);
-   };
-   var datetime = function (value) {
-      return A2(stringProperty,
-      "datetime",
-      value);
-   };
-   var pubdate = function (value) {
-      return A2(stringProperty,
-      "pubdate",
-      value);
-   };
-   var start = function (n) {
-      return A2(stringProperty,
-      "start",
-      $Basics.toString(n));
-   };
-   var colspan = function (n) {
-      return A2(stringProperty,
-      "colSpan",
-      $Basics.toString(n));
-   };
-   var headers = function (value) {
-      return A2(stringProperty,
-      "headers",
-      value);
-   };
-   var rowspan = function (n) {
-      return A2(stringProperty,
-      "rowSpan",
-      $Basics.toString(n));
-   };
-   var scope = function (value) {
-      return A2(stringProperty,
-      "scope",
-      value);
-   };
-   var manifest = function (value) {
-      return A2(stringProperty,
-      "manifest",
-      value);
-   };
-   var boolProperty = F2(function (name,
-   bool) {
-      return A2(property,
-      name,
-      $Json$Encode.bool(bool));
-   });
-   var hidden = function (bool) {
-      return A2(boolProperty,
-      "hidden",
-      bool);
-   };
-   var contenteditable = function (bool) {
-      return A2(boolProperty,
-      "contentEditable",
-      bool);
-   };
-   var spellcheck = function (bool) {
-      return A2(boolProperty,
-      "spellcheck",
-      bool);
-   };
-   var async = function (bool) {
-      return A2(boolProperty,
-      "async",
-      bool);
-   };
-   var defer = function (bool) {
-      return A2(boolProperty,
-      "defer",
-      bool);
-   };
-   var scoped = function (bool) {
-      return A2(boolProperty,
-      "scoped",
-      bool);
-   };
-   var autoplay = function (bool) {
-      return A2(boolProperty,
-      "autoplay",
-      bool);
-   };
-   var controls = function (bool) {
-      return A2(boolProperty,
-      "controls",
-      bool);
-   };
-   var loop = function (bool) {
-      return A2(boolProperty,
-      "loop",
-      bool);
-   };
-   var $default = function (bool) {
-      return A2(boolProperty,
-      "default",
-      bool);
-   };
-   var seamless = function (bool) {
-      return A2(boolProperty,
-      "seamless",
-      bool);
-   };
-   var checked = function (bool) {
-      return A2(boolProperty,
-      "checked",
-      bool);
-   };
-   var selected = function (bool) {
-      return A2(boolProperty,
-      "selected",
-      bool);
-   };
-   var autofocus = function (bool) {
-      return A2(boolProperty,
-      "autofocus",
-      bool);
-   };
-   var disabled = function (bool) {
-      return A2(boolProperty,
-      "disabled",
-      bool);
-   };
-   var multiple = function (bool) {
-      return A2(boolProperty,
-      "multiple",
-      bool);
-   };
-   var novalidate = function (bool) {
-      return A2(boolProperty,
-      "noValidate",
-      bool);
-   };
-   var readonly = function (bool) {
-      return A2(boolProperty,
-      "readOnly",
-      bool);
-   };
-   var required = function (bool) {
-      return A2(boolProperty,
-      "required",
-      bool);
-   };
-   var ismap = function (value) {
-      return A2(boolProperty,
-      "isMap",
-      value);
-   };
-   var download = function (bool) {
-      return A2(boolProperty,
-      "download",
-      bool);
-   };
-   var reversed = function (bool) {
-      return A2(boolProperty,
-      "reversed",
-      bool);
-   };
-   var classList = function (list) {
-      return $class($String.join(" ")($List.map($Basics.fst)($List.filter($Basics.snd)(list))));
-   };
-   var style = function (props) {
-      return property("style")($Json$Encode.object($List.map(function (_v0) {
-         return function () {
-            switch (_v0.ctor)
-            {case "_Tuple2":
-               return {ctor: "_Tuple2"
-                      ,_0: _v0._0
-                      ,_1: $Json$Encode.string(_v0._1)};}
-            _U.badCase($moduleName,
-            "on line 156, column 35 to 57");
-         }();
-      })(props)));
-   };
-   var key = function (k) {
-      return A2(stringProperty,
-      "key",
-      k);
-   };
-   _elm.Html.Attributes.values = {_op: _op
-                                 ,key: key
-                                 ,style: style
-                                 ,$class: $class
-                                 ,classList: classList
-                                 ,id: id
-                                 ,title: title
-                                 ,hidden: hidden
-                                 ,type$: type$
-                                 ,value: value
-                                 ,checked: checked
-                                 ,placeholder: placeholder
-                                 ,selected: selected
-                                 ,accept: accept
-                                 ,acceptCharset: acceptCharset
-                                 ,action: action
-                                 ,autocomplete: autocomplete
-                                 ,autofocus: autofocus
-                                 ,autosave: autosave
-                                 ,disabled: disabled
-                                 ,enctype: enctype
-                                 ,formaction: formaction
-                                 ,list: list
-                                 ,maxlength: maxlength
-                                 ,minlength: minlength
-                                 ,method: method
-                                 ,multiple: multiple
-                                 ,name: name
-                                 ,novalidate: novalidate
-                                 ,pattern: pattern
-                                 ,readonly: readonly
-                                 ,required: required
-                                 ,size: size
-                                 ,$for: $for
-                                 ,form: form
-                                 ,max: max
-                                 ,min: min
-                                 ,step: step
-                                 ,cols: cols
-                                 ,rows: rows
-                                 ,wrap: wrap
-                                 ,href: href
-                                 ,target: target
-                                 ,download: download
-                                 ,downloadAs: downloadAs
-                                 ,hreflang: hreflang
-                                 ,media: media
-                                 ,ping: ping
-                                 ,rel: rel
-                                 ,ismap: ismap
-                                 ,usemap: usemap
-                                 ,shape: shape
-                                 ,coords: coords
-                                 ,src: src
-                                 ,height: height
-                                 ,width: width
-                                 ,alt: alt
-                                 ,autoplay: autoplay
-                                 ,controls: controls
-                                 ,loop: loop
-                                 ,preload: preload
-                                 ,poster: poster
-                                 ,$default: $default
-                                 ,kind: kind
-                                 ,srclang: srclang
-                                 ,sandbox: sandbox
-                                 ,seamless: seamless
-                                 ,srcdoc: srcdoc
-                                 ,reversed: reversed
-                                 ,start: start
-                                 ,align: align
-                                 ,colspan: colspan
-                                 ,rowspan: rowspan
-                                 ,headers: headers
-                                 ,scope: scope
-                                 ,async: async
-                                 ,charset: charset
-                                 ,content: content
-                                 ,defer: defer
-                                 ,httpEquiv: httpEquiv
-                                 ,language: language
-                                 ,scoped: scoped
-                                 ,accesskey: accesskey
-                                 ,contenteditable: contenteditable
-                                 ,contextmenu: contextmenu
-                                 ,dir: dir
-                                 ,draggable: draggable
-                                 ,dropzone: dropzone
-                                 ,itemprop: itemprop
-                                 ,lang: lang
-                                 ,spellcheck: spellcheck
-                                 ,tabindex: tabindex
-                                 ,challenge: challenge
-                                 ,keytype: keytype
-                                 ,cite: cite
-                                 ,datetime: datetime
-                                 ,pubdate: pubdate
-                                 ,manifest: manifest
-                                 ,property: property
-                                 ,attribute: attribute};
-   return _elm.Html.Attributes.values;
-};
-Elm.Html = Elm.Html || {};
-Elm.Html.Events = Elm.Html.Events || {};
-Elm.Html.Events.make = function (_elm) {
-   "use strict";
-   _elm.Html = _elm.Html || {};
-   _elm.Html.Events = _elm.Html.Events || {};
-   if (_elm.Html.Events.values)
-   return _elm.Html.Events.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Html.Events",
-   $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Json$Decode = Elm.Json.Decode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $VirtualDom = Elm.VirtualDom.make(_elm);
-   var keyCode = A2($Json$Decode._op[":="],
-   "keyCode",
-   $Json$Decode.$int);
-   var targetChecked = A2($Json$Decode.at,
-   _L.fromArray(["target"
-                ,"checked"]),
-   $Json$Decode.bool);
-   var targetValue = A2($Json$Decode.at,
-   _L.fromArray(["target"
-                ,"value"]),
-   $Json$Decode.string);
-   var defaultOptions = $VirtualDom.defaultOptions;
-   var Options = F2(function (a,
-   b) {
-      return {_: {}
-             ,preventDefault: b
-             ,stopPropagation: a};
-   });
-   var onWithOptions = $VirtualDom.onWithOptions;
-   var on = $VirtualDom.on;
-   var messageOn = F3(function (name,
-   addr,
-   msg) {
-      return A3(on,
-      name,
-      $Json$Decode.value,
-      function (_v0) {
-         return function () {
-            return A2($Signal.message,
-            addr,
-            msg);
-         }();
-      });
-   });
-   var onClick = messageOn("click");
-   var onDoubleClick = messageOn("dblclick");
-   var onMouseMove = messageOn("mousemove");
-   var onMouseDown = messageOn("mousedown");
-   var onMouseUp = messageOn("mouseup");
-   var onMouseEnter = messageOn("mouseenter");
-   var onMouseLeave = messageOn("mouseleave");
-   var onMouseOver = messageOn("mouseover");
-   var onMouseOut = messageOn("mouseout");
-   var onBlur = messageOn("blur");
-   var onFocus = messageOn("focus");
-   var onSubmit = messageOn("submit");
-   var onKey = F3(function (name,
-   addr,
-   handler) {
-      return A3(on,
-      name,
-      keyCode,
-      function (code) {
-         return A2($Signal.message,
-         addr,
-         handler(code));
-      });
-   });
-   var onKeyUp = onKey("keyup");
-   var onKeyDown = onKey("keydown");
-   var onKeyPress = onKey("keypress");
-   _elm.Html.Events.values = {_op: _op
-                             ,onBlur: onBlur
-                             ,onFocus: onFocus
-                             ,onSubmit: onSubmit
-                             ,onKeyUp: onKeyUp
-                             ,onKeyDown: onKeyDown
-                             ,onKeyPress: onKeyPress
-                             ,onClick: onClick
-                             ,onDoubleClick: onDoubleClick
-                             ,onMouseMove: onMouseMove
-                             ,onMouseDown: onMouseDown
-                             ,onMouseUp: onMouseUp
-                             ,onMouseEnter: onMouseEnter
-                             ,onMouseLeave: onMouseLeave
-                             ,onMouseOver: onMouseOver
-                             ,onMouseOut: onMouseOut
-                             ,on: on
-                             ,onWithOptions: onWithOptions
-                             ,defaultOptions: defaultOptions
-                             ,targetValue: targetValue
-                             ,targetChecked: targetChecked
-                             ,keyCode: keyCode
-                             ,Options: Options};
-   return _elm.Html.Events.values;
-};
-Elm.Json = Elm.Json || {};
-Elm.Json.Decode = Elm.Json.Decode || {};
-Elm.Json.Decode.make = function (_elm) {
-   "use strict";
-   _elm.Json = _elm.Json || {};
-   _elm.Json.Decode = _elm.Json.Decode || {};
-   if (_elm.Json.Decode.values)
-   return _elm.Json.Decode.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Json.Decode",
-   $Array = Elm.Array.make(_elm),
-   $Dict = Elm.Dict.make(_elm),
-   $Json$Encode = Elm.Json.Encode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Native$Json = Elm.Native.Json.make(_elm),
-   $Result = Elm.Result.make(_elm);
-   var tuple8 = $Native$Json.decodeTuple8;
-   var tuple7 = $Native$Json.decodeTuple7;
-   var tuple6 = $Native$Json.decodeTuple6;
-   var tuple5 = $Native$Json.decodeTuple5;
-   var tuple4 = $Native$Json.decodeTuple4;
-   var tuple3 = $Native$Json.decodeTuple3;
-   var tuple2 = $Native$Json.decodeTuple2;
-   var tuple1 = $Native$Json.decodeTuple1;
-   var succeed = $Native$Json.succeed;
-   var fail = $Native$Json.fail;
-   var andThen = $Native$Json.andThen;
-   var customDecoder = $Native$Json.customDecoder;
-   var decodeValue = $Native$Json.runDecoderValue;
-   var value = $Native$Json.decodeValue;
-   var maybe = $Native$Json.decodeMaybe;
-   var $null = $Native$Json.decodeNull;
-   var array = $Native$Json.decodeArray;
-   var list = $Native$Json.decodeList;
-   var bool = $Native$Json.decodeBool;
-   var $int = $Native$Json.decodeInt;
-   var $float = $Native$Json.decodeFloat;
-   var string = $Native$Json.decodeString;
-   var oneOf = $Native$Json.oneOf;
-   var keyValuePairs = $Native$Json.decodeKeyValuePairs;
-   var object8 = $Native$Json.decodeObject8;
-   var object7 = $Native$Json.decodeObject7;
-   var object6 = $Native$Json.decodeObject6;
-   var object5 = $Native$Json.decodeObject5;
-   var object4 = $Native$Json.decodeObject4;
-   var object3 = $Native$Json.decodeObject3;
-   var object2 = $Native$Json.decodeObject2;
-   var object1 = $Native$Json.decodeObject1;
-   _op[":="] = $Native$Json.decodeField;
-   var at = F2(function (fields,
-   decoder) {
-      return A3($List.foldr,
-      F2(function (x,y) {
-         return A2(_op[":="],x,y);
-      }),
-      decoder,
-      fields);
-   });
-   var decodeString = $Native$Json.runDecoderString;
-   var map = $Native$Json.decodeObject1;
-   var dict = function (decoder) {
-      return A2(map,
-      $Dict.fromList,
-      keyValuePairs(decoder));
-   };
-   var Decoder = {ctor: "Decoder"};
-   _elm.Json.Decode.values = {_op: _op
-                             ,decodeString: decodeString
-                             ,decodeValue: decodeValue
-                             ,string: string
-                             ,$int: $int
-                             ,$float: $float
-                             ,bool: bool
-                             ,$null: $null
-                             ,list: list
-                             ,array: array
-                             ,tuple1: tuple1
-                             ,tuple2: tuple2
-                             ,tuple3: tuple3
-                             ,tuple4: tuple4
-                             ,tuple5: tuple5
-                             ,tuple6: tuple6
-                             ,tuple7: tuple7
-                             ,tuple8: tuple8
-                             ,at: at
-                             ,object1: object1
-                             ,object2: object2
-                             ,object3: object3
-                             ,object4: object4
-                             ,object5: object5
-                             ,object6: object6
-                             ,object7: object7
-                             ,object8: object8
-                             ,keyValuePairs: keyValuePairs
-                             ,dict: dict
-                             ,maybe: maybe
-                             ,oneOf: oneOf
-                             ,map: map
-                             ,fail: fail
-                             ,succeed: succeed
-                             ,andThen: andThen
-                             ,value: value
-                             ,customDecoder: customDecoder
-                             ,Decoder: Decoder};
-   return _elm.Json.Decode.values;
-};
-Elm.Json = Elm.Json || {};
-Elm.Json.Encode = Elm.Json.Encode || {};
-Elm.Json.Encode.make = function (_elm) {
-   "use strict";
-   _elm.Json = _elm.Json || {};
-   _elm.Json.Encode = _elm.Json.Encode || {};
-   if (_elm.Json.Encode.values)
-   return _elm.Json.Encode.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Json.Encode",
-   $Array = Elm.Array.make(_elm),
-   $Native$Json = Elm.Native.Json.make(_elm);
-   var list = $Native$Json.encodeList;
-   var array = $Native$Json.encodeArray;
-   var object = $Native$Json.encodeObject;
-   var $null = $Native$Json.encodeNull;
-   var bool = $Native$Json.identity;
-   var $float = $Native$Json.identity;
-   var $int = $Native$Json.identity;
-   var string = $Native$Json.identity;
-   var encode = $Native$Json.encode;
-   var Value = {ctor: "Value"};
-   _elm.Json.Encode.values = {_op: _op
-                             ,encode: encode
-                             ,string: string
-                             ,$int: $int
-                             ,$float: $float
-                             ,bool: bool
-                             ,$null: $null
-                             ,list: list
-                             ,array: array
-                             ,object: object
-                             ,Value: Value};
-   return _elm.Json.Encode.values;
 };
 Elm.List = Elm.List || {};
 Elm.List.make = function (_elm) {
@@ -4056,7 +2796,7 @@ Elm.List.make = function (_elm) {
             case "[]":
             return $Maybe.Nothing;}
          _U.badCase($moduleName,
-         "between lines 87 and 89");
+         "between lines 87 and 95");
       }();
    };
    var head = function (list) {
@@ -4067,7 +2807,7 @@ Elm.List.make = function (_elm) {
             case "[]":
             return $Maybe.Nothing;}
          _U.badCase($moduleName,
-         "between lines 75 and 77");
+         "between lines 75 and 84");
       }();
    };
    _op["::"] = $Native$List.cons;
@@ -4106,7 +2846,7 @@ Elm.List.make = function (_elm) {
             return A2(_op["::"],_v15._0,xs);
             case "Nothing": return xs;}
          _U.badCase($moduleName,
-         "between lines 179 and 181");
+         "between lines 179 and 186");
       }();
    });
    var filterMap = F2(function (f,
@@ -4253,7 +2993,7 @@ Elm.List.make = function (_elm) {
             case "[]":
             return _L.fromArray([]);}
          _U.badCase($moduleName,
-         "between lines 350 and 356");
+         "between lines 350 and 361");
       }();
    });
    _elm.List.values = {_op: _op
@@ -4305,197 +3045,201 @@ Elm.Main.make = function (_elm) {
    _U = _N.Utils.make(_elm),
    _L = _N.List.make(_elm),
    $moduleName = "Main",
-   $Array = Elm.Array.make(_elm),
    $Basics = Elm.Basics.make(_elm),
-   $Card = Elm.Card.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Dict = Elm.Dict.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Random = Elm.Random.make(_elm),
-   $Random$Array = Elm.Random.Array.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
-   $String = Elm.String.make(_elm);
-   var areIdentical = function (list) {
+   $Maybe = Elm.Maybe.make(_elm);
+   var $float = F3(function (from,
+   to,
+   v) {
+      return from + (to - from) * v;
+   });
+   var color = F3(function (from,
+   to,
+   v) {
       return function () {
-         var l = $List.length(list);
-         var f = $List.head(list);
-         return function () {
-            var _v0 = {ctor: "_Tuple2"
-                      ,_0: l
-                      ,_1: f};
-            switch (_v0.ctor)
-            {case "_Tuple2": switch (_v0._0)
-                 {case 2: switch (_v0._1.ctor)
-                      {case "Just":
-                         return A2($List.all,
-                           function (x) {
-                              return A2($String.contains,
-                              x.image,
-                              _v0._1._0.image);
-                           },
-                           list);}
-                      break;}
-                 return false;}
-            _U.badCase($moduleName,
-            "between lines 84 and 86");
-         }();
-      }();
-   };
-   var lockIfIdentical = F2(function (model,
-   list) {
-      return function () {
-         var identical = areIdentical(list);
-         return function () {
-            switch (identical)
-            {case false: return model;
-               case true: return A2($List.map,
-                 function (cmodel) {
-                    return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
-                 },
-                 model);}
-            _U.badCase($moduleName,
-            "between lines 94 and 101");
-         }();
+         var float$ = F3(function (from,
+         to,
+         v) {
+            return $Basics.round(A3($float,
+            $Basics.toFloat(from),
+            $Basics.toFloat(to),
+            v));
+         });
+         var $ = {ctor: "_Tuple2"
+                 ,_0: $Color.toRgb(from)
+                 ,_1: $Color.toRgb(to)},
+         rgb1 = $._0,
+         rgb2 = $._1;
+         var $ = {ctor: "_Tuple4"
+                 ,_0: rgb1.red
+                 ,_1: rgb1.green
+                 ,_2: rgb1.blue
+                 ,_3: rgb1.alpha},
+         r1 = $._0,
+         g1 = $._1,
+         b1 = $._2,
+         a1 = $._3;
+         var $ = {ctor: "_Tuple4"
+                 ,_0: rgb2.red
+                 ,_1: rgb2.green
+                 ,_2: rgb2.blue
+                 ,_3: rgb2.alpha},
+         r2 = $._0,
+         g2 = $._1,
+         b2 = $._2,
+         a2 = $._3;
+         return A4($Color.rgba,
+         A3(float$,r1,r2,v),
+         A3(float$,g1,g2,v),
+         A3(float$,b1,b2,v),
+         A3($float,a1,a2,v));
       }();
    });
-   var openImages = function (model) {
-      return A3($List.foldr,
-      F2(function (m,i) {
-         return $Card.isOpen(m) ? A2($List._op["::"],
-         m,
-         i) : i;
-      }),
-      _L.fromArray([]),
-      model.cards);
-   };
-   var update = F2(function (action,
-   model) {
+   var linear = F3(function (_v0,
+   _v1,
+   val) {
       return function () {
-         var opened = openImages(model);
-         var openedCount = $List.length(opened);
-         var modelAfterLock = _U.replace([["cards"
-                                          ,A2(lockIfIdentical,
-                                          model.cards,
-                                          opened)]],
-         model);
-         return function () {
-            switch (action.ctor)
-            {case "Do":
-               return _U.replace([["cards"
-                                  ,A2($List.map,
-                                  function (cModel) {
-                                     return function () {
-                                        var _v8 = {ctor: "_Tuple2"
-                                                  ,_0: openedCount
-                                                  ,_1: cModel.id};
-                                        switch (_v8.ctor)
-                                        {case "_Tuple2":
-                                           return _U.eq(_v8._1,
-                                             action._0) ? A2($Card.update,
-                                             action._1,
-                                             cModel) : _U.eq(_v8._0,
-                                             2) ? $Card.close(cModel) : cModel;}
-                                        _U.badCase($moduleName,
-                                        "between lines 113 and 121");
-                                     }();
-                                  },
-                                  modelAfterLock.cards)]
-                                 ,["score"
-                                  ,modelAfterLock.score + 1]],
-                 modelAfterLock);}
-            _U.badCase($moduleName,
-            "between lines 111 and 123");
-         }();
-      }();
-   });
-   var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                             ,_0: "width"
-                                                             ,_1: "290px"}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "height"
-                                                             ,_1: "290px"}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "margin"
-                                                             ,_1: "80px 500px 0px 500px"}]));
-   var initSeed = 9999;
-   var shuffle = function (list) {
-      return function () {
-         var _v11 = A2($Random$Array.shuffle,
-         $Random.initialSeed(initSeed),
-         $Array.fromList(list));
-         switch (_v11.ctor)
+         switch (_v1.ctor)
          {case "_Tuple2":
-            return $Array.toList(_v11._0);}
+            return function () {
+                 switch (_v0.ctor)
+                 {case "_Tuple2":
+                    return F2(function (x,y) {
+                         return x + y;
+                      })(_v1._0)((val - _v0._0) / (_v0._1 - _v0._0) * (_v1._1 - _v1._0));}
+                 _U.badCase($moduleName,
+                 "on line 49, column 32 to 74");
+              }();}
          _U.badCase($moduleName,
-         "between lines 33 and 34");
+         "on line 49, column 32 to 74");
+      }();
+   });
+   var grid_viz = function (g) {
+      return function () {
+         var max = $Basics.toFloat($Maybe.withDefault(-1)($List.maximum($Dict.values(g))));
+         var min = $Basics.toFloat($Maybe.withDefault(-1)($List.minimum($Dict.values(g))));
+         var normalize = A2(linear,
+         {ctor: "_Tuple2"
+         ,_0: min
+         ,_1: max},
+         {ctor: "_Tuple2",_0: 1,_1: 0});
+         var colors = function ($) {
+            return A2(color,
+            $Color.darkCharcoal,
+            $Color.lightGrey)(normalize($Basics.toFloat($)));
+         };
+         var forms = $List.concatMap(function (_v8) {
+            return function () {
+               switch (_v8.ctor)
+               {case "_Tuple2":
+                  switch (_v8._0.ctor)
+                    {case "_Tuple2":
+                       return _L.fromArray([$Graphics$Collage.move({ctor: "_Tuple2"
+                                                                   ,_0: 50 * $Basics.toFloat(_v8._0._0)
+                                                                   ,_1: 50 * $Basics.toFloat(_v8._0._1)})($Graphics$Collage.filled(colors(_v8._1))($Graphics$Collage.circle(10)))
+                                           ,$Graphics$Collage.move({ctor: "_Tuple2"
+                                                                   ,_0: 50 * $Basics.toFloat(_v8._0._0)
+                                                                   ,_1: -18 + 50 * $Basics.toFloat(_v8._0._1)})($Graphics$Collage.toForm($Graphics$Element.show(_v8._1)))]);}
+                    break;}
+               _U.badCase($moduleName,
+               "between lines 36 and 37");
+            }();
+         })($Dict.toList(g));
+         return A3($Graphics$Collage.collage,
+         600,
+         600,
+         _L.fromArray([$Graphics$Collage.move({ctor: "_Tuple2"
+                                              ,_0: -250
+                                              ,_1: -250})($Graphics$Collage.group(forms))]));
       }();
    };
-   var init = {_: {}
-              ,cards: shuffle(A2($List.map,
-              function (index) {
-                 return A2($Card.initialModel,
-                 A2($Basics._op["++"],
-                 "images/",
-                 A2($Basics._op["++"],
-                 $Basics.toString(A2($Basics._op["%"],
-                 index,
-                 8)),
-                 ".svg")),
-                 index);
-              },
-              _L.range(1,16)))
-              ,score: 0};
-   var Do = F2(function (a,b) {
-      return {ctor: "Do"
-             ,_0: a
-             ,_1: b};
+   var table = function (d) {
+      return function () {
+         var row = function (_v14) {
+            return function () {
+               switch (_v14.ctor)
+               {case "_Tuple2":
+                  return A2($Graphics$Element.flow,
+                    $Graphics$Element.right,
+                    _L.fromArray([$Graphics$Element.show(_v14._1)
+                                 ,A2($Graphics$Element.spacer,
+                                 20,
+                                 20)
+                                 ,$Graphics$Element.show(_v14._0)]));}
+               _U.badCase($moduleName,
+               "on line 23, column 27 to 68");
+            }();
+         };
+         return $Graphics$Element.flow($Graphics$Element.down)(A2($List.map,
+         row,
+         $Dict.toList(d)));
+      }();
+   };
+   var multiset = function (xs) {
+      return function () {
+         var incr = function (m_int) {
+            return function () {
+               switch (m_int.ctor)
+               {case "Just":
+                  return $Maybe.Just(m_int._0 + 1);
+                  case "Nothing":
+                  return $Maybe.Just(1);}
+               _U.badCase($moduleName,
+               "between lines 16 and 19");
+            }();
+         };
+         var step = F2(function (x,
+         mset) {
+            return A3($Dict.update,
+            x,
+            incr,
+            mset);
+         });
+         return A3($List.foldl,
+         step,
+         $Dict.empty,
+         xs);
+      }();
+   };
+   var runs = Elm.Native.Port.make(_elm).inbound("runs",
+   "List (List Int)",
+   function (v) {
+      return typeof v === "object" && v instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.map(function (v) {
+         return typeof v === "object" && v instanceof Array ? Elm.Native.List.make(_elm).fromArray(v.map(function (v) {
+            return typeof v === "number" ? v : _U.badPort("a number",
+            v);
+         })) : _U.badPort("an array",v);
+      })) : _U.badPort("an array",v);
    });
-   var view = F2(function (address,
-   model) {
-      return A2($Html.div,
-      _L.fromArray([containerStyle]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([]),
-                   _L.fromArray([$Html.text(A2($Basics._op["++"],
-                   "Tries ",
-                   $Basics.toString(model.score)))]))
-                   ,A2($Html.div,
-                   _L.fromArray([]),
-                   A2($List.map,
-                   function (cModel) {
-                      return A2($Card.view,
-                      A2($Signal.forwardTo,
-                      address,
-                      Do(cModel.id)),
-                      cModel);
-                   },
-                   model.cards))]));
-   });
-   var Model = F2(function (a,b) {
-      return {_: {}
-             ,cards: a
-             ,score: b};
-   });
-   var main = $StartApp$Simple.start({_: {}
-                                     ,model: init
-                                     ,update: update
-                                     ,view: view});
+   var grid = multiset(A2($List.concatMap,
+   $List.indexedMap(F2(function (v0,
+   v1) {
+      return {ctor: "_Tuple2"
+             ,_0: v0
+             ,_1: v1};
+   })),
+   runs));
+   var main = A2($Graphics$Element.flow,
+   $Graphics$Element.down,
+   _L.fromArray([$Graphics$Element.show(A2($Basics._op["++"],
+                "\nThis is a visualization of the distribution D3\'s shuffle method, for reference. The\nvertical axis shows the starting index of an element; top row is zero. The\nhoriztonal axis is the end location of an element. The numbers and shading\nindicate how many times an element started in the position indicated by its row\nand moved to the position indicated by its column. There are ",
+                A2($Basics._op["++"],
+                $Basics.toString($List.length(runs)),
+                " trials.")))
+                ,grid_viz(grid)]));
    _elm.Main.values = {_op: _op
+                      ,multiset: multiset
+                      ,table: table
+                      ,grid: grid
+                      ,grid_viz: grid_viz
                       ,main: main
-                      ,Model: Model
-                      ,Do: Do
-                      ,initSeed: initSeed
-                      ,shuffle: shuffle
-                      ,init: init
-                      ,containerStyle: containerStyle
-                      ,view: view
-                      ,openImages: openImages
-                      ,areIdentical: areIdentical
-                      ,lockIfIdentical: lockIfIdentical
-                      ,update: update};
+                      ,linear: linear
+                      ,$float: $float
+                      ,color: color};
    return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
@@ -4517,7 +3261,7 @@ Elm.Maybe.make = function (_elm) {
             case "Nothing":
             return $default;}
          _U.badCase($moduleName,
-         "between lines 45 and 47");
+         "between lines 45 and 56");
       }();
    });
    var Nothing = {ctor: "Nothing"};
@@ -4530,11 +3274,11 @@ Elm.Maybe.make = function (_elm) {
                     case "Nothing":
                     return oneOf(maybes._1);}
                  _U.badCase($moduleName,
-                 "between lines 64 and 66");
+                 "between lines 64 and 73");
               }();
             case "[]": return Nothing;}
          _U.badCase($moduleName,
-         "between lines 59 and 66");
+         "between lines 59 and 73");
       }();
    };
    var andThen = F2(function (maybeValue,
@@ -4559,7 +3303,7 @@ Elm.Maybe.make = function (_elm) {
             return Just(f(maybe._0));
             case "Nothing": return Nothing;}
          _U.badCase($moduleName,
-         "between lines 76 and 78");
+         "between lines 76 and 107");
       }();
    });
    _elm.Maybe.values = {_op: _op
@@ -7197,493 +5941,6 @@ Elm.Native.Graphics.Element.make = function(localRuntime) {
 
 };
 
-Elm.Native.Json = {};
-Elm.Native.Json.make = function(localRuntime) {
-
-	localRuntime.Native = localRuntime.Native || {};
-	localRuntime.Native.Json = localRuntime.Native.Json || {};
-	if (localRuntime.Native.Json.values) {
-		return localRuntime.Native.Json.values;
-	}
-
-	var ElmArray = Elm.Native.Array.make(localRuntime);
-	var List = Elm.Native.List.make(localRuntime);
-	var Maybe = Elm.Maybe.make(localRuntime);
-	var Result = Elm.Result.make(localRuntime);
-	var Utils = Elm.Native.Utils.make(localRuntime);
-
-
-	function crash(expected, actual) {
-		throw new Error(
-			'expecting ' + expected + ' but got ' + JSON.stringify(actual)
-		);
-	}
-
-
-	// PRIMITIVE VALUES
-
-	function decodeNull(successValue) {
-		return function(value) {
-			if (value === null) {
-				return successValue;
-			}
-			crash('null', value);
-		};
-	}
-
-
-	function decodeString(value) {
-		if (typeof value === 'string' || value instanceof String) {
-			return value;
-		}
-		crash('a String', value);
-	}
-
-
-	function decodeFloat(value) {
-		if (typeof value === 'number') {
-			return value;
-		}
-		crash('a Float', value);
-	}
-
-
-	function decodeInt(value) {
-		if (typeof value === 'number' && (value|0) === value) {
-			return value;
-		}
-		crash('an Int', value);
-	}
-
-
-	function decodeBool(value) {
-		if (typeof value === 'boolean') {
-			return value;
-		}
-		crash('a Bool', value);
-	}
-
-
-	// ARRAY
-
-	function decodeArray(decoder) {
-		return function(value) {
-			if (value instanceof Array) {
-				var len = value.length;
-				var array = new Array(len);
-				for (var i = len; i-- ; ) {
-					array[i] = decoder(value[i]);
-				}
-				return ElmArray.fromJSArray(array);
-			}
-			crash('an Array', value);
-		};
-	}
-
-
-	// LIST
-
-	function decodeList(decoder) {
-		return function(value) {
-			if (value instanceof Array) {
-				var len = value.length;
-				var list = List.Nil;
-				for (var i = len; i-- ; ) {
-					list = List.Cons( decoder(value[i]), list );
-				}
-				return list;
-			}
-			crash('a List', value);
-		};
-	}
-
-
-	// MAYBE
-
-	function decodeMaybe(decoder) {
-		return function(value) {
-			try {
-				return Maybe.Just(decoder(value));
-			} catch(e) {
-				return Maybe.Nothing;
-			}
-		};
-	}
-
-
-	// FIELDS
-
-	function decodeField(field, decoder) {
-		return function(value) {
-			var subValue = value[field];
-			if (subValue !== undefined) {
-				return decoder(subValue);
-			}
-			crash("an object with field '" + field + "'", value);
-		};
-	}
-
-
-	// OBJECTS
-
-	function decodeKeyValuePairs(decoder) {
-		return function(value) {
-			var isObject =
-				typeof value === 'object'
-					&& value !== null
-					&& !(value instanceof Array);
-
-			if (isObject) {
-				var keyValuePairs = List.Nil;
-				for (var key in value) {
-					var elmValue = decoder(value[key]);
-					var pair = Utils.Tuple2(key, elmValue);
-					keyValuePairs = List.Cons(pair, keyValuePairs);
-				}
-				return keyValuePairs;
-			}
-
-			crash("an object", value);
-		};
-	}
-
-	function decodeObject1(f, d1) {
-		return function(value) {
-			return f(d1(value));
-		};
-	}
-
-	function decodeObject2(f, d1, d2) {
-		return function(value) {
-			return A2( f, d1(value), d2(value) );
-		};
-	}
-
-	function decodeObject3(f, d1, d2, d3) {
-		return function(value) {
-			return A3( f, d1(value), d2(value), d3(value) );
-		};
-	}
-
-	function decodeObject4(f, d1, d2, d3, d4) {
-		return function(value) {
-			return A4( f, d1(value), d2(value), d3(value), d4(value) );
-		};
-	}
-
-	function decodeObject5(f, d1, d2, d3, d4, d5) {
-		return function(value) {
-			return A5( f, d1(value), d2(value), d3(value), d4(value), d5(value) );
-		};
-	}
-
-	function decodeObject6(f, d1, d2, d3, d4, d5, d6) {
-		return function(value) {
-			return A6( f,
-				d1(value),
-				d2(value),
-				d3(value),
-				d4(value),
-				d5(value),
-				d6(value)
-			);
-		};
-	}
-
-	function decodeObject7(f, d1, d2, d3, d4, d5, d6, d7) {
-		return function(value) {
-			return A7( f,
-				d1(value),
-				d2(value),
-				d3(value),
-				d4(value),
-				d5(value),
-				d6(value),
-				d7(value)
-			);
-		};
-	}
-
-	function decodeObject8(f, d1, d2, d3, d4, d5, d6, d7, d8) {
-		return function(value) {
-			return A8( f,
-				d1(value),
-				d2(value),
-				d3(value),
-				d4(value),
-				d5(value),
-				d6(value),
-				d7(value),
-				d8(value)
-			);
-		};
-	}
-
-
-	// TUPLES
-
-	function decodeTuple1(f, d1) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 1 ) {
-				crash('a Tuple of length 1', value);
-			}
-			return f( d1(value[0]) );
-		};
-	}
-
-	function decodeTuple2(f, d1, d2) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 2 ) {
-				crash('a Tuple of length 2', value);
-			}
-			return A2( f, d1(value[0]), d2(value[1]) );
-		};
-	}
-
-	function decodeTuple3(f, d1, d2, d3) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 3 ) {
-				crash('a Tuple of length 3', value);
-			}
-			return A3( f, d1(value[0]), d2(value[1]), d3(value[2]) );
-		};
-	}
-
-
-	function decodeTuple4(f, d1, d2, d3, d4) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 4 ) {
-				crash('a Tuple of length 4', value);
-			}
-			return A4( f, d1(value[0]), d2(value[1]), d3(value[2]), d4(value[3]) );
-		};
-	}
-
-
-	function decodeTuple5(f, d1, d2, d3, d4, d5) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 5 ) {
-				crash('a Tuple of length 5', value);
-			}
-			return A5( f,
-				d1(value[0]),
-				d2(value[1]),
-				d3(value[2]),
-				d4(value[3]),
-				d5(value[4])
-			);
-		};
-	}
-
-
-	function decodeTuple6(f, d1, d2, d3, d4, d5, d6) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 6 ) {
-				crash('a Tuple of length 6', value);
-			}
-			return A6( f,
-				d1(value[0]),
-				d2(value[1]),
-				d3(value[2]),
-				d4(value[3]),
-				d5(value[4]),
-				d6(value[5])
-			);
-		};
-	}
-
-	function decodeTuple7(f, d1, d2, d3, d4, d5, d6, d7) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 7 ) {
-				crash('a Tuple of length 7', value);
-			}
-			return A7( f,
-				d1(value[0]),
-				d2(value[1]),
-				d3(value[2]),
-				d4(value[3]),
-				d5(value[4]),
-				d6(value[5]),
-				d7(value[6])
-			);
-		};
-	}
-
-
-	function decodeTuple8(f, d1, d2, d3, d4, d5, d6, d7, d8) {
-		return function(value) {
-			if ( !(value instanceof Array) || value.length !== 8 ) {
-				crash('a Tuple of length 8', value);
-			}
-			return A8( f,
-				d1(value[0]),
-				d2(value[1]),
-				d3(value[2]),
-				d4(value[3]),
-				d5(value[4]),
-				d6(value[5]),
-				d7(value[6]),
-				d8(value[7])
-			);
-		};
-	}
-
-
-	// CUSTOM DECODERS
-
-	function decodeValue(value) {
-		return value;
-	}
-
-	function runDecoderValue(decoder, value) {
-		try {
-			return Result.Ok(decoder(value));
-		} catch(e) {
-			return Result.Err(e.message);
-		}
-	}
-
-	function customDecoder(decoder, callback) {
-		return function(value) {
-			var result = callback(decoder(value));
-			if (result.ctor === 'Err') {
-				throw new Error('custom decoder failed: ' + result._0);
-			}
-			return result._0;
-		}
-	}
-
-	function andThen(decode, callback) {
-		return function(value) {
-			var result = decode(value);
-			return callback(result)(value);
-		}
-	}
-
-	function fail(msg) {
-		return function(value) {
-			throw new Error(msg);
-		}
-	}
-
-	function succeed(successValue) {
-		return function(value) {
-			return successValue;
-		}
-	}
-
-
-	// ONE OF MANY
-
-	function oneOf(decoders) {
-		return function(value) {
-			var errors = [];
-			var temp = decoders;
-			while (temp.ctor !== '[]') {
-				try {
-					return temp._0(value);
-				} catch(e) {
-					errors.push(e.message);
-				}
-				temp = temp._1;
-			}
-			throw new Error('expecting one of the following:\n    ' + errors.join('\n    '));
-		}
-	}
-
-	function get(decoder, value) {
-		try {
-			return Result.Ok(decoder(value));
-		} catch(e) {
-			return Result.Err(e.message);
-		}
-	}
-
-
-	// ENCODE / DECODE
-
-	function runDecoderString(decoder, string) {
-		try {
-			return Result.Ok(decoder(JSON.parse(string)));
-		} catch(e) {
-			return Result.Err(e.message);
-		}
-	}
-
-	function encode(indentLevel, value) {
-		return JSON.stringify(value, null, indentLevel);
-	}
-
-	function identity(value) {
-		return value;
-	}
-
-	function encodeObject(keyValuePairs) {
-		var obj = {};
-		while (keyValuePairs.ctor !== '[]') {
-			var pair = keyValuePairs._0;
-			obj[pair._0] = pair._1;
-			keyValuePairs = keyValuePairs._1;
-		}
-		return obj;
-	}
-
-	return localRuntime.Native.Json.values = {
-		encode: F2(encode),
-		runDecoderString: F2(runDecoderString),
-		runDecoderValue: F2(runDecoderValue),
-
-		get: F2(get),
-		oneOf: oneOf,
-
-		decodeNull: decodeNull,
-		decodeInt: decodeInt,
-		decodeFloat: decodeFloat,
-		decodeString: decodeString,
-		decodeBool: decodeBool,
-
-		decodeMaybe: decodeMaybe,
-
-		decodeList: decodeList,
-		decodeArray: decodeArray,
-
-		decodeField: F2(decodeField),
-
-		decodeObject1: F2(decodeObject1),
-		decodeObject2: F3(decodeObject2),
-		decodeObject3: F4(decodeObject3),
-		decodeObject4: F5(decodeObject4),
-		decodeObject5: F6(decodeObject5),
-		decodeObject6: F7(decodeObject6),
-		decodeObject7: F8(decodeObject7),
-		decodeObject8: F9(decodeObject8),
-		decodeKeyValuePairs: decodeKeyValuePairs,
-
-		decodeTuple1: F2(decodeTuple1),
-		decodeTuple2: F3(decodeTuple2),
-		decodeTuple3: F4(decodeTuple3),
-		decodeTuple4: F5(decodeTuple4),
-		decodeTuple5: F6(decodeTuple5),
-		decodeTuple6: F7(decodeTuple6),
-		decodeTuple7: F8(decodeTuple7),
-		decodeTuple8: F9(decodeTuple8),
-
-		andThen: F2(andThen),
-		decodeValue: decodeValue,
-		customDecoder: F2(customDecoder),
-		fail: fail,
-		succeed: succeed,
-
-		identity: identity,
-		encodeNull: null,
-		encodeArray: ElmArray.toJSArray,
-		encodeList: List.toArray,
-		encodeObject: encodeObject
-
-	};
-
-};
-
 Elm.Native.List = {};
 Elm.Native.List.make = function(localRuntime) {
 	localRuntime.Native = localRuntime.Native || {};
@@ -7982,7 +6239,7 @@ Elm.Native.Port.make = function(localRuntime) {
 				"Regarding the port named '" + name + "' with type:\n\n" +
 				"    " + type.split('\n').join('\n        ') + "\n\n" +
 				"You just sent the value:\n\n" +
-				"    " + JSON.stringify(value) + "\n\n" +
+				"    " + JSON.stringify(arg.value) + "\n\n" +
 				"but it cannot be converted to the necessary type.\n" +
 				e.message
 			);
@@ -8203,8 +6460,6 @@ if (!Elm.fullscreen) {
 			inputs = rootNode.kids;
 			filterListeners(inputs, listeners);
 
-			addReceivers(elm.ports);
-
 			if (typeof moduleToReplace !== 'undefined')
 			{
 				hotSwap(moduleToReplace, elm);
@@ -8287,31 +6542,6 @@ if (!Elm.fullscreen) {
 			{
 				var listener = listeners[i];
 				listener.domNode.removeEventListener(listener.eventName, listener.func);
-			}
-		}
-
-		// add receivers for built-in ports if they are defined
-		function addReceivers(ports)
-		{
-			if ('title' in ports)
-			{
-				if (typeof ports.title === 'string')
-				{
-					document.title = ports.title;
-				}
-				else
-				{
-					ports.title.subscribe(function(v) { document.title = v; });
-				}
-			}
-			if ('redirect' in ports)
-			{
-				ports.redirect.subscribe(function(v) {
-					if (v.length > 0)
-					{
-						window.location = v;
-					}
-				});
 			}
 		}
 
@@ -8816,7 +7046,9 @@ Elm.Native.Show.make = function(localRuntime) {
 		}
 		if (type === 'object' && 'notify' in v && 'id' in v)
 		{
-			return '<Signal>';
+			return 'initialValue' in v
+				? '<Signal>'
+				: '<Stream>';
 		}
 		return "<internal structure>";
 	};
@@ -9161,7 +7393,6 @@ Elm.Native.Signal.make = function(localRuntime) {
 		var node = {
 			id: Utils.guid(),
 			name: 'merge',
-			value: A2(tieBreaker, leftStream.value, rightStream.value),
 			parents: [leftStream, rightStream],
 			kids: []
 		};
@@ -9344,7 +7575,7 @@ Elm.Native.Signal.make = function(localRuntime) {
 		sampleOn: F2(sampleOn),
 		dropRepeats: dropRepeats,
 		timestamp: timestamp,
-		delay: F2(delay)
+		delay: delay
 	};
 };
 
@@ -10711,1526 +8942,6 @@ Elm.Native.Utils.make = function(localRuntime) {
 	};
 };
 
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var createElement = require("./vdom/create-element.js")
-
-module.exports = createElement
-
-},{"./vdom/create-element.js":6}],2:[function(require,module,exports){
-(function (global){
-var topLevel = typeof global !== 'undefined' ? global :
-    typeof window !== 'undefined' ? window : {}
-var minDoc = require('min-document');
-
-if (typeof document !== 'undefined') {
-    module.exports = document;
-} else {
-    var doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'];
-
-    if (!doccy) {
-        doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'] = minDoc;
-    }
-
-    module.exports = doccy;
-}
-
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":24}],3:[function(require,module,exports){
-"use strict";
-
-module.exports = function isObject(x) {
-	return typeof x === "object" && x !== null;
-};
-
-},{}],4:[function(require,module,exports){
-var nativeIsArray = Array.isArray
-var toString = Object.prototype.toString
-
-module.exports = nativeIsArray || isArray
-
-function isArray(obj) {
-    return toString.call(obj) === "[object Array]"
-}
-
-},{}],5:[function(require,module,exports){
-var isObject = require("is-object")
-var isHook = require("../vnode/is-vhook.js")
-
-module.exports = applyProperties
-
-function applyProperties(node, props, previous) {
-    for (var propName in props) {
-        var propValue = props[propName]
-
-        if (propValue === undefined) {
-            removeProperty(node, propName, propValue, previous);
-        } else if (isHook(propValue)) {
-            removeProperty(node, propName, propValue, previous)
-            if (propValue.hook) {
-                propValue.hook(node,
-                    propName,
-                    previous ? previous[propName] : undefined)
-            }
-        } else {
-            if (isObject(propValue)) {
-                patchObject(node, props, previous, propName, propValue);
-            } else {
-                node[propName] = propValue
-            }
-        }
-    }
-}
-
-function removeProperty(node, propName, propValue, previous) {
-    if (previous) {
-        var previousValue = previous[propName]
-
-        if (!isHook(previousValue)) {
-            if (propName === "attributes") {
-                for (var attrName in previousValue) {
-                    node.removeAttribute(attrName)
-                }
-            } else if (propName === "style") {
-                for (var i in previousValue) {
-                    node.style[i] = ""
-                }
-            } else if (typeof previousValue === "string") {
-                node[propName] = ""
-            } else {
-                node[propName] = null
-            }
-        } else if (previousValue.unhook) {
-            previousValue.unhook(node, propName, propValue)
-        }
-    }
-}
-
-function patchObject(node, props, previous, propName, propValue) {
-    var previousValue = previous ? previous[propName] : undefined
-
-    // Set attributes
-    if (propName === "attributes") {
-        for (var attrName in propValue) {
-            var attrValue = propValue[attrName]
-
-            if (attrValue === undefined) {
-                node.removeAttribute(attrName)
-            } else {
-                node.setAttribute(attrName, attrValue)
-            }
-        }
-
-        return
-    }
-
-    if(previousValue && isObject(previousValue) &&
-        getPrototype(previousValue) !== getPrototype(propValue)) {
-        node[propName] = propValue
-        return
-    }
-
-    if (!isObject(node[propName])) {
-        node[propName] = {}
-    }
-
-    var replacer = propName === "style" ? "" : undefined
-
-    for (var k in propValue) {
-        var value = propValue[k]
-        node[propName][k] = (value === undefined) ? replacer : value
-    }
-}
-
-function getPrototype(value) {
-    if (Object.getPrototypeOf) {
-        return Object.getPrototypeOf(value)
-    } else if (value.__proto__) {
-        return value.__proto__
-    } else if (value.constructor) {
-        return value.constructor.prototype
-    }
-}
-
-},{"../vnode/is-vhook.js":13,"is-object":3}],6:[function(require,module,exports){
-var document = require("global/document")
-
-var applyProperties = require("./apply-properties")
-
-var isVNode = require("../vnode/is-vnode.js")
-var isVText = require("../vnode/is-vtext.js")
-var isWidget = require("../vnode/is-widget.js")
-var handleThunk = require("../vnode/handle-thunk.js")
-
-module.exports = createElement
-
-function createElement(vnode, opts) {
-    var doc = opts ? opts.document || document : document
-    var warn = opts ? opts.warn : null
-
-    vnode = handleThunk(vnode).a
-
-    if (isWidget(vnode)) {
-        return vnode.init()
-    } else if (isVText(vnode)) {
-        return doc.createTextNode(vnode.text)
-    } else if (!isVNode(vnode)) {
-        if (warn) {
-            warn("Item is not a valid virtual dom node", vnode)
-        }
-        return null
-    }
-
-    var node = (vnode.namespace === null) ?
-        doc.createElement(vnode.tagName) :
-        doc.createElementNS(vnode.namespace, vnode.tagName)
-
-    var props = vnode.properties
-    applyProperties(node, props)
-
-    var children = vnode.children
-
-    for (var i = 0; i < children.length; i++) {
-        var childNode = createElement(children[i], opts)
-        if (childNode) {
-            node.appendChild(childNode)
-        }
-    }
-
-    return node
-}
-
-},{"../vnode/handle-thunk.js":11,"../vnode/is-vnode.js":14,"../vnode/is-vtext.js":15,"../vnode/is-widget.js":16,"./apply-properties":5,"global/document":2}],7:[function(require,module,exports){
-// Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
-// We don't want to read all of the DOM nodes in the tree so we use
-// the in-order tree indexing to eliminate recursion down certain branches.
-// We only recurse into a DOM node if we know that it contains a child of
-// interest.
-
-var noChild = {}
-
-module.exports = domIndex
-
-function domIndex(rootNode, tree, indices, nodes) {
-    if (!indices || indices.length === 0) {
-        return {}
-    } else {
-        indices.sort(ascending)
-        return recurse(rootNode, tree, indices, nodes, 0)
-    }
-}
-
-function recurse(rootNode, tree, indices, nodes, rootIndex) {
-    nodes = nodes || {}
-
-
-    if (rootNode) {
-        if (indexInRange(indices, rootIndex, rootIndex)) {
-            nodes[rootIndex] = rootNode
-        }
-
-        var vChildren = tree.children
-
-        if (vChildren) {
-
-            var childNodes = rootNode.childNodes
-
-            for (var i = 0; i < tree.children.length; i++) {
-                rootIndex += 1
-
-                var vChild = vChildren[i] || noChild
-                var nextIndex = rootIndex + (vChild.count || 0)
-
-                // skip recursion down the tree if there are no nodes down here
-                if (indexInRange(indices, rootIndex, nextIndex)) {
-                    recurse(childNodes[i], vChild, indices, nodes, rootIndex)
-                }
-
-                rootIndex = nextIndex
-            }
-        }
-    }
-
-    return nodes
-}
-
-// Binary search for an index in the interval [left, right]
-function indexInRange(indices, left, right) {
-    if (indices.length === 0) {
-        return false
-    }
-
-    var minIndex = 0
-    var maxIndex = indices.length - 1
-    var currentIndex
-    var currentItem
-
-    while (minIndex <= maxIndex) {
-        currentIndex = ((maxIndex + minIndex) / 2) >> 0
-        currentItem = indices[currentIndex]
-
-        if (minIndex === maxIndex) {
-            return currentItem >= left && currentItem <= right
-        } else if (currentItem < left) {
-            minIndex = currentIndex + 1
-        } else  if (currentItem > right) {
-            maxIndex = currentIndex - 1
-        } else {
-            return true
-        }
-    }
-
-    return false;
-}
-
-function ascending(a, b) {
-    return a > b ? 1 : -1
-}
-
-},{}],8:[function(require,module,exports){
-var applyProperties = require("./apply-properties")
-
-var isWidget = require("../vnode/is-widget.js")
-var VPatch = require("../vnode/vpatch.js")
-
-var render = require("./create-element")
-var updateWidget = require("./update-widget")
-
-module.exports = applyPatch
-
-function applyPatch(vpatch, domNode, renderOptions) {
-    var type = vpatch.type
-    var vNode = vpatch.vNode
-    var patch = vpatch.patch
-
-    switch (type) {
-        case VPatch.REMOVE:
-            return removeNode(domNode, vNode)
-        case VPatch.INSERT:
-            return insertNode(domNode, patch, renderOptions)
-        case VPatch.VTEXT:
-            return stringPatch(domNode, vNode, patch, renderOptions)
-        case VPatch.WIDGET:
-            return widgetPatch(domNode, vNode, patch, renderOptions)
-        case VPatch.VNODE:
-            return vNodePatch(domNode, vNode, patch, renderOptions)
-        case VPatch.ORDER:
-            reorderChildren(domNode, patch)
-            return domNode
-        case VPatch.PROPS:
-            applyProperties(domNode, patch, vNode.properties)
-            return domNode
-        case VPatch.THUNK:
-            return replaceRoot(domNode,
-                renderOptions.patch(domNode, patch, renderOptions))
-        default:
-            return domNode
-    }
-}
-
-function removeNode(domNode, vNode) {
-    var parentNode = domNode.parentNode
-
-    if (parentNode) {
-        parentNode.removeChild(domNode)
-    }
-
-    destroyWidget(domNode, vNode);
-
-    return null
-}
-
-function insertNode(parentNode, vNode, renderOptions) {
-    var newNode = render(vNode, renderOptions)
-
-    if (parentNode) {
-        parentNode.appendChild(newNode)
-    }
-
-    return parentNode
-}
-
-function stringPatch(domNode, leftVNode, vText, renderOptions) {
-    var newNode
-
-    if (domNode.nodeType === 3) {
-        domNode.replaceData(0, domNode.length, vText.text)
-        newNode = domNode
-    } else {
-        var parentNode = domNode.parentNode
-        newNode = render(vText, renderOptions)
-
-        if (parentNode && newNode !== domNode) {
-            parentNode.replaceChild(newNode, domNode)
-        }
-    }
-
-    return newNode
-}
-
-function widgetPatch(domNode, leftVNode, widget, renderOptions) {
-    var updating = updateWidget(leftVNode, widget)
-    var newNode
-
-    if (updating) {
-        newNode = widget.update(leftVNode, domNode) || domNode
-    } else {
-        newNode = render(widget, renderOptions)
-    }
-
-    var parentNode = domNode.parentNode
-
-    if (parentNode && newNode !== domNode) {
-        parentNode.replaceChild(newNode, domNode)
-    }
-
-    if (!updating) {
-        destroyWidget(domNode, leftVNode)
-    }
-
-    return newNode
-}
-
-function vNodePatch(domNode, leftVNode, vNode, renderOptions) {
-    var parentNode = domNode.parentNode
-    var newNode = render(vNode, renderOptions)
-
-    if (parentNode && newNode !== domNode) {
-        parentNode.replaceChild(newNode, domNode)
-    }
-
-    return newNode
-}
-
-function destroyWidget(domNode, w) {
-    if (typeof w.destroy === "function" && isWidget(w)) {
-        w.destroy(domNode)
-    }
-}
-
-function reorderChildren(domNode, moves) {
-    var childNodes = domNode.childNodes
-    var keyMap = {}
-    var node
-    var remove
-    var insert
-
-    for (var i = 0; i < moves.removes.length; i++) {
-        remove = moves.removes[i]
-        node = childNodes[remove.from]
-        if (remove.key) {
-            keyMap[remove.key] = node
-        }
-        domNode.removeChild(node)
-    }
-
-    var length = childNodes.length
-    for (var j = 0; j < moves.inserts.length; j++) {
-        insert = moves.inserts[j]
-        node = keyMap[insert.key]
-        // this is the weirdest bug i've ever seen in webkit
-        domNode.insertBefore(node, insert.to >= length++ ? null : childNodes[insert.to])
-    }
-}
-
-function replaceRoot(oldRoot, newRoot) {
-    if (oldRoot && newRoot && oldRoot !== newRoot && oldRoot.parentNode) {
-        oldRoot.parentNode.replaceChild(newRoot, oldRoot)
-    }
-
-    return newRoot;
-}
-
-},{"../vnode/is-widget.js":16,"../vnode/vpatch.js":19,"./apply-properties":5,"./create-element":6,"./update-widget":10}],9:[function(require,module,exports){
-var document = require("global/document")
-var isArray = require("x-is-array")
-
-var domIndex = require("./dom-index")
-var patchOp = require("./patch-op")
-module.exports = patch
-
-function patch(rootNode, patches) {
-    return patchRecursive(rootNode, patches)
-}
-
-function patchRecursive(rootNode, patches, renderOptions) {
-    var indices = patchIndices(patches)
-
-    if (indices.length === 0) {
-        return rootNode
-    }
-
-    var index = domIndex(rootNode, patches.a, indices)
-    var ownerDocument = rootNode.ownerDocument
-
-    if (!renderOptions) {
-        renderOptions = { patch: patchRecursive }
-        if (ownerDocument !== document) {
-            renderOptions.document = ownerDocument
-        }
-    }
-
-    for (var i = 0; i < indices.length; i++) {
-        var nodeIndex = indices[i]
-        rootNode = applyPatch(rootNode,
-            index[nodeIndex],
-            patches[nodeIndex],
-            renderOptions)
-    }
-
-    return rootNode
-}
-
-function applyPatch(rootNode, domNode, patchList, renderOptions) {
-    if (!domNode) {
-        return rootNode
-    }
-
-    var newNode
-
-    if (isArray(patchList)) {
-        for (var i = 0; i < patchList.length; i++) {
-            newNode = patchOp(patchList[i], domNode, renderOptions)
-
-            if (domNode === rootNode) {
-                rootNode = newNode
-            }
-        }
-    } else {
-        newNode = patchOp(patchList, domNode, renderOptions)
-
-        if (domNode === rootNode) {
-            rootNode = newNode
-        }
-    }
-
-    return rootNode
-}
-
-function patchIndices(patches) {
-    var indices = []
-
-    for (var key in patches) {
-        if (key !== "a") {
-            indices.push(Number(key))
-        }
-    }
-
-    return indices
-}
-
-},{"./dom-index":7,"./patch-op":8,"global/document":2,"x-is-array":4}],10:[function(require,module,exports){
-var isWidget = require("../vnode/is-widget.js")
-
-module.exports = updateWidget
-
-function updateWidget(a, b) {
-    if (isWidget(a) && isWidget(b)) {
-        if ("name" in a && "name" in b) {
-            return a.id === b.id
-        } else {
-            return a.init === b.init
-        }
-    }
-
-    return false
-}
-
-},{"../vnode/is-widget.js":16}],11:[function(require,module,exports){
-var isVNode = require("./is-vnode")
-var isVText = require("./is-vtext")
-var isWidget = require("./is-widget")
-var isThunk = require("./is-thunk")
-
-module.exports = handleThunk
-
-function handleThunk(a, b) {
-    var renderedA = a
-    var renderedB = b
-
-    if (isThunk(b)) {
-        renderedB = renderThunk(b, a)
-    }
-
-    if (isThunk(a)) {
-        renderedA = renderThunk(a, null)
-    }
-
-    return {
-        a: renderedA,
-        b: renderedB
-    }
-}
-
-function renderThunk(thunk, previous) {
-    var renderedThunk = thunk.vnode
-
-    if (!renderedThunk) {
-        renderedThunk = thunk.vnode = thunk.render(previous)
-    }
-
-    if (!(isVNode(renderedThunk) ||
-            isVText(renderedThunk) ||
-            isWidget(renderedThunk))) {
-        throw new Error("thunk did not return a valid node");
-    }
-
-    return renderedThunk
-}
-
-},{"./is-thunk":12,"./is-vnode":14,"./is-vtext":15,"./is-widget":16}],12:[function(require,module,exports){
-module.exports = isThunk
-
-function isThunk(t) {
-    return t && t.type === "Thunk"
-}
-
-},{}],13:[function(require,module,exports){
-module.exports = isHook
-
-function isHook(hook) {
-    return hook &&
-      (typeof hook.hook === "function" && !hook.hasOwnProperty("hook") ||
-       typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
-}
-
-},{}],14:[function(require,module,exports){
-var version = require("./version")
-
-module.exports = isVirtualNode
-
-function isVirtualNode(x) {
-    return x && x.type === "VirtualNode" && x.version === version
-}
-
-},{"./version":17}],15:[function(require,module,exports){
-var version = require("./version")
-
-module.exports = isVirtualText
-
-function isVirtualText(x) {
-    return x && x.type === "VirtualText" && x.version === version
-}
-
-},{"./version":17}],16:[function(require,module,exports){
-module.exports = isWidget
-
-function isWidget(w) {
-    return w && w.type === "Widget"
-}
-
-},{}],17:[function(require,module,exports){
-module.exports = "2"
-
-},{}],18:[function(require,module,exports){
-var version = require("./version")
-var isVNode = require("./is-vnode")
-var isWidget = require("./is-widget")
-var isThunk = require("./is-thunk")
-var isVHook = require("./is-vhook")
-
-module.exports = VirtualNode
-
-var noProperties = {}
-var noChildren = []
-
-function VirtualNode(tagName, properties, children, key, namespace) {
-    this.tagName = tagName
-    this.properties = properties || noProperties
-    this.children = children || noChildren
-    this.key = key != null ? String(key) : undefined
-    this.namespace = (typeof namespace === "string") ? namespace : null
-
-    var count = (children && children.length) || 0
-    var descendants = 0
-    var hasWidgets = false
-    var hasThunks = false
-    var descendantHooks = false
-    var hooks
-
-    for (var propName in properties) {
-        if (properties.hasOwnProperty(propName)) {
-            var property = properties[propName]
-            if (isVHook(property) && property.unhook) {
-                if (!hooks) {
-                    hooks = {}
-                }
-
-                hooks[propName] = property
-            }
-        }
-    }
-
-    for (var i = 0; i < count; i++) {
-        var child = children[i]
-        if (isVNode(child)) {
-            descendants += child.count || 0
-
-            if (!hasWidgets && child.hasWidgets) {
-                hasWidgets = true
-            }
-
-            if (!hasThunks && child.hasThunks) {
-                hasThunks = true
-            }
-
-            if (!descendantHooks && (child.hooks || child.descendantHooks)) {
-                descendantHooks = true
-            }
-        } else if (!hasWidgets && isWidget(child)) {
-            if (typeof child.destroy === "function") {
-                hasWidgets = true
-            }
-        } else if (!hasThunks && isThunk(child)) {
-            hasThunks = true;
-        }
-    }
-
-    this.count = count + descendants
-    this.hasWidgets = hasWidgets
-    this.hasThunks = hasThunks
-    this.hooks = hooks
-    this.descendantHooks = descendantHooks
-}
-
-VirtualNode.prototype.version = version
-VirtualNode.prototype.type = "VirtualNode"
-
-},{"./is-thunk":12,"./is-vhook":13,"./is-vnode":14,"./is-widget":16,"./version":17}],19:[function(require,module,exports){
-var version = require("./version")
-
-VirtualPatch.NONE = 0
-VirtualPatch.VTEXT = 1
-VirtualPatch.VNODE = 2
-VirtualPatch.WIDGET = 3
-VirtualPatch.PROPS = 4
-VirtualPatch.ORDER = 5
-VirtualPatch.INSERT = 6
-VirtualPatch.REMOVE = 7
-VirtualPatch.THUNK = 8
-
-module.exports = VirtualPatch
-
-function VirtualPatch(type, vNode, patch) {
-    this.type = Number(type)
-    this.vNode = vNode
-    this.patch = patch
-}
-
-VirtualPatch.prototype.version = version
-VirtualPatch.prototype.type = "VirtualPatch"
-
-},{"./version":17}],20:[function(require,module,exports){
-var version = require("./version")
-
-module.exports = VirtualText
-
-function VirtualText(text) {
-    this.text = String(text)
-}
-
-VirtualText.prototype.version = version
-VirtualText.prototype.type = "VirtualText"
-
-},{"./version":17}],21:[function(require,module,exports){
-var isObject = require("is-object")
-var isHook = require("../vnode/is-vhook")
-
-module.exports = diffProps
-
-function diffProps(a, b) {
-    var diff
-
-    for (var aKey in a) {
-        if (!(aKey in b)) {
-            diff = diff || {}
-            diff[aKey] = undefined
-        }
-
-        var aValue = a[aKey]
-        var bValue = b[aKey]
-
-        if (aValue === bValue) {
-            continue
-        } else if (isObject(aValue) && isObject(bValue)) {
-            if (getPrototype(bValue) !== getPrototype(aValue)) {
-                diff = diff || {}
-                diff[aKey] = bValue
-            } else if (isHook(bValue)) {
-                 diff = diff || {}
-                 diff[aKey] = bValue
-            } else {
-                var objectDiff = diffProps(aValue, bValue)
-                if (objectDiff) {
-                    diff = diff || {}
-                    diff[aKey] = objectDiff
-                }
-            }
-        } else {
-            diff = diff || {}
-            diff[aKey] = bValue
-        }
-    }
-
-    for (var bKey in b) {
-        if (!(bKey in a)) {
-            diff = diff || {}
-            diff[bKey] = b[bKey]
-        }
-    }
-
-    return diff
-}
-
-function getPrototype(value) {
-  if (Object.getPrototypeOf) {
-    return Object.getPrototypeOf(value)
-  } else if (value.__proto__) {
-    return value.__proto__
-  } else if (value.constructor) {
-    return value.constructor.prototype
-  }
-}
-
-},{"../vnode/is-vhook":13,"is-object":3}],22:[function(require,module,exports){
-var isArray = require("x-is-array")
-
-var VPatch = require("../vnode/vpatch")
-var isVNode = require("../vnode/is-vnode")
-var isVText = require("../vnode/is-vtext")
-var isWidget = require("../vnode/is-widget")
-var isThunk = require("../vnode/is-thunk")
-var handleThunk = require("../vnode/handle-thunk")
-
-var diffProps = require("./diff-props")
-
-module.exports = diff
-
-function diff(a, b) {
-    var patch = { a: a }
-    walk(a, b, patch, 0)
-    return patch
-}
-
-function walk(a, b, patch, index) {
-    if (a === b) {
-        return
-    }
-
-    var apply = patch[index]
-    var applyClear = false
-
-    if (isThunk(a) || isThunk(b)) {
-        thunks(a, b, patch, index)
-    } else if (b == null) {
-
-        // If a is a widget we will add a remove patch for it
-        // Otherwise any child widgets/hooks must be destroyed.
-        // This prevents adding two remove patches for a widget.
-        if (!isWidget(a)) {
-            clearState(a, patch, index)
-            apply = patch[index]
-        }
-
-        apply = appendPatch(apply, new VPatch(VPatch.REMOVE, a, b))
-    } else if (isVNode(b)) {
-        if (isVNode(a)) {
-            if (a.tagName === b.tagName &&
-                a.namespace === b.namespace &&
-                a.key === b.key) {
-                var propsPatch = diffProps(a.properties, b.properties)
-                if (propsPatch) {
-                    apply = appendPatch(apply,
-                        new VPatch(VPatch.PROPS, a, propsPatch))
-                }
-                apply = diffChildren(a, b, patch, apply, index)
-            } else {
-                apply = appendPatch(apply, new VPatch(VPatch.VNODE, a, b))
-                applyClear = true
-            }
-        } else {
-            apply = appendPatch(apply, new VPatch(VPatch.VNODE, a, b))
-            applyClear = true
-        }
-    } else if (isVText(b)) {
-        if (!isVText(a)) {
-            apply = appendPatch(apply, new VPatch(VPatch.VTEXT, a, b))
-            applyClear = true
-        } else if (a.text !== b.text) {
-            apply = appendPatch(apply, new VPatch(VPatch.VTEXT, a, b))
-        }
-    } else if (isWidget(b)) {
-        if (!isWidget(a)) {
-            applyClear = true
-        }
-
-        apply = appendPatch(apply, new VPatch(VPatch.WIDGET, a, b))
-    }
-
-    if (apply) {
-        patch[index] = apply
-    }
-
-    if (applyClear) {
-        clearState(a, patch, index)
-    }
-}
-
-function diffChildren(a, b, patch, apply, index) {
-    var aChildren = a.children
-    var orderedSet = reorder(aChildren, b.children)
-    var bChildren = orderedSet.children
-
-    var aLen = aChildren.length
-    var bLen = bChildren.length
-    var len = aLen > bLen ? aLen : bLen
-
-    for (var i = 0; i < len; i++) {
-        var leftNode = aChildren[i]
-        var rightNode = bChildren[i]
-        index += 1
-
-        if (!leftNode) {
-            if (rightNode) {
-                // Excess nodes in b need to be added
-                apply = appendPatch(apply,
-                    new VPatch(VPatch.INSERT, null, rightNode))
-            }
-        } else {
-            walk(leftNode, rightNode, patch, index)
-        }
-
-        if (isVNode(leftNode) && leftNode.count) {
-            index += leftNode.count
-        }
-    }
-
-    if (orderedSet.moves) {
-        // Reorder nodes last
-        apply = appendPatch(apply, new VPatch(
-            VPatch.ORDER,
-            a,
-            orderedSet.moves
-        ))
-    }
-
-    return apply
-}
-
-function clearState(vNode, patch, index) {
-    // TODO: Make this a single walk, not two
-    unhook(vNode, patch, index)
-    destroyWidgets(vNode, patch, index)
-}
-
-// Patch records for all destroyed widgets must be added because we need
-// a DOM node reference for the destroy function
-function destroyWidgets(vNode, patch, index) {
-    if (isWidget(vNode)) {
-        if (typeof vNode.destroy === "function") {
-            patch[index] = appendPatch(
-                patch[index],
-                new VPatch(VPatch.REMOVE, vNode, null)
-            )
-        }
-    } else if (isVNode(vNode) && (vNode.hasWidgets || vNode.hasThunks)) {
-        var children = vNode.children
-        var len = children.length
-        for (var i = 0; i < len; i++) {
-            var child = children[i]
-            index += 1
-
-            destroyWidgets(child, patch, index)
-
-            if (isVNode(child) && child.count) {
-                index += child.count
-            }
-        }
-    } else if (isThunk(vNode)) {
-        thunks(vNode, null, patch, index)
-    }
-}
-
-// Create a sub-patch for thunks
-function thunks(a, b, patch, index) {
-    var nodes = handleThunk(a, b)
-    var thunkPatch = diff(nodes.a, nodes.b)
-    if (hasPatches(thunkPatch)) {
-        patch[index] = new VPatch(VPatch.THUNK, null, thunkPatch)
-    }
-}
-
-function hasPatches(patch) {
-    for (var index in patch) {
-        if (index !== "a") {
-            return true
-        }
-    }
-
-    return false
-}
-
-// Execute hooks when two nodes are identical
-function unhook(vNode, patch, index) {
-    if (isVNode(vNode)) {
-        if (vNode.hooks) {
-            patch[index] = appendPatch(
-                patch[index],
-                new VPatch(
-                    VPatch.PROPS,
-                    vNode,
-                    undefinedKeys(vNode.hooks)
-                )
-            )
-        }
-
-        if (vNode.descendantHooks || vNode.hasThunks) {
-            var children = vNode.children
-            var len = children.length
-            for (var i = 0; i < len; i++) {
-                var child = children[i]
-                index += 1
-
-                unhook(child, patch, index)
-
-                if (isVNode(child) && child.count) {
-                    index += child.count
-                }
-            }
-        }
-    } else if (isThunk(vNode)) {
-        thunks(vNode, null, patch, index)
-    }
-}
-
-function undefinedKeys(obj) {
-    var result = {}
-
-    for (var key in obj) {
-        result[key] = undefined
-    }
-
-    return result
-}
-
-// List diff, naive left to right reordering
-function reorder(aChildren, bChildren) {
-    // O(M) time, O(M) memory
-    var bChildIndex = keyIndex(bChildren)
-    var bKeys = bChildIndex.keys
-    var bFree = bChildIndex.free
-
-    if (bFree.length === bChildren.length) {
-        return {
-            children: bChildren,
-            moves: null
-        }
-    }
-
-    // O(N) time, O(N) memory
-    var aChildIndex = keyIndex(aChildren)
-    var aKeys = aChildIndex.keys
-    var aFree = aChildIndex.free
-
-    if (aFree.length === aChildren.length) {
-        return {
-            children: bChildren,
-            moves: null
-        }
-    }
-
-    // O(MAX(N, M)) memory
-    var newChildren = []
-
-    var freeIndex = 0
-    var freeCount = bFree.length
-    var deletedItems = 0
-
-    // Iterate through a and match a node in b
-    // O(N) time,
-    for (var i = 0 ; i < aChildren.length; i++) {
-        var aItem = aChildren[i]
-        var itemIndex
-
-        if (aItem.key) {
-            if (bKeys.hasOwnProperty(aItem.key)) {
-                // Match up the old keys
-                itemIndex = bKeys[aItem.key]
-                newChildren.push(bChildren[itemIndex])
-
-            } else {
-                // Remove old keyed items
-                itemIndex = i - deletedItems++
-                newChildren.push(null)
-            }
-        } else {
-            // Match the item in a with the next free item in b
-            if (freeIndex < freeCount) {
-                itemIndex = bFree[freeIndex++]
-                newChildren.push(bChildren[itemIndex])
-            } else {
-                // There are no free items in b to match with
-                // the free items in a, so the extra free nodes
-                // are deleted.
-                itemIndex = i - deletedItems++
-                newChildren.push(null)
-            }
-        }
-    }
-
-    var lastFreeIndex = freeIndex >= bFree.length ?
-        bChildren.length :
-        bFree[freeIndex]
-
-    // Iterate through b and append any new keys
-    // O(M) time
-    for (var j = 0; j < bChildren.length; j++) {
-        var newItem = bChildren[j]
-
-        if (newItem.key) {
-            if (!aKeys.hasOwnProperty(newItem.key)) {
-                // Add any new keyed items
-                // We are adding new items to the end and then sorting them
-                // in place. In future we should insert new items in place.
-                newChildren.push(newItem)
-            }
-        } else if (j >= lastFreeIndex) {
-            // Add any leftover non-keyed items
-            newChildren.push(newItem)
-        }
-    }
-
-    var simulate = newChildren.slice()
-    var simulateIndex = 0
-    var removes = []
-    var inserts = []
-    var simulateItem
-
-    for (var k = 0; k < bChildren.length;) {
-        var wantedItem = bChildren[k]
-        simulateItem = simulate[simulateIndex]
-
-        // remove items
-        while (simulateItem === null && simulate.length) {
-            removes.push(remove(simulate, simulateIndex, null))
-            simulateItem = simulate[simulateIndex]
-        }
-
-        if (!simulateItem || simulateItem.key !== wantedItem.key) {
-            // if we need a key in this position...
-            if (wantedItem.key) {
-                if (simulateItem && simulateItem.key) {
-                    // if an insert doesn't put this key in place, it needs to move
-                    if (bKeys[simulateItem.key] !== k + 1) {
-                        removes.push(remove(simulate, simulateIndex, simulateItem.key))
-                        simulateItem = simulate[simulateIndex]
-                        // if the remove didn't put the wanted item in place, we need to insert it
-                        if (!simulateItem || simulateItem.key !== wantedItem.key) {
-                            inserts.push({key: wantedItem.key, to: k})
-                        }
-                        // items are matching, so skip ahead
-                        else {
-                            simulateIndex++
-                        }
-                    }
-                    else {
-                        inserts.push({key: wantedItem.key, to: k})
-                    }
-                }
-                else {
-                    inserts.push({key: wantedItem.key, to: k})
-                }
-                k++
-            }
-            // a key in simulate has no matching wanted key, remove it
-            else if (simulateItem && simulateItem.key) {
-                removes.push(remove(simulate, simulateIndex, simulateItem.key))
-            }
-        }
-        else {
-            simulateIndex++
-            k++
-        }
-    }
-
-    // remove all the remaining nodes from simulate
-    while(simulateIndex < simulate.length) {
-        simulateItem = simulate[simulateIndex]
-        removes.push(remove(simulate, simulateIndex, simulateItem && simulateItem.key))
-    }
-
-    // If the only moves we have are deletes then we can just
-    // let the delete patch remove these items.
-    if (removes.length === deletedItems && !inserts.length) {
-        return {
-            children: newChildren,
-            moves: null
-        }
-    }
-
-    return {
-        children: newChildren,
-        moves: {
-            removes: removes,
-            inserts: inserts
-        }
-    }
-}
-
-function remove(arr, index, key) {
-    arr.splice(index, 1)
-
-    return {
-        from: index,
-        key: key
-    }
-}
-
-function keyIndex(children) {
-    var keys = {}
-    var free = []
-    var length = children.length
-
-    for (var i = 0; i < length; i++) {
-        var child = children[i]
-
-        if (child.key) {
-            keys[child.key] = i
-        } else {
-            free.push(i)
-        }
-    }
-
-    return {
-        keys: keys,     // A hash of key name to index
-        free: free,     // An array of unkeyed item indices
-    }
-}
-
-function appendPatch(apply, patch) {
-    if (apply) {
-        if (isArray(apply)) {
-            apply.push(patch)
-        } else {
-            apply = [apply, patch]
-        }
-
-        return apply
-    } else {
-        return patch
-    }
-}
-
-},{"../vnode/handle-thunk":11,"../vnode/is-thunk":12,"../vnode/is-vnode":14,"../vnode/is-vtext":15,"../vnode/is-widget":16,"../vnode/vpatch":19,"./diff-props":21,"x-is-array":4}],23:[function(require,module,exports){
-var VNode = require('virtual-dom/vnode/vnode');
-var VText = require('virtual-dom/vnode/vtext');
-var diff = require('virtual-dom/vtree/diff');
-var patch = require('virtual-dom/vdom/patch');
-var createElement = require('virtual-dom/create-element');
-var isHook = require("virtual-dom/vnode/is-vhook");
-
-
-Elm.Native.VirtualDom = {};
-Elm.Native.VirtualDom.make = function(elm)
-{
-	elm.Native = elm.Native || {};
-	elm.Native.VirtualDom = elm.Native.VirtualDom || {};
-	if (elm.Native.VirtualDom.values)
-	{
-		return elm.Native.VirtualDom.values;
-	}
-
-	var Element = Elm.Native.Graphics.Element.make(elm);
-	var Json = Elm.Native.Json.make(elm);
-	var List = Elm.Native.List.make(elm);
-	var Signal = Elm.Native.Signal.make(elm);
-	var Utils = Elm.Native.Utils.make(elm);
-
-	var ATTRIBUTE_KEY = 'UniqueNameThatOthersAreVeryUnlikelyToUse';
-
-	function listToProperties(list)
-	{
-		var object = {};
-		while (list.ctor !== '[]')
-		{
-			var entry = list._0;
-			if (entry.key === ATTRIBUTE_KEY)
-			{
-				object.attributes = object.attributes || {};
-				object.attributes[entry.value.attrKey] = entry.value.attrValue;
-			}
-			else
-			{
-				object[entry.key] = entry.value;
-			}
-			list = list._1;
-		}
-		return object;
-	}
-
-	function node(name)
-	{
-		return F2(function(propertyList, contents) {
-			return makeNode(name, propertyList, contents);
-		});
-	}
-
-	function makeNode(name, propertyList, contents)
-	{
-		var props = listToProperties(propertyList);
-
-		var key, namespace;
-		// support keys
-		if (props.key !== undefined)
-		{
-			key = props.key;
-			props.key = undefined;
-		}
-
-		// support namespace
-		if (props.namespace !== undefined)
-		{
-			namespace = props.namespace;
-			props.namespace = undefined;
-		}
-
-		// ensure that setting text of an input does not move the cursor
-		var useSoftSet =
-			name === 'input'
-			&& props.value !== undefined
-			&& !isHook(props.value);
-
-		if (useSoftSet)
-		{
-			props.value = SoftSetHook(props.value);
-		}
-
-		return new VNode(name, props, List.toArray(contents), key, namespace);
-	}
-
-	function property(key, value)
-	{
-		return {
-			key: key,
-			value: value
-		};
-	}
-
-	function attribute(key, value)
-	{
-		return {
-			key: ATTRIBUTE_KEY,
-			value: {
-				attrKey: key,
-				attrValue: value
-			}
-		};
-	}
-
-	function on(name, options, decoder, createMessage)
-	{
-		function eventHandler(event)
-		{
-			var value = A2(Json.runDecoderValue, decoder, event);
-			if (value.ctor === 'Ok')
-			{
-				if (options.stopPropagation)
-				{
-					event.stopPropagation();
-				}
-				if (options.preventDefault)
-				{
-					event.preventDefault();
-				}
-				Signal.sendMessage(createMessage(value._0));
-			}
-		}
-		return property('on' + name, eventHandler);
-	}
-
-	function SoftSetHook(value)
-	{
-		if (!(this instanceof SoftSetHook))
-		{
-			return new SoftSetHook(value);
-		}
-
-		this.value = value;
-	}
-
-	SoftSetHook.prototype.hook = function (node, propertyName)
-	{
-		if (node[propertyName] !== this.value)
-		{
-			node[propertyName] = this.value;
-		}
-	};
-
-	function text(string)
-	{
-		return new VText(string);
-	}
-
-	function ElementWidget(element)
-	{
-		this.element = element;
-	}
-
-	ElementWidget.prototype.type = "Widget";
-
-	ElementWidget.prototype.init = function init()
-	{
-		return Element.render(this.element);
-	};
-
-	ElementWidget.prototype.update = function update(previous, node)
-	{
-		return Element.update(node, previous.element, this.element);
-	};
-
-	function fromElement(element)
-	{
-		return new ElementWidget(element);
-	}
-
-	function toElement(width, height, html)
-	{
-		return A3(Element.newElement, width, height, {
-			ctor: 'Custom',
-			type: 'evancz/elm-html',
-			render: render,
-			update: update,
-			model: html
-		});
-	}
-
-	function render(model)
-	{
-		var element = Element.createNode('div');
-		element.appendChild(createElement(model));
-		return element;
-	}
-
-	function update(node, oldModel, newModel)
-	{
-		updateAndReplace(node.firstChild, oldModel, newModel);
-		return node;
-	}
-
-	function updateAndReplace(node, oldModel, newModel)
-	{
-		var patches = diff(oldModel, newModel);
-		var newNode = patch(node, patches);
-		return newNode;
-	}
-
-	function lazyRef(fn, a)
-	{
-		function thunk()
-		{
-			return fn(a);
-		}
-		return new Thunk(fn, [a], thunk);
-	}
-
-	function lazyRef2(fn, a, b)
-	{
-		function thunk()
-		{
-			return A2(fn, a, b);
-		}
-		return new Thunk(fn, [a,b], thunk);
-	}
-
-	function lazyRef3(fn, a, b, c)
-	{
-		function thunk()
-		{
-			return A3(fn, a, b, c);
-		}
-		return new Thunk(fn, [a,b,c], thunk);
-	}
-
-	function Thunk(fn, args, thunk)
-	{
-		this.fn = fn;
-		this.args = args;
-		this.vnode = null;
-		this.key = undefined;
-		this.thunk = thunk;
-	}
-
-	Thunk.prototype.type = "Thunk";
-	Thunk.prototype.update = updateThunk;
-	Thunk.prototype.render = renderThunk;
-
-	function shouldUpdate(current, previous)
-	{
-		if (current.fn !== previous.fn)
-		{
-			return true;
-		}
-
-		// if it's the same function, we know the number of args must match
-		var cargs = current.args;
-		var pargs = previous.args;
-
-		for (var i = cargs.length; i--; )
-		{
-			if (cargs[i] !== pargs[i])
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	function updateThunk(previous, domNode)
-	{
-		if (!shouldUpdate(this, previous))
-		{
-			this.vnode = previous.vnode;
-			return;
-		}
-
-		if (!this.vnode)
-		{
-			this.vnode = this.thunk();
-		}
-
-		var patches = diff(previous.vnode, this.vnode);
-		patch(domNode, patches);
-	}
-
-	function renderThunk()
-	{
-		return this.thunk();
-	}
-
-	return Elm.Native.VirtualDom.values = {
-		node: node,
-		text: text,
-		on: F4(on),
-
-		property: F2(property),
-		attribute: F2(attribute),
-
-		lazy: F2(lazyRef),
-		lazy2: F3(lazyRef2),
-		lazy3: F4(lazyRef3),
-
-		toElement: F3(toElement),
-		fromElement: fromElement,
-
-		render: createElement,
-		updateAndReplace: updateAndReplace
-	};
-};
-
-},{"virtual-dom/create-element":1,"virtual-dom/vdom/patch":9,"virtual-dom/vnode/is-vhook":13,"virtual-dom/vnode/vnode":18,"virtual-dom/vnode/vtext":20,"virtual-dom/vtree/diff":22}],24:[function(require,module,exports){
-
-},{}]},{},[23]);
-
 Elm.Random = Elm.Random || {};
 Elm.Random.make = function (_elm) {
    "use strict";
@@ -12534,8 +9245,6 @@ Elm.Random.Array.make = function (_elm) {
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Random = Elm.Random.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
    $Trampoline = Elm.Trampoline.make(_elm);
    var choose = F2(function (seed,
    arr) {
@@ -12599,7 +9308,7 @@ Elm.Random.Array.make = function (_elm) {
                                                       _v0._1)
                                                       ,_2: a$});}
                                      _U.badCase($moduleName,
-                                     "on line 55, column 48 to 71");
+                                     "on line 56, column 48 to 71");
                                   }();
                                });
                              case "Nothing":
@@ -12608,11 +9317,11 @@ Elm.Random.Array.make = function (_elm) {
                                                      ,_1: _v0._1
                                                      ,_2: _v0._2});}
                           _U.badCase($moduleName,
-                          "between lines 53 and 56");
+                          "between lines 54 and 57");
                        }();
                     }();}
                _U.badCase($moduleName,
-               "between lines 52 and 56");
+               "between lines 53 and 57");
             }();
          };
          var _ = $Trampoline.trampoline(helper({ctor: "_Tuple3"
@@ -12623,13 +9332,13 @@ Elm.Random.Array.make = function (_elm) {
             switch (_.ctor)
             {case "_Tuple3": return _._0;}
             _U.badCase($moduleName,
-            "on line 56, column 32 to 67");
+            "on line 57, column 32 to 67");
          }();
          var shuffled = function () {
             switch (_.ctor)
             {case "_Tuple3": return _._1;}
             _U.badCase($moduleName,
-            "on line 56, column 32 to 67");
+            "on line 57, column 32 to 67");
          }();
          return {ctor: "_Tuple2"
                 ,_0: $Array.fromList(shuffled)
@@ -12678,7 +9387,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return $Maybe.Just(result._0);}
          _U.badCase($moduleName,
-         "between lines 164 and 166");
+         "between lines 164 and 177");
       }();
    };
    var Err = function (a) {
@@ -12693,7 +9402,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return callback(result._0);}
          _U.badCase($moduleName,
-         "between lines 126 and 128");
+         "between lines 126 and 145");
       }();
    });
    var Ok = function (a) {
@@ -12707,7 +9416,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return Ok(func(ra._0));}
          _U.badCase($moduleName,
-         "between lines 41 and 43");
+         "between lines 41 and 52");
       }();
    });
    var map2 = F3(function (func,
@@ -12861,7 +9570,7 @@ Elm.Result.make = function (_elm) {
                  return Err(_v39._4._0);}
               break;}
          _U.badCase($moduleName,
-         "between lines 82 and 88");
+         "between lines 82 and 123");
       }();
    });
    var formatError = F2(function (f,
@@ -12873,7 +9582,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return Ok(result._0);}
          _U.badCase($moduleName,
-         "between lines 148 and 150");
+         "between lines 148 and 161");
       }();
    });
    var fromMaybe = F2(function (err,
@@ -12932,7 +9641,7 @@ Elm.Signal.make = function (_elm) {
                  }();
               });}
          _U.badCase($moduleName,
-         "between lines 370 and 371");
+         "between lines 362 and 363");
       }();
    });
    var Message = function (a) {
@@ -12946,7 +9655,7 @@ Elm.Signal.make = function (_elm) {
          {case "Address":
             return Message(_v5._0(value));}
          _U.badCase($moduleName,
-         "on line 352, column 5 to 24");
+         "on line 344, column 5 to 24");
       }();
    });
    var mailbox = $Native$Signal.mailbox;
@@ -12963,7 +9672,7 @@ Elm.Signal.make = function (_elm) {
                  return _v8._0(f(x));
               });}
          _U.badCase($moduleName,
-         "on line 339, column 5 to 29");
+         "on line 331, column 5 to 29");
       }();
    });
    var Mailbox = F2(function (a,
@@ -13004,7 +9713,7 @@ Elm.Signal.make = function (_elm) {
             case "[]":
             return $Debug.crash("mergeMany was given an empty list!");}
          _U.badCase($moduleName,
-         "between lines 177 and 182");
+         "between lines 177 and 197");
       }();
    };
    var foldp = $Native$Signal.foldp;
@@ -13045,63 +9754,6 @@ Elm.Signal.make = function (_elm) {
                         ,forwardTo: forwardTo
                         ,Mailbox: Mailbox};
    return _elm.Signal.values;
-};
-Elm.StartApp = Elm.StartApp || {};
-Elm.StartApp.Simple = Elm.StartApp.Simple || {};
-Elm.StartApp.Simple.make = function (_elm) {
-   "use strict";
-   _elm.StartApp = _elm.StartApp || {};
-   _elm.StartApp.Simple = _elm.StartApp.Simple || {};
-   if (_elm.StartApp.Simple.values)
-   return _elm.StartApp.Simple.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "StartApp.Simple",
-   $Basics = Elm.Basics.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var start = function (config) {
-      return function () {
-         var actions = $Signal.mailbox($Maybe.Nothing);
-         var address = A2($Signal.forwardTo,
-         actions.address,
-         $Maybe.Just);
-         var model = A3($Signal.foldp,
-         F2(function (_v0,model) {
-            return function () {
-               switch (_v0.ctor)
-               {case "Just":
-                  return A2(config.update,
-                    _v0._0,
-                    model);}
-               _U.badCase($moduleName,
-               "on line 91, column 34 to 60");
-            }();
-         }),
-         config.model,
-         actions.signal);
-         return A2($Signal.map,
-         config.view(address),
-         model);
-      }();
-   };
-   var Config = F3(function (a,
-   b,
-   c) {
-      return {_: {}
-             ,model: a
-             ,update: c
-             ,view: b};
-   });
-   _elm.StartApp.Simple.values = {_op: _op
-                                 ,Config: Config
-                                 ,start: start};
-   return _elm.StartApp.Simple.values;
 };
 Elm.String = Elm.String || {};
 Elm.String.make = function (_elm) {
@@ -13605,69 +10257,4 @@ Elm.Transform2D.make = function (_elm) {
                              ,scaleX: scaleX
                              ,scaleY: scaleY};
    return _elm.Transform2D.values;
-};
-Elm.VirtualDom = Elm.VirtualDom || {};
-Elm.VirtualDom.make = function (_elm) {
-   "use strict";
-   _elm.VirtualDom = _elm.VirtualDom || {};
-   if (_elm.VirtualDom.values)
-   return _elm.VirtualDom.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "VirtualDom",
-   $Basics = Elm.Basics.make(_elm),
-   $Graphics$Element = Elm.Graphics.Element.make(_elm),
-   $Json$Decode = Elm.Json.Decode.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Native$VirtualDom = Elm.Native.VirtualDom.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var lazy3 = $Native$VirtualDom.lazy3;
-   var lazy2 = $Native$VirtualDom.lazy2;
-   var lazy = $Native$VirtualDom.lazy;
-   var defaultOptions = {_: {}
-                        ,preventDefault: false
-                        ,stopPropagation: false};
-   var Options = F2(function (a,
-   b) {
-      return {_: {}
-             ,preventDefault: b
-             ,stopPropagation: a};
-   });
-   var onWithOptions = $Native$VirtualDom.on;
-   var on = F3(function (eventName,
-   decoder,
-   toMessage) {
-      return A4($Native$VirtualDom.on,
-      eventName,
-      defaultOptions,
-      decoder,
-      toMessage);
-   });
-   var attribute = $Native$VirtualDom.attribute;
-   var property = $Native$VirtualDom.property;
-   var Property = {ctor: "Property"};
-   var fromElement = $Native$VirtualDom.fromElement;
-   var toElement = $Native$VirtualDom.toElement;
-   var text = $Native$VirtualDom.text;
-   var node = $Native$VirtualDom.node;
-   var Node = {ctor: "Node"};
-   _elm.VirtualDom.values = {_op: _op
-                            ,text: text
-                            ,node: node
-                            ,toElement: toElement
-                            ,fromElement: fromElement
-                            ,property: property
-                            ,attribute: attribute
-                            ,on: on
-                            ,onWithOptions: onWithOptions
-                            ,defaultOptions: defaultOptions
-                            ,lazy: lazy
-                            ,lazy2: lazy2
-                            ,lazy3: lazy3
-                            ,Options: Options};
-   return _elm.VirtualDom.values;
 };

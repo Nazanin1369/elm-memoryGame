@@ -6,6 +6,9 @@ import List
 import Card
 import Debug
 import String
+import Random
+import Array
+import Random.Array
 
 
 main =
@@ -13,15 +16,31 @@ main =
 
 
 
-type alias Model =
-   List Card.Model
+type alias Model = {
+   cards: List Card.Model,
+   score: Int
+}
+
 
 type Action
   = Do Int Card.Status
 
-init: List Card.Model
+initSeed =
+  9999
+
+shuffle: List Card.Model -> List Card.Model
+shuffle list =
+  case Random.Array.shuffle (Random.initialSeed initSeed) (Array.fromList list) of
+    (x, y) -> (Array.toList x)
+
+init: Model
 init =
-  List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 8)) ++ ".svg") index) [1..16]
+  {
+    cards = shuffle <|
+              List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 8)) ++ ".svg") index) [1..16],
+    score = 0
+  }
+
 
 containerStyle : Html.Attribute
 containerStyle =
@@ -32,11 +51,18 @@ containerStyle =
         ("margin", "80px 500px 0px 500px")
       ]
 
-
+-- ::
 view: Signal.Address Action -> Model -> Html.Html
 view address model =
   div [containerStyle]
-    (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model)
+    [
+      div []
+        [(Html.text ("Tries " ++ (toString model.score)))],
+      div []
+        (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
+
+    ]
+
 
 
 openImages: Model -> List Card.Model
@@ -47,7 +73,7 @@ openImages model =
         m :: i
       else
         i
-  ) [] model
+  ) [] model.cards
 
 areIdentical: List Card.Model -> Bool
 areIdentical list =
@@ -60,7 +86,7 @@ areIdentical list =
       (_, _) -> False
 
 
-lockIfIdentical: Model -> List Card.Model -> Model
+lockIfIdentical: List Card.Model -> List Card.Model -> List Card.Model
 lockIfIdentical model list =
   let
     identical = areIdentical (list)
@@ -80,16 +106,18 @@ update action model =
     let
       opened = openImages model
       openedCount = List.length (opened)
+      modelAfterLock = { model | cards <- (lockIfIdentical model.cards opened) }
     in
       case action of
-        Do y x -> (lockIfIdentical model opened) |>
-                      List.map (\cModel ->
-                              case (openedCount, cModel.id) of
-                                (c, l) ->  if l == y then
-                                              Card.update x cModel
-                                           else
-                                             if c == 2 then
-                                               Card.close cModel
-                                             else
-                                               cModel
-                      )
+        Do y x ->  { modelAfterLock | cards <-  List.map (\cModel ->
+                                  case (openedCount, cModel.id) of
+                                    (c, l) ->  if l == y then
+                                                  Card.update x cModel
+                                               else
+                                                 if c == 2 then
+                                                   Card.close cModel
+                                                 else
+                                                   cModel
+                          ) modelAfterLock.cards,
+                          score <- modelAfterLock.score + 1
+                      }
