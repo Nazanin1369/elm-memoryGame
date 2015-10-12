@@ -298,6 +298,9 @@ Elm.Card.make = function (_elm) {
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "padding"
                                                          ,_1: "10px"}]));
+   var imageContainerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                  ,_0: "float"
+                                                                  ,_1: "left"}]));
    var toImage = function (model) {
       return $Html$Attributes.src(function () {
          var _v0 = model.status;
@@ -307,13 +310,13 @@ Elm.Card.make = function (_elm) {
             case "Opened":
             return model.image;}
          _U.badCase($moduleName,
-         "between lines 28 and 31");
+         "between lines 31 and 34");
       }());
    };
    var view = F2(function (address,
    model) {
       return A2($Html.div,
-      _L.fromArray([]),
+      _L.fromArray([imageContainerStyle]),
       _L.fromArray([A2($Html.div,
       _L.fromArray([A2($Html$Events.onClick,
       address,
@@ -325,9 +328,13 @@ Elm.Card.make = function (_elm) {
    });
    var Flip = {ctor: "Flip"};
    var Closed = {ctor: "Closed"};
-   var initialModel = {_: {}
-                      ,image: "1.svg"
-                      ,status: Closed};
+   var initialModel = F2(function (img,
+   id) {
+      return {_: {}
+             ,id: id
+             ,image: img
+             ,status: Closed};
+   });
    var Opened = {ctor: "Opened"};
    var update = F2(function (action,
    model) {
@@ -342,11 +349,14 @@ Elm.Card.make = function (_elm) {
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 49 and 51");
+         "between lines 58 and 60");
       }();
    });
-   var Model = F2(function (a,b) {
+   var Model = F3(function (a,
+   b,
+   c) {
       return {_: {}
+             ,id: c
              ,image: b
              ,status: a};
    });
@@ -4255,6 +4265,7 @@ Elm.Main.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Card = Elm.Card.make(_elm),
    $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -4266,32 +4277,51 @@ Elm.Main.make = function (_elm) {
          switch (action.ctor)
          {case "Do": return A2($List.map,
               function (cModel) {
-                 return A2($Card.update,
-                 action._0,
-                 cModel);
+                 return _U.eq(action._0,
+                 cModel.id) ? A2($Card.update,
+                 action._1,
+                 cModel) : cModel;
               },
               model);}
          _U.badCase($moduleName,
-         "between lines 39 and 40");
+         "between lines 44 and 50");
       }();
    });
-   var init = _L.fromArray([$Card.initialModel
-                           ,$Card.initialModel
-                           ,$Card.initialModel
-                           ,$Card.initialModel]);
-   var Do = function (a) {
-      return {ctor: "Do",_0: a};
-   };
+   var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "width"
+                                                             ,_1: "290px"}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "height"
+                                                             ,_1: "290px"}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "margin"
+                                                             ,_1: "80px 500px 0px 500px"}]));
+   var init = A2($List.map,
+   function (index) {
+      return A2($Card.initialModel,
+      A2($Basics._op["++"],
+      $Basics.toString(A2($Basics._op["%"],
+      index,
+      8)),
+      ".svg"),
+      index);
+   },
+   _L.range(1,16));
+   var Do = F2(function (a,b) {
+      return {ctor: "Do"
+             ,_0: a
+             ,_1: b};
+   });
    var view = F2(function (address,
    model) {
       return A2($Html.div,
-      _L.fromArray([]),
+      _L.fromArray([containerStyle]),
       A2($List.map,
       function (cModel) {
          return A2($Card.view,
          A2($Signal.forwardTo,
          address,
-         Do),
+         Do(cModel.id)),
          cModel);
       },
       model));
@@ -4304,6 +4334,7 @@ Elm.Main.make = function (_elm) {
                       ,main: main
                       ,Do: Do
                       ,init: init
+                      ,containerStyle: containerStyle
                       ,view: view
                       ,update: update};
    return _elm.Main.values;

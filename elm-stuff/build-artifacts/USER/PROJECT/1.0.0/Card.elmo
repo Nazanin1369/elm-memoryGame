@@ -26,6 +26,9 @@ Elm.Card.make = function (_elm) {
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "padding"
                                                          ,_1: "10px"}]));
+   var imageContainerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                  ,_0: "float"
+                                                                  ,_1: "left"}]));
    var toImage = function (model) {
       return $Html$Attributes.src(function () {
          var _v0 = model.status;
@@ -35,13 +38,13 @@ Elm.Card.make = function (_elm) {
             case "Opened":
             return model.image;}
          _U.badCase($moduleName,
-         "between lines 28 and 31");
+         "between lines 31 and 34");
       }());
    };
    var view = F2(function (address,
    model) {
       return A2($Html.div,
-      _L.fromArray([]),
+      _L.fromArray([imageContainerStyle]),
       _L.fromArray([A2($Html.div,
       _L.fromArray([A2($Html$Events.onClick,
       address,
@@ -53,9 +56,13 @@ Elm.Card.make = function (_elm) {
    });
    var Flip = {ctor: "Flip"};
    var Closed = {ctor: "Closed"};
-   var initialModel = {_: {}
-                      ,image: "1.svg"
-                      ,status: Closed};
+   var initialModel = F2(function (img,
+   id) {
+      return {_: {}
+             ,id: id
+             ,image: img
+             ,status: Closed};
+   });
    var Opened = {ctor: "Opened"};
    var update = F2(function (action,
    model) {
@@ -70,11 +77,14 @@ Elm.Card.make = function (_elm) {
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 49 and 51");
+         "between lines 58 and 60");
       }();
    });
-   var Model = F2(function (a,b) {
+   var Model = F3(function (a,
+   b,
+   c) {
       return {_: {}
+             ,id: c
              ,image: b
              ,status: a};
    });

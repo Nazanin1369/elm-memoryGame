@@ -7,7 +7,8 @@ import StartApp.Simple exposing (start)
 
 type alias Model =
   { status : Status,
-    image : String
+    image : String,
+    id : Int
   }
 
 type Status
@@ -17,9 +18,11 @@ type Status
 
 type Action = Flip
 
-initialModel =
+initialModel: String -> Int -> Model
+initialModel img id =
   { status = Closed,
-    image = "1.svg"
+    image = img,
+    id =  id
   }
 
 toImage: Model -> Html.Attribute
@@ -30,6 +33,12 @@ toImage model =
 
       Opened -> model.image
 
+imageContainerStyle : Html.Attribute
+imageContainerStyle =
+  Html.Attributes.style <|
+  [
+    ("float", "left")
+  ]
 
 imageStyle : Html.Attribute
 imageStyle =
@@ -42,7 +51,7 @@ imageStyle =
 
 view : Signal.Address Status -> Model -> Html.Html
 view address model =
-  div [] [ div [onClick address model.status] [  Html.img [ toImage model, imageStyle] [] ] ]
+  div [imageContainerStyle] [ div [onClick address model.status] [  Html.img [ toImage model, imageStyle] [] ] ]
 
 update: Status -> Model -> Model
 update action model =

@@ -16,25 +16,35 @@ type alias Model =
    List Card.Model
 
 type Action
-  = Do Card.Status
+  = Do Int Card.Status
 
 init: List Card.Model
 init =
-  [
-    Card.initialModel,
-    Card.initialModel,
-    Card.initialModel,
-    Card.initialModel
-  ]
+  List.map (\index -> Card.initialModel ((toString (index % 8)) ++ ".svg") index) [1..16]
+
+containerStyle : Html.Attribute
+containerStyle =
+    Html.Attributes.style <|
+      [
+        ("width", "290px"),
+        ("height", "290px"),
+        ("margin", "80px 500px 0px 500px")
+      ]
+
 
 view : Signal.Address Action -> Model -> Html.Html
 view address model =
-  div []
-    (List.map (\cModel -> Card.view (Signal.forwardTo address Do) cModel) model)
+  div [containerStyle]
+    (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model)
 
 
 
 update: Action -> Model -> Model
 update action model =
     case action of
-      Do x -> List.map (\cModel -> Card.update x cModel) model
+      Do y x -> List.map (\cModel ->
+                            if y == cModel.id then
+                              Card.update x cModel
+                            else
+                              cModel
+                         ) model
