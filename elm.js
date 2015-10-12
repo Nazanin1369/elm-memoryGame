@@ -4413,10 +4413,10 @@ Elm.Main.make = function (_elm) {
    });
    var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
                                                              ,_0: "width"
-                                                             ,_1: "290px"}
+                                                             ,_1: "420px"}
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "height"
-                                                             ,_1: "290px"}
+                                                             ,_1: "420px"}
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "margin"
                                                              ,_1: "80px 500px 0px 500px"}]));
@@ -4442,11 +4442,11 @@ Elm.Main.make = function (_elm) {
                  A2($Basics._op["++"],
                  $Basics.toString(A2($Basics._op["%"],
                  index,
-                 8)),
+                 18)),
                  ".svg")),
                  index);
               },
-              _L.range(1,16)))
+              _L.range(1,36)))
               ,score: 0};
    var Do = F2(function (a,b) {
       return {ctor: "Do"

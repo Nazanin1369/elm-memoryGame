@@ -37,7 +37,7 @@ init: Model
 init =
   {
     cards = shuffle <|
-              List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 8)) ++ ".svg") index) [1..16],
+              List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 18)) ++ ".svg") index) [1..36],
     score = 0
   }
 
@@ -46,10 +46,10 @@ containerStyle : Html.Attribute
 containerStyle =
     Html.Attributes.style <|
       [
-        ("width", "290px"),
-        ("height", "290px"),
+        ("width", "420px"),
+        ("height", "420px"),
         ("margin", "80px 500px 0px 500px")
-      ]
+      ]  
 
 -- ::
 view: Signal.Address Action -> Model -> Html.Html
