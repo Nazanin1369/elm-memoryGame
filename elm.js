@@ -306,11 +306,8 @@ Elm.Card.make = function (_elm) {
          var _v0 = model.status;
          switch (_v0.ctor)
          {case "Closed":
-            return "back.svg";
-            case "Opened":
-            return model.image;}
-         _U.badCase($moduleName,
-         "between lines 37 and 39");
+            return "back.svg";}
+         return model.image;
       }());
    };
    var view = F2(function (address,
@@ -326,18 +323,29 @@ Elm.Card.make = function (_elm) {
                    ,imageStyle]),
       _L.fromArray([]))]))]));
    });
-   var incIfOpen = F2(function (model,
-   i) {
+   var isLocked = function (model) {
       return function () {
          var _v1 = model.status;
          switch (_v1.ctor)
-         {case "Closed": return i;
-            case "Opened": return i + 1;}
-         _U.badCase($moduleName,
-         "between lines 30 and 32");
+         {case "Locked": return true;}
+         return false;
       }();
-   });
+   };
+   var isOpen = function (model) {
+      return function () {
+         var _v2 = model.status;
+         switch (_v2.ctor)
+         {case "Opened": return true;}
+         return false;
+      }();
+   };
    var Flip = {ctor: "Flip"};
+   var Locked = {ctor: "Locked"};
+   var lock = function (model) {
+      return _U.replace([["status"
+                         ,Locked]],
+      model);
+   };
    var Closed = {ctor: "Closed"};
    var initialModel = F2(function (img,
    id) {
@@ -347,9 +355,14 @@ Elm.Card.make = function (_elm) {
              ,status: Closed};
    });
    var close = function (model) {
-      return _U.replace([["status"
-                         ,Closed]],
-      model);
+      return function () {
+         var _v3 = model.status;
+         switch (_v3.ctor)
+         {case "Locked": return model;}
+         return _U.replace([["status"
+                            ,Closed]],
+         model);
+      }();
    };
    var Opened = {ctor: "Opened"};
    var update = F2(function (action,
@@ -360,12 +373,13 @@ Elm.Card.make = function (_elm) {
             return _U.replace([["status"
                                ,Opened]],
               model);
+            case "Locked": return model;
             case "Opened":
             return _U.replace([["status"
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 63 and 65");
+         "between lines 72 and 75");
       }();
    });
    var Model = F3(function (a,
@@ -380,8 +394,10 @@ Elm.Card.make = function (_elm) {
                       ,initialModel: initialModel
                       ,update: update
                       ,view: view
-                      ,incIfOpen: incIfOpen
+                      ,isOpen: isOpen
                       ,close: close
+                      ,lock: lock
+                      ,isLocked: isLocked
                       ,Model: Model};
    return _elm.Card.values;
 };
@@ -4288,43 +4304,89 @@ Elm.Main.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
-   var openImagesCount = function (model) {
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
+   $String = Elm.String.make(_elm);
+   var areIdentical = function (list) {
+      return function () {
+         var l = $List.length(list);
+         var f = $List.head(list);
+         return function () {
+            var _v0 = {ctor: "_Tuple2"
+                      ,_0: l
+                      ,_1: f};
+            switch (_v0.ctor)
+            {case "_Tuple2": switch (_v0._0)
+                 {case 2: switch (_v0._1.ctor)
+                      {case "Just":
+                         return A2($List.all,
+                           function (x) {
+                              return A2($String.contains,
+                              x.image,
+                              _v0._1._0.image);
+                           },
+                           list);}
+                      break;}
+                 return false;}
+            _U.badCase($moduleName,
+            "between lines 58 and 60");
+         }();
+      }();
+   };
+   var lockIfIdentical = F2(function (model,
+   list) {
+      return function () {
+         var identical = areIdentical(list);
+         return function () {
+            switch (identical)
+            {case false: return model;
+               case true: return A2($List.map,
+                 function (cmodel) {
+                    return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
+                 },
+                 model);}
+            _U.badCase($moduleName,
+            "between lines 68 and 75");
+         }();
+      }();
+   });
+   var openImages = function (model) {
       return A3($List.foldr,
       F2(function (m,i) {
-         return A2($Card.incIfOpen,
+         return $Card.isOpen(m) ? A2($List._op["::"],
          m,
-         i);
+         i) : i;
       }),
-      0,
+      _L.fromArray([]),
       model);
    };
    var update = F2(function (action,
    model) {
       return function () {
-         var openedCount = openImagesCount(model);
+         var opened = openImages(model);
+         var openedCount = $List.length(opened);
          return function () {
             switch (action.ctor)
-            {case "Do": return A2($List.map,
-                 function (cModel) {
+            {case "Do":
+               return $List.map(function (cModel) {
                     return function () {
-                       var _v3 = {ctor: "_Tuple2"
+                       var _v8 = {ctor: "_Tuple2"
                                  ,_0: openedCount
                                  ,_1: cModel.id};
-                       switch (_v3.ctor)
+                       switch (_v8.ctor)
                        {case "_Tuple2":
-                          return _U.eq(_v3._1,
+                          return _U.eq(_v8._1,
                             action._0) ? A2($Card.update,
                             action._1,
-                            cModel) : _U.eq(_v3._0,
+                            cModel) : _U.eq(_v8._0,
                             2) ? $Card.close(cModel) : cModel;}
                        _U.badCase($moduleName,
-                       "between lines 55 and 63");
+                       "between lines 87 and 95");
                     }();
-                 },
-                 model);}
+                 })(A2(lockIfIdentical,
+                 model,
+                 opened));}
             _U.badCase($moduleName,
-            "between lines 53 and 63");
+            "between lines 84 and 95");
          }();
       }();
    });
@@ -4377,7 +4439,9 @@ Elm.Main.make = function (_elm) {
                       ,init: init
                       ,containerStyle: containerStyle
                       ,view: view
-                      ,openImagesCount: openImagesCount
+                      ,openImages: openImages
+                      ,areIdentical: areIdentical
+                      ,lockIfIdentical: lockIfIdentical
                       ,update: update};
    return _elm.Main.values;
 };

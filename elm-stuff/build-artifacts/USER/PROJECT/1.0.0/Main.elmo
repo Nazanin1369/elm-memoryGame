@@ -17,43 +17,89 @@ Elm.Main.make = function (_elm) {
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
-   var openImagesCount = function (model) {
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
+   $String = Elm.String.make(_elm);
+   var areIdentical = function (list) {
+      return function () {
+         var l = $List.length(list);
+         var f = $List.head(list);
+         return function () {
+            var _v0 = {ctor: "_Tuple2"
+                      ,_0: l
+                      ,_1: f};
+            switch (_v0.ctor)
+            {case "_Tuple2": switch (_v0._0)
+                 {case 2: switch (_v0._1.ctor)
+                      {case "Just":
+                         return A2($List.all,
+                           function (x) {
+                              return A2($String.contains,
+                              x.image,
+                              _v0._1._0.image);
+                           },
+                           list);}
+                      break;}
+                 return false;}
+            _U.badCase($moduleName,
+            "between lines 58 and 60");
+         }();
+      }();
+   };
+   var lockIfIdentical = F2(function (model,
+   list) {
+      return function () {
+         var identical = areIdentical(list);
+         return function () {
+            switch (identical)
+            {case false: return model;
+               case true: return A2($List.map,
+                 function (cmodel) {
+                    return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
+                 },
+                 model);}
+            _U.badCase($moduleName,
+            "between lines 68 and 75");
+         }();
+      }();
+   });
+   var openImages = function (model) {
       return A3($List.foldr,
       F2(function (m,i) {
-         return A2($Card.incIfOpen,
+         return $Card.isOpen(m) ? A2($List._op["::"],
          m,
-         i);
+         i) : i;
       }),
-      0,
+      _L.fromArray([]),
       model);
    };
    var update = F2(function (action,
    model) {
       return function () {
-         var openedCount = openImagesCount(model);
+         var opened = openImages(model);
+         var openedCount = $List.length(opened);
          return function () {
             switch (action.ctor)
-            {case "Do": return A2($List.map,
-                 function (cModel) {
+            {case "Do":
+               return $List.map(function (cModel) {
                     return function () {
-                       var _v3 = {ctor: "_Tuple2"
+                       var _v8 = {ctor: "_Tuple2"
                                  ,_0: openedCount
                                  ,_1: cModel.id};
-                       switch (_v3.ctor)
+                       switch (_v8.ctor)
                        {case "_Tuple2":
-                          return _U.eq(_v3._1,
+                          return _U.eq(_v8._1,
                             action._0) ? A2($Card.update,
                             action._1,
-                            cModel) : _U.eq(_v3._0,
+                            cModel) : _U.eq(_v8._0,
                             2) ? $Card.close(cModel) : cModel;}
                        _U.badCase($moduleName,
-                       "between lines 55 and 63");
+                       "between lines 87 and 95");
                     }();
-                 },
-                 model);}
+                 })(A2(lockIfIdentical,
+                 model,
+                 opened));}
             _U.badCase($moduleName,
-            "between lines 53 and 63");
+            "between lines 84 and 95");
          }();
       }();
    });
@@ -106,7 +152,9 @@ Elm.Main.make = function (_elm) {
                       ,init: init
                       ,containerStyle: containerStyle
                       ,view: view
-                      ,openImagesCount: openImagesCount
+                      ,openImages: openImages
+                      ,areIdentical: areIdentical
+                      ,lockIfIdentical: lockIfIdentical
                       ,update: update};
    return _elm.Main.values;
 };

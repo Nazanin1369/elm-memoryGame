@@ -5,6 +5,7 @@ import StartApp.Simple exposing (start)
 import List
 import Card
 import Debug
+import String
 
 
 main =
@@ -38,20 +39,51 @@ view address model =
     (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model)
 
 
-openImagesCount:  Model -> Int
-openImagesCount model =
+openImages: Model -> List Card.Model
+openImages model =
   List.foldr (
     \m i ->
-      Card.incIfOpen m i
-  ) 0 model
+      if Card.isOpen m then
+        m :: i
+      else
+        i
+  ) [] model
+
+areIdentical: List Card.Model -> Bool
+areIdentical list =
+  let
+    f = List.head list
+    l = List.length list
+  in
+    case (l, f) of
+      (2, Just h) -> List.all (\x -> String.contains x.image h.image) list
+      (_, _) -> False
+
+
+lockIfIdentical: Model -> List Card.Model -> Model
+lockIfIdentical model list =
+  let
+    identical = areIdentical (list)
+  in
+      case identical of
+        True -> List.map (\cmodel -> if Card.isOpen cmodel then
+                                        Card.lock cmodel
+                                     else
+                                        cmodel
+                         ) model
+
+        False -> model
+
 
 update: Action -> Model -> Model
 update action model =
     let
-      openedCount = openImagesCount model
+      opened = openImages model
+      openedCount = List.length (opened)
     in
       case action of
-        Do y x -> List.map (\cModel ->
+        Do y x -> (lockIfIdentical model opened) |>
+                      List.map (\cModel ->
                               case (openedCount, cModel.id) of
                                 (c, l) ->  if l == y then
                                               Card.update x cModel
@@ -60,4 +92,4 @@ update action model =
                                                Card.close cModel
                                              else
                                                cModel
-                           ) model
+                      )

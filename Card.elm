@@ -1,4 +1,4 @@
-module Card (Model, initialModel, update, view, Status, incIfOpen, close) where
+module Card (Model, initialModel, update, view, Status, isOpen, close, lock, isLocked) where
 
 import Html exposing (div, button, text)
 import Html.Events exposing (onClick)
@@ -14,6 +14,7 @@ type alias Model =
 type Status
     = Opened
     | Closed
+    | Locked
 
 
 type Action = Flip
@@ -25,18 +26,26 @@ initialModel img id =
     id =  id
   }
 
-incIfOpen: Model -> Int -> Int
-incIfOpen model i =
+isOpen: Model -> Bool
+isOpen model =
     case model.status of
-      Closed -> i
-      Opened -> i + 1
+      Opened -> True
+      _ -> False
+
+
+isLocked: Model -> Bool
+isLocked model =
+    case model.status of
+      Locked -> True
+      _ -> False
+
 
 toImage: Model -> Html.Attribute
 toImage model =
   Html.Attributes.src <|
     case model.status of
       Closed -> "back.svg"
-      Opened -> model.image
+      _   -> model.image
 
 imageContainerStyle : Html.Attribute
 imageContainerStyle =
@@ -61,10 +70,18 @@ view address model =
 update: Status -> Model -> Model
 update action model =
   case action of
+    Locked -> model
     Closed -> { model | status <- Opened}
     Opened -> { model | status <- Closed}
 
 
 close: Model -> Model
 close model =
-  { model | status <- Closed}
+  case model.status of
+    Locked -> model
+    _ -> { model | status <- Closed}
+
+
+lock: Model -> Model
+lock model =
+  { model | status <- Locked }
