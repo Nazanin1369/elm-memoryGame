@@ -32,19 +32,32 @@ containerStyle =
       ]
 
 
-view : Signal.Address Action -> Model -> Html.Html
+view: Signal.Address Action -> Model -> Html.Html
 view address model =
   div [containerStyle]
     (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model)
 
 
+openImagesCount:  Model -> Int
+openImagesCount model =
+  List.foldr (
+    \m i ->
+      Card.incIfOpen m i
+  ) 0 model
 
 update: Action -> Model -> Model
 update action model =
-    case action of
-      Do y x -> List.map (\cModel ->
-                            if y == cModel.id then
-                              Card.update x cModel
-                            else
-                              cModel
-                         ) model
+    let
+      openedCount = openImagesCount model
+    in
+      case action of
+        Do y x -> List.map (\cModel ->
+                              case (openedCount, cModel.id) of
+                                (c, l) ->  if l == y then
+                                              Card.update x cModel
+                                           else
+                                             if c == 2 then
+                                               Card.close cModel
+                                             else
+                                               cModel
+                           ) model

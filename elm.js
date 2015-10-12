@@ -310,7 +310,7 @@ Elm.Card.make = function (_elm) {
             case "Opened":
             return model.image;}
          _U.badCase($moduleName,
-         "between lines 31 and 34");
+         "between lines 37 and 39");
       }());
    };
    var view = F2(function (address,
@@ -326,6 +326,17 @@ Elm.Card.make = function (_elm) {
                    ,imageStyle]),
       _L.fromArray([]))]))]));
    });
+   var incIfOpen = F2(function (model,
+   i) {
+      return function () {
+         var _v1 = model.status;
+         switch (_v1.ctor)
+         {case "Closed": return i;
+            case "Opened": return i + 1;}
+         _U.badCase($moduleName,
+         "between lines 30 and 32");
+      }();
+   });
    var Flip = {ctor: "Flip"};
    var Closed = {ctor: "Closed"};
    var initialModel = F2(function (img,
@@ -335,6 +346,11 @@ Elm.Card.make = function (_elm) {
              ,image: img
              ,status: Closed};
    });
+   var close = function (model) {
+      return _U.replace([["status"
+                         ,Closed]],
+      model);
+   };
    var Opened = {ctor: "Opened"};
    var update = F2(function (action,
    model) {
@@ -349,7 +365,7 @@ Elm.Card.make = function (_elm) {
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 58 and 60");
+         "between lines 63 and 65");
       }();
    });
    var Model = F3(function (a,
@@ -364,6 +380,8 @@ Elm.Card.make = function (_elm) {
                       ,initialModel: initialModel
                       ,update: update
                       ,view: view
+                      ,incIfOpen: incIfOpen
+                      ,close: close
                       ,Model: Model};
    return _elm.Card.values;
 };
@@ -4271,20 +4289,43 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
+   var openImagesCount = function (model) {
+      return A3($List.foldr,
+      F2(function (m,i) {
+         return A2($Card.incIfOpen,
+         m,
+         i);
+      }),
+      0,
+      model);
+   };
    var update = F2(function (action,
    model) {
       return function () {
-         switch (action.ctor)
-         {case "Do": return A2($List.map,
-              function (cModel) {
-                 return _U.eq(action._0,
-                 cModel.id) ? A2($Card.update,
-                 action._1,
-                 cModel) : cModel;
-              },
-              model);}
-         _U.badCase($moduleName,
-         "between lines 44 and 50");
+         var openedCount = openImagesCount(model);
+         return function () {
+            switch (action.ctor)
+            {case "Do": return A2($List.map,
+                 function (cModel) {
+                    return function () {
+                       var _v3 = {ctor: "_Tuple2"
+                                 ,_0: openedCount
+                                 ,_1: cModel.id};
+                       switch (_v3.ctor)
+                       {case "_Tuple2":
+                          return _U.eq(_v3._1,
+                            action._0) ? A2($Card.update,
+                            action._1,
+                            cModel) : _U.eq(_v3._0,
+                            2) ? $Card.close(cModel) : cModel;}
+                       _U.badCase($moduleName,
+                       "between lines 55 and 63");
+                    }();
+                 },
+                 model);}
+            _U.badCase($moduleName,
+            "between lines 53 and 63");
+         }();
       }();
    });
    var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
@@ -4336,6 +4377,7 @@ Elm.Main.make = function (_elm) {
                       ,init: init
                       ,containerStyle: containerStyle
                       ,view: view
+                      ,openImagesCount: openImagesCount
                       ,update: update};
    return _elm.Main.values;
 };

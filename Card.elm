@@ -1,4 +1,4 @@
-module Card (Model, initialModel, update, view, Status) where
+module Card (Model, initialModel, update, view, Status, incIfOpen, close) where
 
 import Html exposing (div, button, text)
 import Html.Events exposing (onClick)
@@ -25,12 +25,17 @@ initialModel img id =
     id =  id
   }
 
+incIfOpen: Model -> Int -> Int
+incIfOpen model i =
+    case model.status of
+      Closed -> i
+      Opened -> i + 1
+
 toImage: Model -> Html.Attribute
 toImage model =
   Html.Attributes.src <|
     case model.status of
       Closed -> "back.svg"
-
       Opened -> model.image
 
 imageContainerStyle : Html.Attribute
@@ -58,3 +63,8 @@ update action model =
   case action of
     Closed -> { model | status <- Opened}
     Opened -> { model | status <- Closed}
+
+
+close: Model -> Model
+close model =
+  { model | status <- Closed}

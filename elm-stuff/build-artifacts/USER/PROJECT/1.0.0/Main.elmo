@@ -18,20 +18,43 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
    $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
+   var openImagesCount = function (model) {
+      return A3($List.foldr,
+      F2(function (m,i) {
+         return A2($Card.incIfOpen,
+         m,
+         i);
+      }),
+      0,
+      model);
+   };
    var update = F2(function (action,
    model) {
       return function () {
-         switch (action.ctor)
-         {case "Do": return A2($List.map,
-              function (cModel) {
-                 return _U.eq(action._0,
-                 cModel.id) ? A2($Card.update,
-                 action._1,
-                 cModel) : cModel;
-              },
-              model);}
-         _U.badCase($moduleName,
-         "between lines 44 and 50");
+         var openedCount = openImagesCount(model);
+         return function () {
+            switch (action.ctor)
+            {case "Do": return A2($List.map,
+                 function (cModel) {
+                    return function () {
+                       var _v3 = {ctor: "_Tuple2"
+                                 ,_0: openedCount
+                                 ,_1: cModel.id};
+                       switch (_v3.ctor)
+                       {case "_Tuple2":
+                          return _U.eq(_v3._1,
+                            action._0) ? A2($Card.update,
+                            action._1,
+                            cModel) : _U.eq(_v3._0,
+                            2) ? $Card.close(cModel) : cModel;}
+                       _U.badCase($moduleName,
+                       "between lines 55 and 63");
+                    }();
+                 },
+                 model);}
+            _U.badCase($moduleName,
+            "between lines 53 and 63");
+         }();
       }();
    });
    var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
@@ -83,6 +106,7 @@ Elm.Main.make = function (_elm) {
                       ,init: init
                       ,containerStyle: containerStyle
                       ,view: view
+                      ,openImagesCount: openImagesCount
                       ,update: update};
    return _elm.Main.values;
 };
