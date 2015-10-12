@@ -21,7 +21,7 @@ type Action
 
 init: List Card.Model
 init =
-  List.map (\index -> Card.initialModel ((toString (index % 8)) ++ ".svg") index) [1..16]
+  List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 8)) ++ ".svg") index) [1..16]
 
 containerStyle : Html.Attribute
 containerStyle =

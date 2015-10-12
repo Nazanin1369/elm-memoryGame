@@ -116,10 +116,12 @@ Elm.Main.make = function (_elm) {
    function (index) {
       return A2($Card.initialModel,
       A2($Basics._op["++"],
+      "images/",
+      A2($Basics._op["++"],
       $Basics.toString(A2($Basics._op["%"],
       index,
       8)),
-      ".svg"),
+      ".svg")),
       index);
    },
    _L.range(1,16));

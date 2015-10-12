@@ -44,7 +44,7 @@ toImage: Model -> Html.Attribute
 toImage model =
   Html.Attributes.src <|
     case model.status of
-      Closed -> "back.svg"
+      Closed -> "images/back.svg"
       _   -> model.image
 
 imageContainerStyle : Html.Attribute
@@ -60,7 +60,10 @@ imageStyle =
   [
     ("width", "50px"),
     ("height", "50px"),
-    ("padding", "10px")
+    ("padding", "10px"),
+    ("position", "relative"),
+    ("display", "block"),
+    ("-webkit-transform", "rotate3d(0,1,0,-180deg)")
   ]
 
 view : Signal.Address Status -> Model -> Html.Html

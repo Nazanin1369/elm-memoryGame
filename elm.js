@@ -297,7 +297,16 @@ Elm.Card.make = function (_elm) {
                                                          ,_1: "50px"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "padding"
-                                                         ,_1: "10px"}]));
+                                                         ,_1: "10px"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "position"
+                                                         ,_1: "relative"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "display"
+                                                         ,_1: "block"}
+                                                        ,{ctor: "_Tuple2"
+                                                         ,_0: "-webkit-transform"
+                                                         ,_1: "rotate3d(0,1,0,-180deg)"}]));
    var imageContainerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
                                                                   ,_0: "float"
                                                                   ,_1: "left"}]));
@@ -306,7 +315,7 @@ Elm.Card.make = function (_elm) {
          var _v0 = model.status;
          switch (_v0.ctor)
          {case "Closed":
-            return "back.svg";}
+            return "images/back.svg";}
          return model.image;
       }());
    };
@@ -379,7 +388,7 @@ Elm.Card.make = function (_elm) {
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 72 and 75");
+         "between lines 75 and 78");
       }();
    });
    var Model = F3(function (a,
@@ -4403,10 +4412,12 @@ Elm.Main.make = function (_elm) {
    function (index) {
       return A2($Card.initialModel,
       A2($Basics._op["++"],
+      "images/",
+      A2($Basics._op["++"],
       $Basics.toString(A2($Basics._op["%"],
       index,
       8)),
-      ".svg"),
+      ".svg")),
       index);
    },
    _L.range(1,16));
