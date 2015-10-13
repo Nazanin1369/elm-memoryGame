@@ -1,0 +1,165 @@
+Elm.Signal = Elm.Signal || {};
+Elm.Signal.Stream = Elm.Signal.Stream || {};
+Elm.Signal.Stream.make = function (_elm) {
+   "use strict";
+   _elm.Signal = _elm.Signal || {};
+   _elm.Signal.Stream = _elm.Signal.Stream || {};
+   if (_elm.Signal.Stream.values)
+   return _elm.Signal.Stream.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Signal.Stream",
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Signal$Extra = Elm.Signal.Extra.make(_elm),
+   $Signal$Time = Elm.Signal.Time.make(_elm);
+   var timestamp = function ($) {
+      return $Signal.map(function (_v0) {
+         return function () {
+            switch (_v0.ctor)
+            {case "_Tuple2":
+               return A2($Maybe.map,
+                 function (a) {
+                    return {ctor: "_Tuple2"
+                           ,_0: _v0._0
+                           ,_1: a};
+                 },
+                 _v0._1);}
+            _U.badCase($moduleName,
+            "on line 240, column 46 to 71");
+         }();
+      })($Signal$Time.timestamp($));
+   };
+   var never = $Signal.constant($Maybe.Nothing);
+   var filter = function (str) {
+      return A2($Signal$Extra.filter,
+      $Maybe.Nothing,
+      str);
+   };
+   var fromSignal = function (sig) {
+      return A2($Signal.merge,
+      $Signal.constant($Maybe.Nothing),
+      A2($Signal._op["<~"],
+      $Maybe.Just,
+      sig));
+   };
+   var init = function (sig) {
+      return A2($Signal.sampleOn,
+      $Signal.constant({ctor: "_Tuple0"}),
+      sig);
+   };
+   var map = function (f) {
+      return $Signal.map($Maybe.map(f));
+   };
+   var filterMap = function (f) {
+      return function ($) {
+         return filter(map(f)($));
+      };
+   };
+   var keepIf = F2(function (isOk,
+   stream) {
+      return A2(filterMap,
+      function (v) {
+         return isOk(v) ? $Maybe.Just(v) : $Maybe.Nothing;
+      },
+      stream);
+   });
+   var maybeMap2 = F3(function (f,
+   l,
+   r) {
+      return function () {
+         var _v4 = {ctor: "_Tuple2"
+                   ,_0: l
+                   ,_1: r};
+         switch (_v4.ctor)
+         {case "_Tuple2":
+            switch (_v4._0.ctor)
+              {case "Just":
+                 switch (_v4._1.ctor)
+                   {case "Just":
+                      return $Maybe.Just(A2(f,
+                        _v4._0._0,
+                        _v4._1._0));}
+                   break;}
+              break;}
+         return $Maybe.Nothing;
+      }();
+   });
+   var fairMerge = function (f) {
+      return $Signal$Extra.fairMerge(maybeMap2(f));
+   };
+   var merge = fairMerge(F2(function (l,
+   _v9) {
+      return function () {
+         return l;
+      }();
+   }));
+   var mergeMany = A2($List.foldr,
+   merge,
+   never);
+   var sample = F3(function (f,
+   signal,
+   events) {
+      return A3($Signal.map2,
+      maybeMap2(f),
+      A2($Signal._op["<~"],
+      $Maybe.Just,
+      signal),
+      events);
+   });
+   var fromJust = function (m) {
+      return function () {
+         switch (m.ctor)
+         {case "Just": return m._0;
+            case "Nothing":
+            return $Debug.crash(A2($Basics._op["++"],
+              "There was an implementation error somewhere in ",
+              A2($Basics._op["++"],
+              "Signal.Stream. If you\'re using the latest version of ",
+              A2($Basics._op["++"],
+              "Apanatshka/elm-signal-extra, please file an issue (if there isn\'t ",
+              "such an issue yet). "))));}
+         _U.badCase($moduleName,
+         "between lines 45 and 51");
+      }();
+   };
+   var toSignal = F2(function (a,
+   str) {
+      return A2($Signal$Extra._op["~>"],
+      A2($Signal.merge,
+      $Signal.constant($Maybe.Just(a)),
+      str),
+      fromJust);
+   });
+   var fold = F3(function (f,
+   b,
+   str) {
+      return A3($Signal.foldp,
+      function ($) {
+         return f(fromJust($));
+      },
+      b,
+      str);
+   });
+   _elm.Signal.Stream.values = {_op: _op
+                               ,map: map
+                               ,fairMerge: fairMerge
+                               ,merge: merge
+                               ,mergeMany: mergeMany
+                               ,fold: fold
+                               ,filterMap: filterMap
+                               ,filter: filter
+                               ,keepIf: keepIf
+                               ,sample: sample
+                               ,never: never
+                               ,timestamp: timestamp
+                               ,toSignal: toSignal
+                               ,fromSignal: fromSignal};
+   return _elm.Signal.Stream.values;
+};

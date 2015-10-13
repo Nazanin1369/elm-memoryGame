@@ -16,6 +16,7 @@ Elm.Main.make = function (_elm) {
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Now = Elm.Now.make(_elm),
    $Random = Elm.Random.make(_elm),
    $Random$Array = Elm.Random.Array.make(_elm),
    $Result = Elm.Result.make(_elm),
@@ -44,7 +45,7 @@ Elm.Main.make = function (_elm) {
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 84 and 86");
+            "between lines 88 and 90");
          }();
       }();
    };
@@ -61,7 +62,7 @@ Elm.Main.make = function (_elm) {
                  },
                  model);}
             _U.badCase($moduleName,
-            "between lines 94 and 101");
+            "between lines 98 and 105");
          }();
       }();
    });
@@ -103,7 +104,7 @@ Elm.Main.make = function (_elm) {
                                              cModel) : _U.eq(_v8._0,
                                              2) ? $Card.close(cModel) : cModel;}
                                         _U.badCase($moduleName,
-                                        "between lines 113 and 121");
+                                        "between lines 117 and 125");
                                      }();
                                   },
                                   modelAfterLock.cards)]
@@ -111,7 +112,7 @@ Elm.Main.make = function (_elm) {
                                   ,modelAfterLock.score + 1]],
                  modelAfterLock);}
             _U.badCase($moduleName,
-            "between lines 111 and 123");
+            "between lines 115 and 127");
          }();
       }();
    });
@@ -124,7 +125,7 @@ Elm.Main.make = function (_elm) {
                                                             ,{ctor: "_Tuple2"
                                                              ,_0: "margin"
                                                              ,_1: "80px 500px 0px 500px"}]));
-   var initSeed = 9999;
+   var initSeed = $Basics.round($Now.loadTime);
    var shuffle = function (list) {
       return function () {
          var _v11 = A2($Random$Array.shuffle,
@@ -134,7 +135,7 @@ Elm.Main.make = function (_elm) {
          {case "_Tuple2":
             return $Array.toList(_v11._0);}
          _U.badCase($moduleName,
-         "between lines 33 and 34");
+         "between lines 37 and 38");
       }();
    };
    var init = {_: {}

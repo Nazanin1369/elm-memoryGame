@@ -1,0 +1,51 @@
+Elm.Signal = Elm.Signal || {};
+Elm.Signal.Fun = Elm.Signal.Fun || {};
+Elm.Signal.Fun.make = function (_elm) {
+   "use strict";
+   _elm.Signal = _elm.Signal || {};
+   _elm.Signal.Fun = _elm.Signal.Fun || {};
+   if (_elm.Signal.Fun.values)
+   return _elm.Signal.Fun.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Signal.Fun",
+   $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var bimap = F2(function (f1,
+   f2) {
+      return $Signal.map(function (fs) {
+         return function ($) {
+            return f2(fs(f1($)));
+         };
+      });
+   });
+   var postmap = function (f2) {
+      return $Signal.map(function (fs) {
+         return function ($) {
+            return f2(fs($));
+         };
+      });
+   };
+   var premap = function (f1) {
+      return $Signal.map(function (fs) {
+         return function ($) {
+            return fs(f1($));
+         };
+      });
+   };
+   var scan = $Signal.foldp(F2(function (x,
+   y) {
+      return x(y);
+   }));
+   _elm.Signal.Fun.values = {_op: _op
+                            ,scan: scan
+                            ,premap: premap
+                            ,postmap: postmap
+                            ,bimap: bimap};
+   return _elm.Signal.Fun.values;
+};

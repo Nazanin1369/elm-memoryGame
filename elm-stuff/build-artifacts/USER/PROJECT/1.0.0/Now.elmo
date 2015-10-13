@@ -1,0 +1,22 @@
+Elm.Now = Elm.Now || {};
+Elm.Now.make = function (_elm) {
+   "use strict";
+   _elm.Now = _elm.Now || {};
+   if (_elm.Now.values)
+   return _elm.Now.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Now",
+   $Basics = Elm.Basics.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Native$Now = Elm.Native.Now.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var loadTime = $Native$Now.loadTime;
+   _elm.Now.values = {_op: _op
+                     ,loadTime: loadTime};
+   return _elm.Now.values;
+};

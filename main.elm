@@ -1,5 +1,6 @@
 import Html exposing (div, button, text)
 import Html.Events exposing (onClick)
+import Signal.Time exposing (..)
 import Html.Attributes
 import StartApp.Simple exposing (start)
 import List
@@ -9,10 +10,13 @@ import String
 import Random
 import Array
 import Random.Array
+import Now
+
 
 
 main =
   start { model = init, view = view, update = update }
+  
 
 
 
@@ -26,7 +30,7 @@ type Action
   = Do Int Card.Status
 
 initSeed =
-  9999
+   round Now.loadTime
 
 shuffle: List Card.Model -> List Card.Model
 shuffle list =
