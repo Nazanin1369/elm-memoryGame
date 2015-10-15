@@ -1,0 +1,205 @@
+Elm.MemoryGame = Elm.MemoryGame || {};
+Elm.MemoryGame.make = function (_elm) {
+   "use strict";
+   _elm.MemoryGame = _elm.MemoryGame || {};
+   if (_elm.MemoryGame.values)
+   return _elm.MemoryGame.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "MemoryGame",
+   $Array = Elm.Array.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Card = Elm.Card.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Now = Elm.Now.make(_elm),
+   $Random = Elm.Random.make(_elm),
+   $Random$Array = Elm.Random.Array.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
+   $String = Elm.String.make(_elm);
+   var areIdentical = function (list) {
+      return function () {
+         var l = $List.length(list);
+         var f = $List.head(list);
+         return function () {
+            var _v0 = {ctor: "_Tuple2"
+                      ,_0: l
+                      ,_1: f};
+            switch (_v0.ctor)
+            {case "_Tuple2": switch (_v0._0)
+                 {case 2: switch (_v0._1.ctor)
+                      {case "Just":
+                         return A2($List.all,
+                           function (x) {
+                              return A2($String.contains,
+                              x.image,
+                              _v0._1._0.image);
+                           },
+                           list);}
+                      break;}
+                 return false;}
+            _U.badCase($moduleName,
+            "between lines 90 and 92");
+         }();
+      }();
+   };
+   var lockIfIdentical = F2(function (model,
+   list) {
+      return function () {
+         var identical = areIdentical(list);
+         return function () {
+            switch (identical)
+            {case false: return model;
+               case true: return A2($List.map,
+                 function (cmodel) {
+                    return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
+                 },
+                 model);}
+            _U.badCase($moduleName,
+            "between lines 100 and 107");
+         }();
+      }();
+   });
+   var openImages = function (model) {
+      return A3($List.foldr,
+      F2(function (m,i) {
+         return $Card.isOpen(m) ? A2($List._op["::"],
+         m,
+         i) : i;
+      }),
+      _L.fromArray([]),
+      model.cards);
+   };
+   var update = F2(function (action,
+   model) {
+      return function () {
+         var opened = openImages(model);
+         var openedCount = $List.length(opened);
+         var modelAfterLock = _U.replace([["cards"
+                                          ,A2(lockIfIdentical,
+                                          model.cards,
+                                          opened)]],
+         model);
+         return function () {
+            switch (action.ctor)
+            {case "Do":
+               return _U.replace([["cards"
+                                  ,A2($List.map,
+                                  function (cModel) {
+                                     return function () {
+                                        var _v8 = {ctor: "_Tuple2"
+                                                  ,_0: openedCount
+                                                  ,_1: cModel.id};
+                                        switch (_v8.ctor)
+                                        {case "_Tuple2":
+                                           return _U.eq(_v8._1,
+                                             action._0) ? A2($Card.update,
+                                             action._1,
+                                             cModel) : _U.eq(_v8._0,
+                                             2) ? $Card.close(cModel) : cModel;}
+                                        _U.badCase($moduleName,
+                                        "between lines 119 and 127");
+                                     }();
+                                  },
+                                  modelAfterLock.cards)]
+                                 ,["score"
+                                  ,modelAfterLock.score + 1]],
+                 modelAfterLock);}
+            _U.badCase($moduleName,
+            "between lines 117 and 129");
+         }();
+      }();
+   });
+   var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "width"
+                                                             ,_1: "420px"}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "height"
+                                                             ,_1: "420px"}
+                                                            ,{ctor: "_Tuple2"
+                                                             ,_0: "margin"
+                                                             ,_1: "80px 500px 0px 500px"}]));
+   var initSeed = $Basics.round($Now.loadTime);
+   var shuffle = function (list) {
+      return function () {
+         var _v11 = A2($Random$Array.shuffle,
+         $Random.initialSeed(initSeed),
+         $Array.fromList(list));
+         switch (_v11.ctor)
+         {case "_Tuple2":
+            return $Array.toList(_v11._0);}
+         _U.badCase($moduleName,
+         "between lines 39 and 40");
+      }();
+   };
+   var init = {_: {}
+              ,cards: shuffle(A2($List.map,
+              function (index) {
+                 return A2($Card.initialModel,
+                 A2($Basics._op["++"],
+                 "images/",
+                 A2($Basics._op["++"],
+                 $Basics.toString(A2($Basics._op["%"],
+                 index,
+                 18)),
+                 ".svg")),
+                 index);
+              },
+              _L.range(1,36)))
+              ,score: 0};
+   var Do = F2(function (a,b) {
+      return {ctor: "Do"
+             ,_0: a
+             ,_1: b};
+   });
+   var view = F2(function (address,
+   model) {
+      return A2($Html.div,
+      _L.fromArray([containerStyle]),
+      _L.fromArray([A2($Html.div,
+                   _L.fromArray([]),
+                   _L.fromArray([$Html.text(A2($Basics._op["++"],
+                   "Tries ",
+                   $Basics.toString(model.score)))]))
+                   ,A2($Html.div,
+                   _L.fromArray([]),
+                   A2($List.map,
+                   function (cModel) {
+                      return A2($Card.view,
+                      A2($Signal.forwardTo,
+                      address,
+                      Do(cModel.id)),
+                      cModel);
+                   },
+                   model.cards))]));
+   });
+   var Model = F2(function (a,b) {
+      return {_: {}
+             ,cards: a
+             ,score: b};
+   });
+   var main = $StartApp$Simple.start({_: {}
+                                     ,model: init
+                                     ,update: update
+                                     ,view: view});
+   _elm.MemoryGame.values = {_op: _op
+                            ,main: main
+                            ,Model: Model
+                            ,Do: Do
+                            ,initSeed: initSeed
+                            ,shuffle: shuffle
+                            ,init: init
+                            ,containerStyle: containerStyle
+                            ,view: view
+                            ,openImages: openImages
+                            ,areIdentical: areIdentical
+                            ,lockIfIdentical: lockIfIdentical
+                            ,update: update};
+   return _elm.MemoryGame.values;
+};

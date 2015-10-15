@@ -5,7 +5,9 @@
     "license": "BSD3",
     "native-modules": true,
     "source-directories": [
-        "."
+        ".",
+        "./src",
+        "./images"
     ],
     "exposed-modules": [],
     "dependencies": {

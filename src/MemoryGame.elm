@@ -1,3 +1,5 @@
+module MemoryGame where
+
 import Html exposing (div, button, text)
 import Html.Events exposing (onClick)
 import Signal.Time exposing (..)
@@ -55,7 +57,7 @@ containerStyle =
         ("margin", "80px 500px 0px 500px")
       ]  
 
--- ::
+
 view: Signal.Address Action -> Model -> Html.Html
 view address model =
   div [containerStyle]
