@@ -48,19 +48,9 @@ init =
   }
 
 
-containerStyle : Html.Attribute
-containerStyle =
-    Html.Attributes.style <|
-      [
-        ("width", "420px"),
-        ("height", "420px"),
-        ("margin", "80px 500px 0px 500px")
-      ]  
-
-
 view: Signal.Address Action -> Model -> Html.Html
 view address model =
-  div [containerStyle]
+  div [Html.Attributes.class "cardsContainer"]
     [
       div []
         [(Html.text ("Tries " ++ (toString model.score)))],
