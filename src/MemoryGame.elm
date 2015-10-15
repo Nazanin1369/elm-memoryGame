@@ -48,27 +48,17 @@ init =
   }
 
 
-containerStyle : Html.Attribute
-containerStyle =
-    Html.Attributes.style <|
-      [
-        ("width", "420px"),
-        ("height", "420px"),
-        ("margin", "80px 500px 0px 500px")
-      ]  
-
-
 view: Signal.Address Action -> Model -> Html.Html
 view address model =
-  div [containerStyle]
-    [
-      div []
-        [(Html.text ("Tries " ++ (toString model.score)))],
-      div []
+  div [] [
+   div [Html.Attributes.class  "infoContainer"] [(Html.text ("Tries " ++ (toString model.score)))]
+   , div [Html.Attributes.class "cardsContainer"]
+      [
+       div []
         (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
-
-    ]
-
+      ] 
+  ]    
+      
 
 
 openImages: Model -> List Card.Model

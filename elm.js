@@ -4414,7 +4414,7 @@ Elm.MemoryGame.make = function (_elm) {
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 90 and 92");
+            "between lines 80 and 82");
          }();
       }();
    };
@@ -4431,7 +4431,7 @@ Elm.MemoryGame.make = function (_elm) {
                  },
                  model);}
             _U.badCase($moduleName,
-            "between lines 100 and 107");
+            "between lines 90 and 97");
          }();
       }();
    });
@@ -4473,7 +4473,7 @@ Elm.MemoryGame.make = function (_elm) {
                                              cModel) : _U.eq(_v8._0,
                                              2) ? $Card.close(cModel) : cModel;}
                                         _U.badCase($moduleName,
-                                        "between lines 119 and 127");
+                                        "between lines 109 and 117");
                                      }();
                                   },
                                   modelAfterLock.cards)]
@@ -4481,19 +4481,10 @@ Elm.MemoryGame.make = function (_elm) {
                                   ,modelAfterLock.score + 1]],
                  modelAfterLock);}
             _U.badCase($moduleName,
-            "between lines 117 and 129");
+            "between lines 107 and 119");
          }();
       }();
    });
-   var containerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
-                                                             ,_0: "width"
-                                                             ,_1: "420px"}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "height"
-                                                             ,_1: "420px"}
-                                                            ,{ctor: "_Tuple2"
-                                                             ,_0: "margin"
-                                                             ,_1: "80px 500px 0px 500px"}]));
    var initSeed = $Basics.round($Now.loadTime);
    var shuffle = function (list) {
       return function () {
@@ -4530,13 +4521,15 @@ Elm.MemoryGame.make = function (_elm) {
    var view = F2(function (address,
    model) {
       return A2($Html.div,
-      _L.fromArray([containerStyle]),
+      _L.fromArray([]),
       _L.fromArray([A2($Html.div,
-                   _L.fromArray([]),
+                   _L.fromArray([$Html$Attributes.$class("infoContainer")]),
                    _L.fromArray([$Html.text(A2($Basics._op["++"],
                    "Tries ",
                    $Basics.toString(model.score)))]))
                    ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("cardsContainer")]),
+                   _L.fromArray([A2($Html.div,
                    _L.fromArray([]),
                    A2($List.map,
                    function (cModel) {
@@ -4546,7 +4539,7 @@ Elm.MemoryGame.make = function (_elm) {
                       Do(cModel.id)),
                       cModel);
                    },
-                   model.cards))]));
+                   model.cards))]))]));
    });
    var Model = F2(function (a,b) {
       return {_: {}
@@ -4564,7 +4557,6 @@ Elm.MemoryGame.make = function (_elm) {
                             ,initSeed: initSeed
                             ,shuffle: shuffle
                             ,init: init
-                            ,containerStyle: containerStyle
                             ,view: view
                             ,openImages: openImages
                             ,areIdentical: areIdentical
