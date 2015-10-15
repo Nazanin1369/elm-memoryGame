@@ -6,51 +6,30 @@ body {
 
 #memoryGame {
 	height: 100%;
-	background:
-	repeating-linear-gradient(
-		to top left,
-		transparent,
-		transparent 5em,
-		#96526B 5em,
-		#96526B 10em,
-		transparent 10em,
-		transparent 15em,
-		#F5CF66 15em,
-		#F5CF66 20em
-	),
-	repeating-linear-gradient(
-		to top right,
-		transparent,
-		transparent 5em,
-		#EBAD60 5em,
-		#EBAD60 10em,
-		transparent 10em,
-		transparent 15em,
-		#8BAB8D 15em,
-		#8BAB8D 20em
-	), wheat;
-
-	background-blend-mode: multiply;
+	background-color: #fff; 
+	background-image: 
+	linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
+	linear-gradient(#eee .1em, transparent .1em);
+	background-size: 100% 1.2em;
 }
 
 .cardsContainer {
 	width: 420px;
     height: 420px;
     position: fixed;
-    top: 40%;
+    top: 35%;
     left: 50%;
     margin-top: -9em;
     margin-left: -15em;
-    border: 10px solid #96526B;
-    background-color: wheat;
+    border: 10px solid #abced4;
 }
 
 .infoContainer {
 	position: fixed;
-    top: 35%;
     left: 50%;
-    margin-top: -9em;
-    margin-left: -12em;
-    font-weight: 700;
-    font-size: 20px;
+    margin-top: 1em;
+    margin-left: -13em;
+    font: 400 2.5em/125% 'Sofia', Helvetica, Sans-serif;
+	color: #333;
+  	text-shadow: 1px 1px 0px #ededed, 4px 4px 0px rgba(0,0,0,0.15);
 }
