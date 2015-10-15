@@ -4521,13 +4521,15 @@ Elm.MemoryGame.make = function (_elm) {
    var view = F2(function (address,
    model) {
       return A2($Html.div,
-      _L.fromArray([$Html$Attributes.$class("cardsContainer")]),
+      _L.fromArray([]),
       _L.fromArray([A2($Html.div,
-                   _L.fromArray([]),
+                   _L.fromArray([$Html$Attributes.$class("infoContainer")]),
                    _L.fromArray([$Html.text(A2($Basics._op["++"],
                    "Tries ",
                    $Basics.toString(model.score)))]))
                    ,A2($Html.div,
+                   _L.fromArray([$Html$Attributes.$class("cardsContainer")]),
+                   _L.fromArray([A2($Html.div,
                    _L.fromArray([]),
                    A2($List.map,
                    function (cModel) {
@@ -4537,7 +4539,7 @@ Elm.MemoryGame.make = function (_elm) {
                       Do(cModel.id)),
                       cModel);
                    },
-                   model.cards))]));
+                   model.cards))]))]));
    });
    var Model = F2(function (a,b) {
       return {_: {}

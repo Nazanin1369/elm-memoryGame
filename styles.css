@@ -36,5 +36,21 @@ body {
 .cardsContainer {
 	width: 420px;
     height: 420px;
-    margin: 0 auto;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    margin-top: -9em;
+    margin-left: -15em;
+    border: 10px solid #96526B;
+    background-color: wheat;
+}
+
+.infoContainer {
+	position: fixed;
+    top: 35%;
+    left: 50%;
+    margin-top: -9em;
+    margin-left: -12em;
+    font-weight: 700;
+    font-size: 20px;
 }

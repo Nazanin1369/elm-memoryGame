@@ -50,15 +50,15 @@ init =
 
 view: Signal.Address Action -> Model -> Html.Html
 view address model =
-  div [Html.Attributes.class "cardsContainer"]
-    [
-      div []
-        [(Html.text ("Tries " ++ (toString model.score)))],
-      div []
+  div [] [
+   div [Html.Attributes.class  "infoContainer"] [(Html.text ("Tries " ++ (toString model.score)))]
+   , div [Html.Attributes.class "cardsContainer"]
+      [
+       div []
         (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
-
-    ]
-
+      ] 
+  ]    
+      
 
 
 openImages: Model -> List Card.Model
