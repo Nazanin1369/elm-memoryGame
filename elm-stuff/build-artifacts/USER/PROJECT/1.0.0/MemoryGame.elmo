@@ -139,7 +139,7 @@ Elm.MemoryGame.make = function (_elm) {
                  $Basics.toString(A2($Basics._op["%"],
                  index,
                  18)),
-                 ".svg")),
+                 ".png")),
                  index);
               },
               _L.range(1,36)))
