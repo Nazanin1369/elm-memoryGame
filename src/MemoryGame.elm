@@ -43,7 +43,7 @@ init: Model
 init =
   {
     cards = shuffle <|
-              List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 18)) ++ ".svg") index) [1..36],
+              List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 18)) ++ ".png") index) [1..36],
     score = 0
   }
 

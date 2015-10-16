@@ -291,13 +291,13 @@ Elm.Card.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var imageStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
                                                          ,_0: "width"
-                                                         ,_1: "50px"}
+                                                         ,_1: "60px"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "height"
-                                                         ,_1: "50px"}
+                                                         ,_1: "60px"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "padding"
-                                                         ,_1: "10px"}
+                                                         ,_1: "5px"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "position"
                                                          ,_1: "relative"}
@@ -315,7 +315,7 @@ Elm.Card.make = function (_elm) {
          var _v0 = model.status;
          switch (_v0.ctor)
          {case "Closed":
-            return "images/back.svg";}
+            return "images/back.png";}
          return model.image;
       }());
    };
@@ -4508,7 +4508,7 @@ Elm.MemoryGame.make = function (_elm) {
                  $Basics.toString(A2($Basics._op["%"],
                  index,
                  18)),
-                 ".svg")),
+                 ".png")),
                  index);
               },
               _L.range(1,36)))
