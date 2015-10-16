@@ -8,7 +8,7 @@ Memory game using Elm
 
 2- Run the following command from the **root directory** of the project
 
-        elm-make src/MemoryGame.elm --output=index.html
+        elm-make src/MemoryGame.elm
 
 3- Open **index.html** in your browser
 
