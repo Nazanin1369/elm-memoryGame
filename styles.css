@@ -17,22 +17,24 @@ body {
 	width: 540px;
     height: 540px;
     position: fixed;
-    top: 35%;
-    left: 50%;
-    margin-top: -9em;
-    margin-left: -15em;
-    border: 10px solid #CFF5F2;
-    background-color: #CFF5F2;
+    margin-left: 140px;
 }
 
 .infoContainer {
-    font: 400 2.5em/125% 'Sofia', Helvetica, Sans-serif;
-	color: #333;
-  	text-shadow: 1px 1px 0px #ededed, 4px 4px 0px rgba(0,0,0,0.15);
-  	width: 420px;
-    height: 90px;
-    margin-left: -6em;
+    margin-left: 30px;
+    margin-top: 24px;
     position: fixed;
-    top: 0;
-    left: 50%;
+    font-size: 30px;
 }
+
+
+.winContainer {
+    width: 100%;
+    position: fixed;
+    top: 35%;
+    left: 36%;
+    color: #6D5CAE;
+    font: 400 5.5em/125% 'Sofia', Helvetica, Sans-serif;
+    text-shadow: #ccc 0 1px 0, #c9c9c9 0 2px 0, #bbb 0 3px 0, #b9b9b9 0 4px 0, #aaa 0 5px 0,rgba(0,0,0,.1) 0 6px 1px, rgba(0,0,0,.1) 0 0 5px, rgba(0,0,0,.3) 0 1px 3px, rgba(0,0,0,.15) 0 3px 5px, rgba(0,0,0,.2) 0 5px 10px, rgba(0,0,0,.2) 0 10px 10px, rgba(0,0,0,.1) 0 20px 20px;
+ } 
+   
