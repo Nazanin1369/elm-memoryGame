@@ -43,7 +43,7 @@ Elm.Card.make = function (_elm) {
          var _v0 = model.status;
          switch (_v0.ctor)
          {case "Closed":
-            return "images/back.png";}
+            return "images/back.svg";}
          return model.image;
       }());
    };

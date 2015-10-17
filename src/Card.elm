@@ -44,7 +44,7 @@ toImage: Model -> Html.Attribute
 toImage model =
   Html.Attributes.src <|
     case model.status of
-      Closed -> "images/back.png"
+      Closed -> "images/back.svg"
       _   -> model.image
 
 imageContainerStyle : Html.Attribute

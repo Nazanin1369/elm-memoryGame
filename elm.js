@@ -315,7 +315,7 @@ Elm.Card.make = function (_elm) {
          var _v0 = model.status;
          switch (_v0.ctor)
          {case "Closed":
-            return "images/back.png";}
+            return "images/back.svg";}
          return model.image;
       }());
    };
@@ -4417,7 +4417,7 @@ Elm.MemoryGame.make = function (_elm) {
                                        return _U.eq(cItem.id,
                                          _v0._1) ? cItem : $Card.close(cItem);}
                                     _U.badCase($moduleName,
-                                    "between lines 163 and 169");
+                                    "between lines 168 and 174");
                                  }();
                               },
                               model.cards)]],
@@ -4461,7 +4461,7 @@ Elm.MemoryGame.make = function (_elm) {
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 105 and 107");
+            "between lines 110 and 112");
          }();
       }();
    };
@@ -4477,7 +4477,7 @@ Elm.MemoryGame.make = function (_elm) {
                     return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
                  })(model);}
             _U.badCase($moduleName,
-            "between lines 115 and 121");
+            "between lines 120 and 126");
          }();
       }();
    });
@@ -4531,7 +4531,7 @@ Elm.MemoryGame.make = function (_elm) {
                                   ,model.matched_pair + 2]],
                  model);}
             _U.badCase($moduleName,
-            "between lines 183 and 192");
+            "between lines 188 and 197");
          }() : model;
       }();
    };
@@ -4544,7 +4544,7 @@ Elm.MemoryGame.make = function (_elm) {
               action._1,
               action._0)(model)));}
          _U.badCase($moduleName,
-         "between lines 198 and 203");
+         "between lines 203 and 208");
       }();
    });
    var initSeed = $Basics.round($Now.loadTime);
@@ -4585,9 +4585,15 @@ Elm.MemoryGame.make = function (_elm) {
    model) {
       return function () {
          var maxCount = $List.length(model.cards);
-         return false ? A2($Html.div,
+         return _U.eq(model.matched_pair,
+         maxCount) ? A2($Html.div,
          _L.fromArray([$Html$Attributes.$class("winContainer")]),
-         _L.fromArray([$Html.text("You Won!")])) : A2($Html.div,
+         _L.fromArray([A2($Html.p,
+         _L.fromArray([]),
+         _L.fromArray([$Html.text("You Won!")
+                      ,A2($Html.img,
+                      _L.fromArray([$Html$Attributes.src("images/halloween178.svg")]),
+                      _L.fromArray([]))]))])) : A2($Html.div,
          _L.fromArray([]),
          _L.fromArray([A2($Html.div,
                       _L.fromArray([$Html$Attributes.$class("infoContainer")]),
