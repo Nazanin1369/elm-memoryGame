@@ -1,6 +1,6 @@
 module MemoryGame where
 
-import Html exposing (div, button, text)
+import Html exposing (div, button, text, span, p)
 import Html.Events exposing (onClick)
 import Signal.Time exposing (..)
 import Html.Attributes
@@ -55,12 +55,17 @@ view address model =
   let 
     maxCount = List.length model.cards 
   in
-    if model.matched_pair == maxCount then
-      div [] [text "You won!!!!! chicken masala"]
+    --if model.matched_pair == maxCount then
+    if False then
+      div [Html.Attributes.class "winContainer"] [text "You Won!"]
     else
       div [] [
-       div [Html.Attributes.class  "infoCiewontainer"] [(Html.text ("Tries " ++ (toString model.score)))],
-       div [Html.Attributes.class  "infoCiewontainer"] [(Html.text ("Locked " ++ (toString model.matched_pair)))],
+       div [Html.Attributes.class  "infoContainer"] [
+        p [] [
+          Html.text "Tries ",
+          span [] [(Html.text (toString model.score))]
+        ]  
+       ],
        div [Html.Attributes.class "cardsContainer"]
           [
            div []
@@ -135,6 +140,7 @@ updateCardById status id model =
                       ) model.cards,
               score <- model.score + 1           
     }                           
+
 
 
 countOpenCards: Model -> Int

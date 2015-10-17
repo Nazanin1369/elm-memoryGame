@@ -4417,7 +4417,7 @@ Elm.MemoryGame.make = function (_elm) {
                                        return _U.eq(cItem.id,
                                          _v0._1) ? cItem : $Card.close(cItem);}
                                     _U.badCase($moduleName,
-                                    "between lines 157 and 163");
+                                    "between lines 163 and 169");
                                  }();
                               },
                               model.cards)]],
@@ -4461,7 +4461,7 @@ Elm.MemoryGame.make = function (_elm) {
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 100 and 102");
+            "between lines 105 and 107");
          }();
       }();
    };
@@ -4477,7 +4477,7 @@ Elm.MemoryGame.make = function (_elm) {
                     return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
                  })(model);}
             _U.badCase($moduleName,
-            "between lines 110 and 116");
+            "between lines 115 and 121");
          }();
       }();
    });
@@ -4531,7 +4531,7 @@ Elm.MemoryGame.make = function (_elm) {
                                   ,model.matched_pair + 2]],
                  model);}
             _U.badCase($moduleName,
-            "between lines 177 and 186");
+            "between lines 183 and 192");
          }() : model;
       }();
    };
@@ -4544,7 +4544,7 @@ Elm.MemoryGame.make = function (_elm) {
               action._1,
               action._0)(model)));}
          _U.badCase($moduleName,
-         "between lines 192 and 197");
+         "between lines 198 and 203");
       }();
    });
    var initSeed = $Basics.round($Now.loadTime);
@@ -4585,21 +4585,18 @@ Elm.MemoryGame.make = function (_elm) {
    model) {
       return function () {
          var maxCount = $List.length(model.cards);
-         return _U.eq(model.matched_pair,
-         maxCount) ? A2($Html.div,
-         _L.fromArray([]),
-         _L.fromArray([$Html.text("You won!!!!! chicken masala")])) : A2($Html.div,
+         return false ? A2($Html.div,
+         _L.fromArray([$Html$Attributes.$class("winContainer")]),
+         _L.fromArray([$Html.text("You Won!")])) : A2($Html.div,
          _L.fromArray([]),
          _L.fromArray([A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("infoCiewontainer")]),
-                      _L.fromArray([$Html.text(A2($Basics._op["++"],
-                      "Tries ",
-                      $Basics.toString(model.score)))]))
-                      ,A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("infoCiewontainer")]),
-                      _L.fromArray([$Html.text(A2($Basics._op["++"],
-                      "Locked ",
-                      $Basics.toString(model.matched_pair)))]))
+                      _L.fromArray([$Html$Attributes.$class("infoContainer")]),
+                      _L.fromArray([A2($Html.p,
+                      _L.fromArray([]),
+                      _L.fromArray([$Html.text("Tries ")
+                                   ,A2($Html.span,
+                                   _L.fromArray([]),
+                                   _L.fromArray([$Html.text($Basics.toString(model.score))]))]))]))
                       ,A2($Html.div,
                       _L.fromArray([$Html$Attributes.$class("cardsContainer")]),
                       _L.fromArray([A2($Html.div,

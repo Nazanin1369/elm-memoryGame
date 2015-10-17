@@ -1,0 +1,50 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+@font-face {
+    font-family:"BrookeS8";
+    src: url("BrookeS8.ttf") /* TTF file for CSS3 browsers */
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  font-family: 'BrookeS8', Helvetica, Sans-serif;
+  background-image: linear-gradient(90deg, transparent 79px, #10CFBD 79px, #10CFBD 81px, transparent 81px), 
+  linear-gradient(#eee .1em, transparent .1em), linear-gradient(90deg, transparent 79px, #10CFBD 79px, #10CFBD 81px, transparent 81px);
+  background-size: 100% 1.2em;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.page-header {
+  border-bottom: 3px solid #10CFBD;
+}
+
+.footer {
+  font-size: 20px;
+}
+
