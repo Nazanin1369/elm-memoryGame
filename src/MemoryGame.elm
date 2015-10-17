@@ -1,6 +1,6 @@
 module MemoryGame where
 
-import Html exposing (div, button, text, span, p)
+import Html exposing (div, button, text, span, p, img)
 import Html.Events exposing (onClick)
 import Signal.Time exposing (..)
 import Html.Attributes
@@ -55,9 +55,14 @@ view address model =
   let 
     maxCount = List.length model.cards 
   in
-    --if model.matched_pair == maxCount then
-    if False then
-      div [Html.Attributes.class "winContainer"] [text "You Won!"]
+    if model.matched_pair == maxCount then
+      div [Html.Attributes.class "winContainer"]
+      [
+        p [] [
+          text "You Won!",
+          img [Html.Attributes.src "images/halloween178.svg"] []
+        ]
+      ]
     else
       div [] [
        div [Html.Attributes.class  "infoContainer"] [
