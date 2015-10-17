@@ -23,29 +23,76 @@ Elm.MemoryGame.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm),
    $StartApp$Simple = Elm.StartApp.Simple.make(_elm),
    $String = Elm.String.make(_elm);
+   var countOpenCards = function (model) {
+      return A3($List.foldr,
+      F2(function (cItem,o) {
+         return $Card.isOpen(cItem) ? o + 1 : o;
+      }),
+      0,
+      model.cards);
+   };
+   var closeAllCards = F2(function (id,
+   model) {
+      return function () {
+         var count = countOpenCards(model);
+         return _U.cmp(count,
+         2) > 0 ? _U.replace([["cards"
+                              ,A2($List.map,
+                              function (cItem) {
+                                 return function () {
+                                    var _v0 = {ctor: "_Tuple2"
+                                              ,_0: $Card.isOpen(cItem)
+                                              ,_1: id};
+                                    switch (_v0.ctor)
+                                    {case "_Tuple2":
+                                       return _U.eq(cItem.id,
+                                         _v0._1) ? cItem : $Card.close(cItem);}
+                                    _U.badCase($moduleName,
+                                    "between lines 157 and 163");
+                                 }();
+                              },
+                              model.cards)]],
+         model) : model;
+      }();
+   });
+   var updateCardById = F3(function (status,
+   id,
+   model) {
+      return _U.replace([["cards"
+                         ,A2($List.map,
+                         function (cItem) {
+                            return _U.eq(cItem.id,
+                            id) ? A2($Card.update,
+                            status,
+                            cItem) : cItem;
+                         },
+                         model.cards)]
+                        ,["score",model.score + 1]],
+      model);
+   });
    var areIdentical = function (list) {
       return function () {
          var l = $List.length(list);
          var f = $List.head(list);
          return function () {
-            var _v0 = {ctor: "_Tuple2"
+            var _v3 = {ctor: "_Tuple2"
                       ,_0: l
                       ,_1: f};
-            switch (_v0.ctor)
-            {case "_Tuple2": switch (_v0._0)
-                 {case 2: switch (_v0._1.ctor)
+            switch (_v3.ctor)
+            {case "_Tuple2": switch (_v3._0)
+                 {case 2: switch (_v3._1.ctor)
                       {case "Just":
                          return A2($List.all,
                            function (x) {
                               return A2($String.contains,
                               x.image,
-                              _v0._1._0.image);
+                              _v3._1._0.image);
                            },
                            list);}
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 80 and 82");
+            "between lines 100 and 102");
          }();
       }();
    };
@@ -56,17 +103,26 @@ Elm.MemoryGame.make = function (_elm) {
          return function () {
             switch (identical)
             {case false: return model;
-               case true: return A2($List.map,
-                 function (cmodel) {
+               case true:
+               return $List.map(function (cmodel) {
                     return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
-                 },
-                 model);}
+                 })(model);}
             _U.badCase($moduleName,
-            "between lines 90 and 97");
+            "between lines 110 and 116");
          }();
       }();
    });
-   var openImages = function (model) {
+   var countOpenAllCards = function (model) {
+      return A3($List.foldr,
+      F2(function (m,i) {
+         return $Card.isOpen(m) ? A2($Basics._op["++"],
+         i,
+         "1 ") : i;
+      }),
+      "",
+      model.cards);
+   };
+   var getOpenCards = function (model) {
       return A3($List.foldr,
       F2(function (m,i) {
          return $Card.isOpen(m) ? A2($List._op["::"],
@@ -76,57 +132,63 @@ Elm.MemoryGame.make = function (_elm) {
       _L.fromArray([]),
       model.cards);
    };
+   var updateCardStatus = function (model) {
+      return function () {
+         var opened = getOpenCards(model);
+         return _U.replace([["cards"
+                            ,A2(lockIfIdentical,
+                            model.cards,
+                            opened)]],
+         model);
+      }();
+   };
+   var checkAndLock = function (model) {
+      return function () {
+         var openCards = getOpenCards(model);
+         var count = $List.length(openCards);
+         var same = areIdentical(openCards);
+         return _U.eq(count,
+         2) ? function () {
+            switch (same)
+            {case false: return model;
+               case true:
+               return _U.replace([["cards"
+                                  ,A2($List.map,
+                                  function (cItem) {
+                                     return $Card.isOpen(cItem) ? $Card.lock(cItem) : cItem;
+                                  },
+                                  model.cards)]
+                                 ,["matched_pair"
+                                  ,model.matched_pair + 2]],
+                 model);}
+            _U.badCase($moduleName,
+            "between lines 177 and 186");
+         }() : model;
+      }();
+   };
    var update = F2(function (action,
    model) {
       return function () {
-         var opened = openImages(model);
-         var openedCount = $List.length(opened);
-         var modelAfterLock = _U.replace([["cards"
-                                          ,A2(lockIfIdentical,
-                                          model.cards,
-                                          opened)]],
-         model);
-         return function () {
-            switch (action.ctor)
-            {case "Do":
-               return _U.replace([["cards"
-                                  ,A2($List.map,
-                                  function (cModel) {
-                                     return function () {
-                                        var _v8 = {ctor: "_Tuple2"
-                                                  ,_0: openedCount
-                                                  ,_1: cModel.id};
-                                        switch (_v8.ctor)
-                                        {case "_Tuple2":
-                                           return _U.eq(_v8._1,
-                                             action._0) ? A2($Card.update,
-                                             action._1,
-                                             cModel) : _U.eq(_v8._0,
-                                             2) ? $Card.close(cModel) : cModel;}
-                                        _U.badCase($moduleName,
-                                        "between lines 109 and 117");
-                                     }();
-                                  },
-                                  modelAfterLock.cards)]
-                                 ,["score"
-                                  ,modelAfterLock.score + 1]],
-                 modelAfterLock);}
-            _U.badCase($moduleName,
-            "between lines 107 and 119");
-         }();
+         switch (action.ctor)
+         {case "Do":
+            return closeAllCards(action._0)(checkAndLock(A2(updateCardById,
+              action._1,
+              action._0)(model)));}
+         _U.badCase($moduleName,
+         "between lines 192 and 197");
       }();
    });
    var initSeed = $Basics.round($Now.loadTime);
    var shuffle = function (list) {
       return function () {
-         var _v11 = A2($Random$Array.shuffle,
+         var _v12 = A2($Random$Array.shuffle,
          $Random.initialSeed(initSeed),
          $Array.fromList(list));
-         switch (_v11.ctor)
+         switch (_v12.ctor)
          {case "_Tuple2":
-            return $Array.toList(_v11._0);}
+            return $Array.toList(_v12._0);}
          _U.badCase($moduleName,
-         "between lines 39 and 40");
+         "between lines 40 and 41");
       }();
    };
    var init = {_: {}
@@ -143,6 +205,7 @@ Elm.MemoryGame.make = function (_elm) {
                  index);
               },
               _L.range(1,36)))
+              ,matched_pair: 0
               ,score: 0};
    var Do = F2(function (a,b) {
       return {ctor: "Do"
@@ -151,31 +214,45 @@ Elm.MemoryGame.make = function (_elm) {
    });
    var view = F2(function (address,
    model) {
-      return A2($Html.div,
-      _L.fromArray([]),
-      _L.fromArray([A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("infoContainer")]),
-                   _L.fromArray([$Html.text(A2($Basics._op["++"],
-                   "Tries ",
-                   $Basics.toString(model.score)))]))
-                   ,A2($Html.div,
-                   _L.fromArray([$Html$Attributes.$class("cardsContainer")]),
-                   _L.fromArray([A2($Html.div,
-                   _L.fromArray([]),
-                   A2($List.map,
-                   function (cModel) {
-                      return A2($Card.view,
-                      A2($Signal.forwardTo,
-                      address,
-                      Do(cModel.id)),
-                      cModel);
-                   },
-                   model.cards))]))]));
+      return function () {
+         var maxCount = $List.length(model.cards);
+         return _U.eq(model.matched_pair,
+         maxCount) ? A2($Html.div,
+         _L.fromArray([]),
+         _L.fromArray([$Html.text("You won!!!!! chicken masala")])) : A2($Html.div,
+         _L.fromArray([]),
+         _L.fromArray([A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("infoCiewontainer")]),
+                      _L.fromArray([$Html.text(A2($Basics._op["++"],
+                      "Tries ",
+                      $Basics.toString(model.score)))]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("infoCiewontainer")]),
+                      _L.fromArray([$Html.text(A2($Basics._op["++"],
+                      "Locked ",
+                      $Basics.toString(model.matched_pair)))]))
+                      ,A2($Html.div,
+                      _L.fromArray([$Html$Attributes.$class("cardsContainer")]),
+                      _L.fromArray([A2($Html.div,
+                      _L.fromArray([]),
+                      A2($List.map,
+                      function (cModel) {
+                         return A2($Card.view,
+                         A2($Signal.forwardTo,
+                         address,
+                         Do(cModel.id)),
+                         cModel);
+                      },
+                      model.cards))]))]));
+      }();
    });
-   var Model = F2(function (a,b) {
+   var Model = F3(function (a,
+   b,
+   c) {
       return {_: {}
              ,cards: a
-             ,score: b};
+             ,matched_pair: b
+             ,score: c};
    });
    var main = $StartApp$Simple.start({_: {}
                                      ,model: init
@@ -189,9 +266,15 @@ Elm.MemoryGame.make = function (_elm) {
                             ,shuffle: shuffle
                             ,init: init
                             ,view: view
-                            ,openImages: openImages
+                            ,getOpenCards: getOpenCards
+                            ,countOpenAllCards: countOpenAllCards
                             ,areIdentical: areIdentical
                             ,lockIfIdentical: lockIfIdentical
+                            ,updateCardStatus: updateCardStatus
+                            ,updateCardById: updateCardById
+                            ,countOpenCards: countOpenCards
+                            ,closeAllCards: closeAllCards
+                            ,checkAndLock: checkAndLock
                             ,update: update};
    return _elm.MemoryGame.values;
 };

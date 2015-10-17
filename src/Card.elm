@@ -58,8 +58,8 @@ imageStyle : Html.Attribute
 imageStyle =
   Html.Attributes.style <|
   [
-    ("width", "60px"),
-    ("height", "60px"),
+    ("width", "80px"),
+    ("height", "80px"),
     ("padding", "5px"),
     ("position", "relative"),
     ("display", "block"),

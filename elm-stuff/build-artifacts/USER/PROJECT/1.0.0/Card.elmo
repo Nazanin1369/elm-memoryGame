@@ -19,10 +19,10 @@ Elm.Card.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var imageStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
                                                          ,_0: "width"
-                                                         ,_1: "60px"}
+                                                         ,_1: "80px"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "height"
-                                                         ,_1: "60px"}
+                                                         ,_1: "80px"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "padding"
                                                          ,_1: "5px"}

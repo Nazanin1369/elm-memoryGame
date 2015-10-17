@@ -14,8 +14,8 @@ body {
 }
 
 .cardsContainer {
-	width: 420px;
-    height: 420px;
+	width: 540px;
+    height: 540px;
     position: fixed;
     top: 35%;
     left: 50%;
