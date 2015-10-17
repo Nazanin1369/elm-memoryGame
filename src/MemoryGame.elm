@@ -24,6 +24,7 @@ main =
 
 type alias Model = {
    cards: List Card.Model,
+   matched_pair: Int,
    score: Int
 }
 
@@ -44,25 +45,33 @@ init =
   {
     cards = shuffle <|
               List.map (\index -> Card.initialModel ("images/" ++ (toString (index % 18)) ++ ".png") index) [1..36],
-    score = 0
+    score = 0,
+    matched_pair = 0
   }
 
 
 view: Signal.Address Action -> Model -> Html.Html
 view address model =
-  div [] [
-   div [Html.Attributes.class  "infoContainer"] [(Html.text ("Tries " ++ (toString model.score)))]
-   , div [Html.Attributes.class "cardsContainer"]
-      [
-       div []
-        (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
-      ] 
-  ]    
+  let 
+    maxCount = List.length model.cards 
+  in
+    if model.matched_pair == maxCount then
+      div [] [text "You won!!!!! chicken masala"]
+    else
+      div [] [
+       div [Html.Attributes.class  "infoCiewontainer"] [(Html.text ("Tries " ++ (toString model.score)))],
+       div [Html.Attributes.class  "infoCiewontainer"] [(Html.text ("Locked " ++ (toString model.matched_pair)))],
+       div [Html.Attributes.class "cardsContainer"]
+          [
+           div []
+            (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
+          ] 
+      ]    
       
 
 
-openImages: Model -> List Card.Model
-openImages model =
+getOpenCards: Model -> List Card.Model
+getOpenCards model =
   List.foldr (
     \m i ->
       if Card.isOpen m then
@@ -70,6 +79,17 @@ openImages model =
       else
         i
   ) [] model.cards
+
+
+countOpenAllCards: Model -> String
+countOpenAllCards model =
+  List.foldr (
+    \m i ->
+      if Card.isOpen m then
+        i ++ "1 "
+      else
+        i
+  ) "" model.cards
 
 areIdentical: List Card.Model -> Bool
 areIdentical list =
@@ -88,32 +108,94 @@ lockIfIdentical model list =
     identical = areIdentical (list)
   in
       case identical of
-        True -> List.map (\cmodel -> if Card.isOpen cmodel then
+        True -> model |> List.map (\cmodel -> if Card.isOpen cmodel then
                                         Card.lock cmodel
                                      else
                                         cmodel
-                         ) model
+                         ) 
+        False ->  model
 
+
+
+updateCardStatus: Model -> Model
+updateCardStatus model =
+  let
+      opened = getOpenCards model
+  in
+    { model | cards <- (lockIfIdentical model.cards opened) }
+        
+
+updateCardById: Card.Status -> Int -> Model -> Model
+updateCardById status id model =
+    { model | cards <- List.map (\cItem -> 
+                        if cItem.id == id then
+                            Card.update status cItem
+                        else
+                          cItem 
+                      ) model.cards,
+              score <- model.score + 1           
+    }                           
+
+
+countOpenCards: Model -> Int
+countOpenCards model = 
+     List.foldr (\cItem o -> 
+                  if Card.isOpen cItem then
+                    o + 1
+                  else
+                    o  
+                ) 0  model.cards   
+
+
+closeAllCards: Int ->Model -> Model
+closeAllCards id model =
+  let
+    count = countOpenCards model
+  in  
+    if count > 2 then
+      {model | cards <- List.map  (\cItem -> 
+                      case (Card.isOpen cItem, id) of 
+                        (true, x) -> if cItem.id == x then
+                                     cItem
+                                    else
+                                     Card.close cItem
+                        (false, _) -> cItem               
+              ) model.cards           
+      }
+    else
+      model
+
+
+checkAndLock: Model -> Model
+checkAndLock model =
+  let
+    openCards = getOpenCards model
+    count = List.length openCards
+    same = areIdentical openCards
+  in  
+    if count == 2 then
+      case same of
+        True -> { model | cards <- List.map  (\cItem -> 
+                                          if Card.isOpen cItem then
+                                            Card.lock cItem
+                                          else
+                                            cItem  
+                                    ) model.cards,
+                         matched_pair <- model.matched_pair + 2}
         False -> model
+    else
+      model
 
 
 update: Action -> Model -> Model
 update action model =
-    let
-      opened = openImages model
-      openedCount = List.length (opened)
-      modelAfterLock = { model | cards <- (lockIfIdentical model.cards opened) }
-    in
       case action of
-        Do y x ->  { modelAfterLock | cards <-  List.map (\cModel ->
-                                  case (openedCount, cModel.id) of
-                                    (c, l) ->  if l == y then
-                                                  Card.update x cModel
-                                               else
-                                                 if c == 2 then
-                                                   Card.close cModel
-                                                 else
-                                                   cModel
-                          ) modelAfterLock.cards,
-                          score <- modelAfterLock.score + 1
-                      }
+        --Do Int Card.status
+        Do y x -> model |> updateCardById x y
+                        |> checkAndLock
+                        |> closeAllCards y
+                     
+
+
+
+
