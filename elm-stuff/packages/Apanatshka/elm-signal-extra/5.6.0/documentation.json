@@ -1,0 +1,379 @@
+[
+  {
+    "name": "Signal.Stream",
+    "comment": "Uninitialised signals, that only give updates and don't have the concept of\na current value. Like `Signal.Event.EventStream` (also in this package), only with values. \n\n@docs Stream\n\nThis library provides the basic building blocks for routing these streams of\nevents to your application logic.\n\n# Mapping\n@docs map\n\n# Merging\n@docs merge, fairMerge, mergeMany\n\n# Folding\n@docs fold\n\n# Filtering\n@docs filter, filterMap, keepIf, sample\n\n# Primitive Streams\n@docs never, timestamp\n\n# Conversions\n@docs toSignal, fromSignal",
+    "aliases": [
+      {
+        "name": "Stream",
+        "comment": "Streams of events. Many interactions with the world can be formulated as\na stream of discrete events: mouse clicks, responses from servers, key presses,\netc.",
+        "args": [
+          "a"
+        ],
+        "type": "Signal.Signal (Maybe.Maybe a)"
+      }
+    ],
+    "types": [],
+    "values": [
+      {
+        "name": "fairMerge",
+        "comment": "Like `merge`, but you get to decide which event wins when they come in at the same time.",
+        "type": "(a -> a -> a) -> Signal.Stream.Stream a -> Signal.Stream.Stream a -> Signal.Stream.Stream a"
+      },
+      {
+        "name": "filter",
+        "comment": "Filter out and unwrap the `Just`s in the stream.",
+        "type": "Signal.Stream.Stream (Maybe.Maybe a) -> Signal.Stream.Stream a"
+      },
+      {
+        "name": "filterMap",
+        "comment": "Filter out some events. If the incoming event is mapped to a `Nothing` it\nis dropped. If it is mapped to `Just` a value, we keep the value.\n\n    numbers : Stream Int\n    numbers =\n        filterMap (\\raw -> Result.toMaybe (String.toInt raw)) userInput\n\n    userInput : Stream String",
+        "type": "(a -> Maybe.Maybe b) -> Signal.Stream.Stream a -> Signal.Stream.Stream b"
+      },
+      {
+        "name": "fold",
+        "comment": "Create a past-dependent value. Each update from the incoming stream will\nbe used to step the state forward. The outgoing signal represents the current\nstate.\n\n    clickCount : Signal Int\n    clickCount =\n        fold (\\click total -> total + 1) 0 Mouse.clicks\n\n    timeSoFar : Stream Time\n    timeSoFar =\n        fold (+) 0 (fps 40)\n\nSo `clickCount` updates on each mouse click, incrementing by one. `timeSoFar`\nis the time the program has been running, updated 40 times a second.",
+        "type": "(a -> b -> b) -> b -> Signal.Stream.Stream a -> Signal.Signal b"
+      },
+      {
+        "name": "fromSignal",
+        "comment": "Get a stream that triggers whenever the signal is *updated*. Note\nthat an update may result in the same value as before, so the resulting\n`Stream` can have the same value twice in a row.\n\n    moves : Stream (Int,Int)\n    moves =\n      fromSignal Mouse.position",
+        "type": "Signal.Signal a -> Signal.Stream.Stream a"
+      },
+      {
+        "name": "keepIf",
+        "comment": "Filter out some events. The given function decides whether we should\nkeep an update. The following example only keeps even numbers.\n\n    numbers : Stream Int\n\n    isEven : Int -> Bool\n\n    evens : Stream Int\n    evens =\n        keepIf isEven numbers",
+        "type": "(a -> Bool) -> Signal.Stream.Stream a -> Signal.Stream.Stream a"
+      },
+      {
+        "name": "map",
+        "comment": "Apply a function to events as they come in. This lets you transform\nstreams.\n\n    type Action = MouseClick | TimeDelta Float\n\n    actions : Stream Action\n    actions =\n        map (always MouseClick) Mouse.clicks",
+        "type": "(a -> b) -> Signal.Stream.Stream a -> Signal.Stream.Stream b"
+      },
+      {
+        "name": "merge",
+        "comment": "Merge two streams into one. This function is extremely useful for bringing\ntogether lots of different streams to feed into a `fold`.\n\n    type Action = MouseClick | TimeDelta Float\n\n    actions : Stream Action\n    actions =\n        merge\n            (map (always MouseClick) Mouse.clicks)\n            (map TimeDelta (fps 40))\n\nIf an event comes from either of the incoming streams, it flows out the\noutgoing stream. If an event comes on both streams at the same time, the left\nevent wins (i.e., the right event is discarded).",
+        "type": "Signal.Stream.Stream a -> Signal.Stream.Stream a -> Signal.Stream.Stream a"
+      },
+      {
+        "name": "mergeMany",
+        "comment": "Merge many streams into one. This is useful when you are merging more than\ntwo streams. When multiple events come in at the same time, the left-most\nevent wins, just like with `merge`.\n\n    type Action = MouseMove (Int,Int) | TimeDelta Float | Click\n\n    actions : Stream Action\n    actions =\n        mergeMany\n            [ map MouseMove Mouse.position\n            , map TimeDelta (fps 40)\n            , map (always Click) Mouse.clicks\n            ]",
+        "type": "List (Signal.Stream.Stream a) -> Signal.Stream.Stream a"
+      },
+      {
+        "name": "never",
+        "comment": "A stream that never gets an update. This is useful when defining functions\nlike `mergeMany` which needs to be defined even when no streams are given.\n\n    mergeMany : List (Stream a) -> Stream a\n    mergeMany streams =\n        List.foldr merge never streams",
+        "type": "Signal.Stream.Stream a"
+      },
+      {
+        "name": "sample",
+        "comment": "Useful for augmenting a stream with information from a signal.\nFor example, if you are operating on a time delta but want to take the current\nkeyboard state into account.\n\n    inputs : Stream ({ x:Int, y:Int }, Time)\n    inputs =\n        sample (,) Keyboard.arrows (fps 60)\n\nNow we get events exactly with the `(fps 60)` stream, but they are augmented\nwith which arrows are pressed at the moment.",
+        "type": "(a -> b -> c) -> Signal.Signal a -> Signal.Stream.Stream b -> Signal.Stream.Stream c"
+      },
+      {
+        "name": "timestamp",
+        "comment": "Add a timestamp to any stream. Timestamps increase monotonically. When you\ncreate `(timestamp Mouse.x)`, an initial timestamp is produced. The timestamp\nupdates whenever `Mouse.x` updates.\n\nTimestamp updates are tied to individual events, so\n`(timestamp Mouse.x)` and `(timestamp Mouse.y)` will always have the same\ntimestamp because they rely on the same underlying event (`Mouse.position`).",
+        "type": "Signal.Stream.Stream a -> Signal.Stream.Stream ( Signal.Time.Time, a )"
+      },
+      {
+        "name": "toSignal",
+        "comment": "Convert a stream of values into a signal that updates whenever an event\ncomes in on the stream.\n\n    url : Signal String\n\n    url =\n        toSignal \"waiting.gif\" imageStream\n\n    constant : a -> Signal a\n\n    constant value =\n        toSignal value Stream.never",
+        "type": "a -> Signal.Stream.Stream a -> Signal.Signal a"
+      }
+    ],
+    "generated-with-elm-version": "0.15.1"
+  },
+  {
+    "name": "Signal.Time",
+    "comment": "Time related functions for `Signal`s.\n\n# Easy does it\nControlling too frequently changing signals. \n@docs limitRate, dropWithin, settledAfter\n\n# Relative time\n@docs startTime, relativeTime\n\n# Re-exports\nSome functions from the `Time` module that fit in. \n@docs Time, since, delay, timestamp",
+    "aliases": [
+      {
+        "name": "Time",
+        "comment": "Just re-exporting the `Time` type from the `Time` module",
+        "args": [],
+        "type": "Time.Time"
+      }
+    ],
+    "types": [],
+    "values": [
+      {
+        "name": "delay",
+        "comment": "A re-export of [Time.delay](http://package.elm-lang.org/packages/elm-lang/core/1.0.0/Time#delay). \n\nDelay a signal by a certain amount of time. So `(delay second\nMouse.clicks)` will update one second later than any mouse click.",
+        "type": "Signal.Time.Time -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "dropWithin",
+        "comment": "Drops all but the first update of a flurry of updates (a stutter).\nThe stutter is defined as updates that happen with max. the given time\nin between. \n\nThe first update of the given signal is sent through. Then the given\ndelay is waited. If no other updates arrive during that time, then next\nupdate will be sent through. Any update that arrives within the given\ntime of the last update is dropped. \n\n    noDoubleClicks = dropWithin (300 * milliseconds) Mouse.clicks\n\nAlso known to some areas as an \"immediate\" `debounce` function.",
+        "type": "Signal.Time.Time -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "limitRate",
+        "comment": "Limits the given signal to output a maximum of one message within\nthe given time period.\n\nAfter an update of the given signal, for the given period subsequent\nupdates are dropped. The original update that started this dropping is\nkept. \n\n    throttledMouseClicks = limitRate 60 Mouse.clicks\n\nAlso known in some areas as a `throttle` function.",
+        "type": "Signal.Time.Time -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "relativeTime",
+        "comment": "Turns absolute time signal to time relative to the start of the\nprogram. \n\n    let tick = Time.every Time.second\n    in  Signal.foldp ((+) 1) 0 tick == \n          relativeTime tick ~> Time.inSeconds >> round",
+        "type": "Signal.Signal Signal.Time.Time -> Signal.Signal Signal.Time.Time"
+      },
+      {
+        "name": "settledAfter",
+        "comment": "Gives the last update of a flurry of updates (a stutter) after has\nsettled* for the given time. The stutter is defined as updates that\nhappen within the given time. * Where settled the signal gets no further\nupdates for some time, it's **not** relating to the value changes of the\nsignal. \n\nAfter every update of the given signal, the given delay is waited. If no\nother updates arrived during that time, the update is sent through. If a\nnew update arrives within the given time, the previous update is dropped\nand the waiting is restarted. So `debounce`-ing a signal that keeps up\nthe flurry of updates all the time results in a signal that never\nupdates. \n\n    tooltip : Signal Bool\n    tooltip = \n      merge (always False \u003c~ Mouse.position) \n            (always True \u003c~ (Mouse.position\n                            |> settledAfter (500 * Time.millisecond)))\n\nAlso known in some areas as a `debounce` function.",
+        "type": "Signal.Time.Time -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "since",
+        "comment": "A re-export of [Time.since](http://package.elm-lang.org/packages/elm-lang/core/1.0.0/Time#since). \n\nTakes a time `t` and any signal. The resulting boolean signal is true\nfor time `t` after every event on the input signal. So ``(second `since`\nMouse.clicks)`` would result in a signal that is true for one second\nafter each mouse click and false otherwise.",
+        "type": "Signal.Time.Time -> Signal.Signal a -> Signal.Signal Bool"
+      },
+      {
+        "name": "startTime",
+        "comment": "The timestamp of the start of the program.",
+        "type": "Signal.Signal Signal.Time.Time"
+      },
+      {
+        "name": "timestamp",
+        "comment": "A re-export of [Time.timestamp](http://package.elm-lang.org/packages/elm-lang/core/1.0.0/Time#timestamp). \n\nAdd a timestamp to any signal. Timestamps increase monotonically. When\nyou create `(timestamp Mouse.x)`, an initial timestamp is produced. The\ntimestamp updates whenever `Mouse.x` updates.\n\nTimestamp updates are tied to individual events, so `(timestamp\nMouse.x)` and `(timestamp Mouse.y)` will always have the same timestamp\nbecause they rely on the same underlying event (`Mouse.position`).",
+        "type": "Signal.Signal a -> Signal.Signal ( Signal.Time.Time, a )"
+      }
+    ],
+    "generated-with-elm-version": "0.15.1"
+  },
+  {
+    "name": "Signal.Fun",
+    "comment": "Some utility functions for signals of functions. The question is:\nWhy are you dealing with signals of functions? Are you sure you want\nthis? It can be used to harm testability and separation of concerns,\nwhich are endangered species and it's illegal to harm them! So please be\ncareful.\n\n@docs scan, premap, postmap, bimap",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "bimap",
+        "comment": "Compose the given functions before and after every function that\ncomes through the signal respectively.",
+        "type": "(a -> b) -> (c -> d) -> Signal.Fun.SF b c -> Signal.Fun.SF a d"
+      },
+      {
+        "name": "postmap",
+        "comment": "Compose the given function after every function that comes through\nthe signal.",
+        "type": "(c -> d) -> Signal.Fun.SF b c -> Signal.Fun.SF b d"
+      },
+      {
+        "name": "premap",
+        "comment": "Compose the given function before every function that comes through\nthe signal.",
+        "type": "(a -> b) -> Signal.Fun.SF b c -> Signal.Fun.SF a c"
+      },
+      {
+        "name": "scan",
+        "comment": "Takes a starting value for a state; applies each new function coming\nin to calculate the new state.",
+        "type": "a -> Signal.Fun.SF a a -> Signal.Signal a"
+      }
+    ],
+    "generated-with-elm-version": "0.15.1"
+  },
+  {
+    "name": "Signal.Extra",
+    "comment": "Utility functions that aren't in the `Signal` module from\n`elm-lang/core`.\n\n# Mapping\n@docs (~>), andMap\n\n# Zipping and unzipping\nFor those too lazy to write a record or union type.\n@docs zip, zip3, zip4, unzip, unzip3, unzip4\n\n# Stateful\n@docs foldp', foldps, foldps', runBuffer, runBuffer', deltas, delayRound\n\n# Switching\n@docs switchWhen,switchSample\n\n# Filters\n@docs keepIf,keepWhen,sampleWhen,keepThen,keepWhenI,filter,filterFold\n\n# Combining\n@docs fairMerge, mergeMany, combine, mapMany, applyMany, passiveMap2, withPassive",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "andMap",
+        "comment": "Apply a signal of functions to another signal. Like `Task.andMap`, this\nprovides a way to combine several signals together into a data type that's\neasier to extend than `map2`, `map3`, etc.\n\nEquivalent to [Signal's ~ operator](http://package.elm-lang.org/packages/elm-lang/core/latest/Signal#~).\n\n    type alias User =\n        { name : String\n        , age : Int\n        , numberOfPosts : Int\n        }\n\n    userSignal : Signal User\n    userSignal = User\n        `Signal.map` nameSignal\n        `andMap` ageSignal\n        `andMap` numberOfPostsSignal",
+        "type": "Signal.Signal (a -> b) -> Signal.Signal a -> Signal.Signal b"
+      },
+      {
+        "name": "applyMany",
+        "comment": "Apply functions in a signal to the current value of many signals.\nThe result is reevaluated whenever any signal changes.",
+        "type": "Signal.Signal (List a -> b) -> List (Signal.Signal a) -> Signal.Signal b"
+      },
+      {
+        "name": "combine",
+        "comment": "Combine a list of signals into a signal of lists. We have\n\n      combine = mapMany identity\n\nAlso, whenever you are in a situation where you write something like\n\n      Signal.map f (combine signals)\n\nyou are better off directly using `mapMany f signals`.",
+        "type": "List (Signal.Signal a) -> Signal.Signal (List a)"
+      },
+      {
+        "name": "delayRound",
+        "comment": "Instead of delaying for some amount of time, delay for one round,\nwhere a round is initiated by outside event to the Elm program.  \nThis may not be be very useful yet. Let the package author know if you\nfind a good use!  \nAlso known to `delay` in E-FRP.",
+        "type": "b -> Signal.Signal b -> Signal.Signal b"
+      },
+      {
+        "name": "deltas",
+        "comment": "A signal of each change to the provided signal, as a tuple of old\nand new values.\n\nThe initial value of the tuple is the initial value of the provided signal,\nduplicated. Thereafter, the first part of the tuple is the old value of the\nprovided signal, and the second part is the new value.",
+        "type": "Signal.Signal a -> Signal.Signal ( a, a )"
+      },
+      {
+        "name": "fairMerge",
+        "comment": "A function that merges the events of two signals without bias\n(unlike `Signal.merge`). It takes a resolution function for the\n(usually rare) case that the signals update in the same \"round\".\n\n    fairMerge (\\l r -> l) == merge",
+        "type": "(a -> a -> a) -> Signal.Signal a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "filter",
+        "comment": "Filter a signal of optional values, discarding `Nothing`s.",
+        "type": "a -> Signal.Signal (Maybe.Maybe a) -> Signal.Signal a"
+      },
+      {
+        "name": "filterFold",
+        "comment": "Apply a fold that may fail, ignore any non-changes.",
+        "type": "(a -> b -> Maybe.Maybe b) -> b -> Signal.Signal a -> Signal.Signal b"
+      },
+      {
+        "name": "foldp'",
+        "comment": "`foldp'` is slighty more general than `foldp` in that you can base\nthe initial value of the state on the initial value of the input value. \n\n    foldp f b s == foldp' f (always b) s",
+        "type": "(a -> b -> b) -> (a -> b) -> Signal.Signal a -> Signal.Signal b"
+      },
+      {
+        "name": "foldps",
+        "comment": "Like `foldp`, but with a hidden state\n\n    foldp f b i ==\n      let d a = (a,a) -- doubling function\n      in foldps (\\a b -> f a b |> d) (d b) i",
+        "type": "(a -> s -> ( b, s )) -> ( b, s ) -> Signal.Signal a -> Signal.Signal b"
+      },
+      {
+        "name": "foldps'",
+        "comment": "Like `foldp'`, but with a hidden state",
+        "type": "(a -> s -> ( b, s )) -> (a -> ( b, s )) -> Signal.Signal a -> Signal.Signal b"
+      },
+      {
+        "name": "keepIf",
+        "comment": "The old name for `Signal.filter`, which doesn't confuse you with what the `Bool` value means.",
+        "type": "(a -> Bool) -> a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "keepThen",
+        "comment": "Like `keepWhen`, but when the filter signal turn `False`, the output\nchanges back to the base value.",
+        "type": "Signal.Signal Bool -> a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "keepWhen",
+        "comment": "The good old `keepWhen` filter that keeps events from the `Signal a` as long as the\n`Signal Bool` is true.",
+        "type": "Signal.Signal Bool -> a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "keepWhenI",
+        "comment": "`keepWhen` but always keeps the initial value rather than trying to\nfilter it.",
+        "type": "Signal.Signal Bool -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "mapMany",
+        "comment": "Apply a function to the current value of many signals. The\nfunction is reevaluated whenever any signal changes. A typical use case:\n\n      mapMany (flow down) [sig_elem1, sig_elem2, sig_elem3]\n\nNote how this is nicer (and more extendable) than the equivalent:\n\n      Signal.map3 (\\e1 e2 e3 -> flow down [e1, e2, e3]) sig_elem1 sig_elem2 sig_elem3\n\nAlso, `mapMany List.maximum : List (Signal comparable) -> Signal (Maybe comparable)`\ngives a signal that always carries `Just` the maximum value from all its\ninput signals, unless the input signal list is empty, in which case the returned\nsignal is equivalent to `constant Nothing`.",
+        "type": "(List a -> b) -> List (Signal.Signal a) -> Signal.Signal b"
+      },
+      {
+        "name": "mergeMany",
+        "comment": "Merge each Signal in the given list into a given original Signal. This works\nlike Signal.mergeMany, except that it does not crash when given an empty list.\n\n    type Update =\n        MouseMove (Int,Int) | TimeDelta Float | Click\n\n\n    updates : Signal Update\n    updates =\n        mergeMany\n            (MouseMove Mouse.position)\n            [ map TimeDelta (fps 40)\n            , map (always Click) Mouse.clicks\n            ]",
+        "type": "Signal.Signal a -> List (Signal.Signal a) -> Signal.Signal a"
+      },
+      {
+        "name": "passiveMap2",
+        "comment": "Apply a function to the current value of two signals. The second signal is\nmapped passively -- that is, changes to the second signal do not force the\nfunction to re-evaluate. However, when the first signal changes, the function\nis re-evaluated with the current value of both signals.\n\nThis is equivalent to Signal.map2, except that Signal.map2 re-evaluates the\nfunction when either Signal changes.",
+        "type": "(a -> b -> result) -> Signal.Signal a -> Signal.Signal b -> Signal.Signal result"
+      },
+      {
+        "name": "runBuffer",
+        "comment": "A running buffer of the given size (`n`) of the given signal. \nThe list of at most `n` of the last values on the input signal. Starts\nwith an empty list. Adds new values to the *end* of the list! So you get\na list with time going from left to right. \n\n    ((==) [1,2,3,4,5]) \u003c~ runBuffer 5 (count (Time.every second))",
+        "type": "Int -> Signal.Signal a -> Signal.Signal (List a)"
+      },
+      {
+        "name": "runBuffer'",
+        "comment": "Same as `runBuffer` but with an initial buffer.",
+        "type": "List a -> Int -> Signal.Signal a -> Signal.Signal (List a)"
+      },
+      {
+        "name": "sampleWhen",
+        "comment": "A combination of `Signal.sampleOn` and `keepWhen`. When the\nfirst signal becomes `True`, the most recent value of the second signal\nwill be propagated.  \n[Before Elm 0.12](\nhttps://github.com/elm-lang/elm-compiler/blob/master/changelog.md#012)\n this was the standard behaviour of `keepWhen`.",
+        "type": "Signal.Signal Bool -> a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "switchSample",
+        "comment": "Same as the previous, but samples the signal it switches to.",
+        "type": "Signal.Signal Bool -> Signal.Signal a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "switchWhen",
+        "comment": "Switch between two signals. When the first signal is `True`, use the\n second signal, otherwise use the third.",
+        "type": "Signal.Signal Bool -> Signal.Signal a -> Signal.Signal a -> Signal.Signal a"
+      },
+      {
+        "name": "unzip",
+        "comment": "Unzip a signal of pairs to a pair of signals. \n\n    unzip Mouse.position == (Mouse.x, Mouse.y)",
+        "type": "Signal.Signal ( a, b ) -> ( Signal.Signal a, Signal.Signal b )"
+      },
+      {
+        "name": "unzip3",
+        "comment": "",
+        "type": "Signal.Signal ( a, b, c ) -> ( Signal.Signal a, Signal.Signal b, Signal.Signal c )"
+      },
+      {
+        "name": "unzip4",
+        "comment": "",
+        "type": "Signal.Signal ( a, b, c, d ) -> ( Signal.Signal a , Signal.Signal b , Signal.Signal c , Signal.Signal d )"
+      },
+      {
+        "name": "withPassive",
+        "comment": "Intended to be paired with Signal's `(\u003c~)` operator, `withPassive` makes it\npossible for many signals to be passively mapped. For example, the\nfollowing two declarations are equivalent:\n\n    main : Signal Element\n    main =\n      scene \u003c~ Mouse.position `withPassive` Window.dimensions\n\n    main : Signal Element\n    main =\n      passiveMap2 scene Mouse.position Window.dimensions\n\nYou can use this pattern to passively map as many signals as you want, by using\n`withPassive` many times.\n\nThe function will only be re-evaluated when the signal mapped with `(\u003c~)`\nchanges. This is unlike the (otherwise equivalent) Signal `(~)` operator, since\nthat operator re-evaluates the function whenever any of the input signals change.\n\nIf you want the function to be re-evaluated when some signals change but not\nothers, then you can combine the Signal `(~)` operator and `withPassive`, putting\n`(~)` first. For instance:\n\n    main : Signal Element\n    main =\n        scene \u003c~ Mouse.position ~ Window.dimensions `withPassive` anotherSignal\n\nIn this example, the `scene` function will take three parameters, and will be called\nwhenever either of the first two parameters changes. The third parameter will\nbe the value of `anotherSignal`, but changes to `anotherSignal` will not cause\nthe function to be re-evaluated.",
+        "type": "Signal.Signal (a -> b) -> Signal.Signal a -> Signal.Signal b",
+        "associativity": "left",
+        "precedence": 4
+      },
+      {
+        "name": "zip",
+        "comment": "Zip two signals into a signal of pairs.\n\n    zip Mouse.x Mouse.y == Mouse.position",
+        "type": "Signal.Signal a -> Signal.Signal b -> Signal.Signal ( a, b )"
+      },
+      {
+        "name": "zip3",
+        "comment": "",
+        "type": "Signal.Signal a -> Signal.Signal b -> Signal.Signal c -> Signal.Signal ( a, b, c )"
+      },
+      {
+        "name": "zip4",
+        "comment": "",
+        "type": "Signal.Signal a -> Signal.Signal b -> Signal.Signal c -> Signal.Signal d -> Signal.Signal ( a, b, c, d )"
+      },
+      {
+        "name": "~>",
+        "comment": "The `(\u003c~)` operator, but flipped. Doesn't play well with the other\ntwo!\n\n    Mouse.x ~> toFloat >> sqrt >> round\n            >> isEven >> not\n            >> asText",
+        "type": "Signal.Signal a -> (a -> b) -> Signal.Signal b",
+        "associativity": "left",
+        "precedence": 4
+      }
+    ],
+    "generated-with-elm-version": "0.15.1"
+  },
+  {
+    "name": "Signal.Discrete",
+    "comment": "Helper functions for recognising events. Mostly useful in\ncombination with `Signal.sampleOn`, although there are uses. \n\n# EventSource\nAn `EventSource` is really just a `Signal` where we don't care about its\nvalue, but only when it updates. A prime example is `Mouse.clicks`. \n@docs EventSource, es\n\n# Basics\n@docs whenEqual, whenChange, whenChangeTo\n\n# `foldp` variations\n@docs folde",
+    "aliases": [
+      {
+        "name": "EventSource",
+        "comment": "At some point in the future Elm will probably support something like\nthis:\n\n    type alias EventSource = Signal _\n\nThat is, `EventSource` will become an alias for any `Signal a` where we\nhide the `a` part.  \nUntil then, there is the `es` function to create an EventSource",
+        "args": [],
+        "type": "Signal.Signal ()"
+      }
+    ],
+    "types": [],
+    "values": [
+      {
+        "name": "es",
+        "comment": "Simple way to make an event signal from any signal",
+        "type": "Signal.Signal a -> Signal.Discrete.EventSource"
+      },
+      {
+        "name": "folde",
+        "comment": "`foldp` on an `EventSource`.\n\n    toggleOnEnter = folde not False \u003c| whenChangeTo True Keyboard.enter",
+        "type": "(b -> b) -> b -> Signal.Discrete.EventSource -> Signal.Signal b"
+      },
+      {
+        "name": "whenChange",
+        "comment": "Fires when the value of the input signal changes.",
+        "type": "Signal.Signal a -> Signal.Discrete.EventSource"
+      },
+      {
+        "name": "whenChangeTo",
+        "comment": "Fires when the value of the input signal changes to the given value.\n\n    spacebarPress = whenChangeTo True Keyboard.spacebar",
+        "type": "a -> Signal.Signal a -> Signal.Discrete.EventSource"
+      },
+      {
+        "name": "whenEqual",
+        "comment": "Fires when the value of the input signal is equal to the given\nvalue.\n\n**NB:** Repeated updates to the same value will make the `EventSource`\nfire repeatedly.  \nSee also: [`whenChangeTo`](#whenChangeTo). \n\n    Mouse.clicks == whenEqual True Mouse.isDown",
+        "type": "a -> Signal.Signal a -> Signal.Discrete.EventSource"
+      }
+    ],
+    "generated-with-elm-version": "0.15.1"
+  }
+]
