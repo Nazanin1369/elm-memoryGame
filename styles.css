@@ -6,18 +6,17 @@ body {
 
 #memoryGame {
 	height: 100%;
-	background-color: #fff; 
-	background-image: 
+	background-color: #fff;
+	background-image:
 	linear-gradient(90deg, transparent 79px, #10CFBD 79px, #10CFBD 81px, transparent 81px),
 	linear-gradient(#eee .1em, transparent .1em);
 	background-size: 100% 1.2em;
 }
 
 .cardsContainer {
-	width: 540px;
-    height: 540px;
     position: fixed;
-    margin-left: 140px;
+		right: 0;
+    margin-right: 200px;
 }
 
 .infoContainer {
@@ -31,16 +30,12 @@ body {
 .winContainer {
     width: 100%;
     position: fixed;
-    top: 35%;
     left: 31%;
     font-size: 77px;
-    
- } 
+
+ }
 
 .winContainer > p > img {
     width: 100px;
     margin: 30px;
 }
-
-
-   
