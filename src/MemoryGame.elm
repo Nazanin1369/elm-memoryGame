@@ -81,25 +81,26 @@ view address model =
           --text toString (model.matched_pair - model.score),
           span [] [(Html.text ("Score: " ++ toString (model.matched_pair * 50 - model.score)))]
         ],
-        button [onClick address Restrat] [Html.text "Restrat"]
+        button [onClick address Restrat, Html.Attributes.class "btn btn-default btn-circle btn-lg"] [Html.text "Restrat"]
       ]
     else
-      div [] [
-       div [Html.Attributes.class  "infoContainer"] [
+      div [Html.Attributes.class  "col-xs-12 main"] [
+       div [Html.Attributes.class  "infoContainer col-xs-4"] [
         p [] [
-          Html.text "Tries ",
+          Html.text "Moves: ",
           span [] [(Html.text (toString model.score))]
         ],
         p [] [
-          Html.text "Matched ",
+          Html.text "Matched: ",
             span [] [(Html.text (toString ((toFloat model.matched_pair) / 2)  ++ " / " ++ toString ( toFloat model.rows * toFloat model.columns / 2)))]
         ]
        ],
-       div [Html.Attributes.class "cardsContainer", cardWidthStyle model]
-          [
-           div []
-            (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
-          ]
+       div [Html.Attributes.class "cardsContainer col-xs-8"]
+        [
+          div [Html.Attributes.style  [("width", toString (model.columns * 80) ++ "px")]]
+          (List.map (\cModel -> Card.view (Signal.forwardTo address (Do cModel.id)) cModel) model.cards)
+        ]
+
       ]
 
 

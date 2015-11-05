@@ -62,13 +62,20 @@ imageStyle =
     ("height", "80px"),
     ("padding", "5px"),
     ("position", "relative"),
-    ("display", "block"),
-    ("-webkit-transform", "rotate3d(0,1,0,-180deg)")
+    ("display", "block")
   ]
 
 view : Signal.Address Status -> Model -> Html.Html
 view address model =
-  div [imageContainerStyle] [ div [onClick address model.status] [  Html.img [ toImage model, imageStyle] [] ] ]
+--  div [ Html.Attributes.class "flip-container"] [
+  --  div [Html.Attributes.class "flipper", Html.Attributes.id "flipper"] [
+    --  div [Html.Attributes.class "front", onClick address model.status] [Html.img [Html.Attributes.src "images/back.svg", imageStyle] []],
+      --div [Html.Attributes.class "back", onClick address model.status] [ Html.img [ toImage model] [] ]
+    --]
+  --]
+  div [Html.Attributes.class "flipper", Html.Attributes.id "flipper"] [
+    Html.span [imageContainerStyle] [ Html.span [onClick address model.status] [  Html.img [ toImage model, imageStyle] [] ] ]
+  ]
 
 update: Status -> Model -> Model
 update action model =

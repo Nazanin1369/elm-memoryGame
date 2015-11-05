@@ -31,10 +31,7 @@ Elm.Card.make = function (_elm) {
                                                          ,_1: "relative"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "display"
-                                                         ,_1: "block"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "-webkit-transform"
-                                                         ,_1: "rotate3d(0,1,0,-180deg)"}]));
+                                                         ,_1: "block"}]));
    var imageContainerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
                                                                   ,_0: "float"
                                                                   ,_1: "left"}]));
@@ -50,15 +47,18 @@ Elm.Card.make = function (_elm) {
    var view = F2(function (address,
    model) {
       return A2($Html.div,
+      _L.fromArray([$Html$Attributes.$class("flipper")
+                   ,$Html$Attributes.id("flipper")]),
+      _L.fromArray([A2($Html.span,
       _L.fromArray([imageContainerStyle]),
-      _L.fromArray([A2($Html.div,
+      _L.fromArray([A2($Html.span,
       _L.fromArray([A2($Html$Events.onClick,
       address,
       model.status)]),
       _L.fromArray([A2($Html.img,
       _L.fromArray([toImage(model)
                    ,imageStyle]),
-      _L.fromArray([]))]))]));
+      _L.fromArray([]))]))]))]));
    });
    var isLocked = function (model) {
       return function () {
@@ -116,7 +116,7 @@ Elm.Card.make = function (_elm) {
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 75 and 78");
+         "between lines 82 and 85");
       }();
    });
    var Model = F3(function (a,
