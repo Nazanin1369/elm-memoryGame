@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Elm Memory Game">
     <meta name="author" content="Nazanin Delam">
@@ -22,25 +22,38 @@
   </head>
 
   <body>
-    <!-- Begin page content -->
     <div class="container">
-      <div class="page-header">
-        <h1> Memory Game</h1>
+      <div class="top">
+        <div class="page-header">
+          <h1> Memory Game</h1>
+        </div>
+
       </div>
-       <div id="memoryGame"></div>
+      <div id="memoryGame" class="container-fluid"></div>
+
+      <footer class="footer">
+        <div class="">
+          <p class="text-muted">Created by: Nazanin Delam</p>
+        </div>
+      </footer>
     </div>
-
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">Created by: Nazanin Delam</p>
-      </div>
-    </footer>
+    <!-- Begin page content -->
 
 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha256-Sk3nkD6mLTMOF0EOpNtsIry+s1CsaqQC1rVLTAy+0yc= sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <script type="text/javascript">
       var memoryGameDiv = document.getElementById('memoryGame');
       Elm.embed(Elm.MemoryGame, memoryGameDiv);
+      window.onload = function () {
+        var f = document.getElementsByClassName('flipper');
+        for(var i = 0; i < f.length; i++) {
+          f[i].onclick  = function(){
+             this.classList.toggle('flipped');
+          };
+        }
+
+      }
     </script>
   </body>
 </html>

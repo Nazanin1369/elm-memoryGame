@@ -2,40 +2,53 @@ body {
 	height: 100%;
 	padding: 0;
 	margin: 0;
-}
-
-#memoryGame {
-	height: 100%;
 	background-color: #fff;
 	background-image:
-	linear-gradient(90deg, transparent 79px, #10CFBD 79px, #10CFBD 81px, transparent 81px),
+	linear-gradient(90deg, transparent 79px, #10CFBD 81px, transparent 81px),
 	linear-gradient(#eee .1em, transparent .1em);
 	background-size: 100% 1.2em;
 }
 
-.cardsContainer {
-    position: fixed;
-		right: 0;
-    margin-right: 200px;
+#memoryGame {
+	height: 100%;
+
+}
+
+.main {
+	margin: 40px 0px 0px 80px
 }
 
 .infoContainer {
-    margin-left: 30px;
-    margin-top: 24px;
-    position: fixed;
-    font-size: 30px;
+
+	font-size: 24px;
 }
 
 
 .winContainer {
     width: 100%;
     position: fixed;
-    left: 31%;
-    font-size: 77px;
-
- }
+    left: 40%;
+    font-size: 24px;
+}
 
 .winContainer > p > img {
     width: 100px;
     margin: 30px;
+}
+
+.top {
+	border-bottom: 3px solid #10CFBD;
+	max-width: 100%;
+}
+
+.btn-circle.btn-lg {
+	height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+  margin: 10px;
+	color: #fff;
+	background-color: #10CFBD;
+  border-color: #15AD9E;
 }

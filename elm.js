@@ -303,10 +303,7 @@ Elm.Card.make = function (_elm) {
                                                          ,_1: "relative"}
                                                         ,{ctor: "_Tuple2"
                                                          ,_0: "display"
-                                                         ,_1: "block"}
-                                                        ,{ctor: "_Tuple2"
-                                                         ,_0: "-webkit-transform"
-                                                         ,_1: "rotate3d(0,1,0,-180deg)"}]));
+                                                         ,_1: "block"}]));
    var imageContainerStyle = $Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
                                                                   ,_0: "float"
                                                                   ,_1: "left"}]));
@@ -322,15 +319,18 @@ Elm.Card.make = function (_elm) {
    var view = F2(function (address,
    model) {
       return A2($Html.div,
+      _L.fromArray([$Html$Attributes.$class("flipper")
+                   ,$Html$Attributes.id("flipper")]),
+      _L.fromArray([A2($Html.span,
       _L.fromArray([imageContainerStyle]),
-      _L.fromArray([A2($Html.div,
+      _L.fromArray([A2($Html.span,
       _L.fromArray([A2($Html$Events.onClick,
       address,
       model.status)]),
       _L.fromArray([A2($Html.img,
       _L.fromArray([toImage(model)
                    ,imageStyle]),
-      _L.fromArray([]))]))]));
+      _L.fromArray([]))]))]))]));
    });
    var isLocked = function (model) {
       return function () {
@@ -388,7 +388,7 @@ Elm.Card.make = function (_elm) {
                                ,Closed]],
               model);}
          _U.badCase($moduleName,
-         "between lines 75 and 78");
+         "between lines 82 and 85");
       }();
    });
    var Model = F3(function (a,
@@ -4418,7 +4418,7 @@ Elm.MemoryGame.make = function (_elm) {
                                        return _U.eq(cItem.id,
                                          _v0._1) ? cItem : $Card.close(cItem);}
                                     _U.badCase($moduleName,
-                                    "between lines 192 and 198");
+                                    "between lines 193 and 199");
                                  }();
                               },
                               model.cards)]],
@@ -4462,7 +4462,7 @@ Elm.MemoryGame.make = function (_elm) {
                       break;}
                  return false;}
             _U.badCase($moduleName,
-            "between lines 134 and 136");
+            "between lines 135 and 137");
          }();
       }();
    };
@@ -4478,7 +4478,7 @@ Elm.MemoryGame.make = function (_elm) {
                     return $Card.isOpen(cmodel) ? $Card.lock(cmodel) : cmodel;
                  })(model);}
             _U.badCase($moduleName,
-            "between lines 144 and 150");
+            "between lines 145 and 151");
          }();
       }();
    });
@@ -4532,7 +4532,7 @@ Elm.MemoryGame.make = function (_elm) {
                                   ,model.matched_pair + 2]],
                  model);}
             _U.badCase($moduleName,
-            "between lines 212 and 221");
+            "between lines 213 and 222");
          }() : model;
       }();
    };
@@ -4587,7 +4587,7 @@ Elm.MemoryGame.make = function (_elm) {
               action._0)(model)));
             case "Restrat": return init;}
          _U.badCase($moduleName,
-         "between lines 227 and 232");
+         "between lines 228 and 233");
       }();
    });
    var Restrat = {ctor: "Restrat"};
@@ -4618,21 +4618,22 @@ Elm.MemoryGame.make = function (_elm) {
                       $Basics.toString(model.matched_pair * 50 - model.score)))]))]))
                       ,A2($Html.button,
                       _L.fromArray([A2($Html$Events.onClick,
-                      address,
-                      Restrat)]),
+                                   address,
+                                   Restrat)
+                                   ,$Html$Attributes.$class("btn btn-default btn-circle btn-lg")]),
                       _L.fromArray([$Html.text("Restrat")]))])) : A2($Html.div,
-         _L.fromArray([]),
+         _L.fromArray([$Html$Attributes.$class("col-xs-12 main")]),
          _L.fromArray([A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("infoContainer")]),
+                      _L.fromArray([$Html$Attributes.$class("infoContainer col-xs-4")]),
                       _L.fromArray([A2($Html.p,
                                    _L.fromArray([]),
-                                   _L.fromArray([$Html.text("Tries ")
+                                   _L.fromArray([$Html.text("Moves: ")
                                                 ,A2($Html.span,
                                                 _L.fromArray([]),
                                                 _L.fromArray([$Html.text($Basics.toString(model.score))]))]))
                                    ,A2($Html.p,
                                    _L.fromArray([]),
-                                   _L.fromArray([$Html.text("Matched ")
+                                   _L.fromArray([$Html.text("Matched: ")
                                                 ,A2($Html.span,
                                                 _L.fromArray([]),
                                                 _L.fromArray([$Html.text(A2($Basics._op["++"],
@@ -4641,10 +4642,13 @@ Elm.MemoryGame.make = function (_elm) {
                                                 " / ",
                                                 $Basics.toString($Basics.toFloat(model.rows) * $Basics.toFloat(model.columns) / 2))))]))]))]))
                       ,A2($Html.div,
-                      _L.fromArray([$Html$Attributes.$class("cardsContainer")
-                                   ,cardWidthStyle(model)]),
+                      _L.fromArray([$Html$Attributes.$class("cardsContainer col-xs-8")]),
                       _L.fromArray([A2($Html.div,
-                      _L.fromArray([]),
+                      _L.fromArray([$Html$Attributes.style(_L.fromArray([{ctor: "_Tuple2"
+                                                                         ,_0: "width"
+                                                                         ,_1: A2($Basics._op["++"],
+                                                                         $Basics.toString(model.columns * 80),
+                                                                         "px")}]))]),
                       A2($List.map,
                       function (cModel) {
                          return A2($Card.view,
