@@ -1,5 +1,5 @@
 # elm-memoryGame
-Memory game using Elm
+Simple Memory game using [Elm](http://elm-lang.org/)
 
 [Have Fun! :) ](http://nazanin1369.github.io/elm-memoryGame/)
 
@@ -13,7 +13,3 @@ Memory game using Elm
 3- Open **index.html** in your browser
 
 4- Enjoy the game! :)
-
-
-
-
