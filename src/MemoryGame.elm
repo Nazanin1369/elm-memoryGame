@@ -31,7 +31,7 @@ type alias Model = {
 
 type Action
   = Do Int Card.Status
-  | Restrat
+  | Restart
 
 
 type alias Time = Float
@@ -81,7 +81,7 @@ view address model =
           --text toString (model.matched_pair - model.score),
           span [] [(Html.text ("Score: " ++ toString (model.matched_pair * 50 - model.score)))]
         ],
-        button [onClick address Restrat, Html.Attributes.class "btn btn-default btn-circle btn-lg"] [Html.text "Restrat"]
+        button [onClick address Restart, Html.Attributes.class "btn btn-default btn-circle btn-lg"] [Html.text "Restart"]
       ]
     else
       div [Html.Attributes.class  "col-xs-12 main"] [
@@ -226,7 +226,7 @@ checkAndLock model =
 update: Action -> Model -> Model
 update action model =
       case action of
-        Restrat -> init
+        Restart -> init
         --Do Int Card.status
         Do y x -> model |> updateCardById x y
                         |> checkAndLock
