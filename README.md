@@ -13,3 +13,5 @@ Simple Memory game using [Elm](http://elm-lang.org/)
 3- Open **index.html** in your browser
 
 4- Enjoy the game! :)
+
+Levels in progress
