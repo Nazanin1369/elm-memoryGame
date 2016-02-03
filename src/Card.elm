@@ -67,12 +67,6 @@ imageStyle =
 
 view : Signal.Address Status -> Model -> Html.Html
 view address model =
---  div [ Html.Attributes.class "flip-container"] [
-  --  div [Html.Attributes.class "flipper", Html.Attributes.id "flipper"] [
-    --  div [Html.Attributes.class "front", onClick address model.status] [Html.img [Html.Attributes.src "images/back.svg", imageStyle] []],
-      --div [Html.Attributes.class "back", onClick address model.status] [ Html.img [ toImage model] [] ]
-    --]
-  --]
   div [Html.Attributes.class "flipper", Html.Attributes.id "flipper"] [
     Html.span [imageContainerStyle] [ Html.span [onClick address model.status] [  Html.img [ toImage model, imageStyle] [] ] ]
   ]
