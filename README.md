@@ -1,5 +1,5 @@
 # elm-memoryGame
-Simple Memory game using [Elm](http://elm-lang.org/) :tada: :game:
+Simple Memory game using [Elm](http://elm-lang.org/) :tada: :robot:
 
 [Have Fun! :) ](http://nazanin1369.github.io/elm-memoryGame/)
 
